@@ -3425,31 +3425,11 @@ function initConditionExerciseModule() {
   }
 
   function renderConditionExercises() {
+    activeCondition = localStorage.getItem('gh_selected_condition') || 'general';
     const isGu = currentLang === 'gu';
     const condData = HEALTH_CONDITIONS[activeCondition] || HEALTH_CONDITIONS.general;
 
-    // Update Pill active states and language labels
-    conditionPills.forEach(btn => {
-      const cond = btn.getAttribute('data-condition');
-      const cData = HEALTH_CONDITIONS[cond];
-      if (cData) {
-        const textSpan = btn.querySelector('span:last-child');
-        if (textSpan) {
-          textSpan.textContent = isGu 
-            ? (cData.btn_title_gu || cData.title_gu)
-            : (cData.btn_title_en || cData.title_en);
-        }
-      }
-      if (cond === activeCondition) {
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-      } else {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-selected', 'false');
-      }
-    });
-
-    // Update active banner
+    // Update active banner icon and titles
     if (activeIconEl) activeIconEl.textContent = condData.icon;
     if (activeTitleEl) {
       const title = isGu ? (condData.title_gu || condData.btn_title_gu) : (condData.title_en || condData.btn_title_en);
@@ -3461,20 +3441,33 @@ function initConditionExerciseModule() {
         : (condData.desc_en || 'Targeted daily exercises with duration, when to perform, and interactive timers:');
     }
 
+    const focusBadge = document.getElementById('ex-focus-badge');
+    if (focusBadge) {
+      focusBadge.textContent = isGu ? '🩺 હોમ પેજ સાથે જોડાયેલ સક્રિય લક્ષ્ય' : '🩺 Active Health Focus from Home Page';
+    }
+
+    const changeFocusText = document.getElementById('ex-change-focus-text');
+    if (changeFocusText) {
+      changeFocusText.textContent = isGu ? 'હોમ પેજ પર લક્ષ્ય બદલો' : 'Change Focus on Home Page';
+    }
+
+    const timingBadge = document.getElementById('ex-timing-badge');
+    if (timingBadge) {
+      timingBadge.textContent = isGu ? '⏱️ ચોક્કસ સમય અને લાઈવ ટાઈમર' : '⏱️ Exact Timing & Built-in Timers';
+    }
+
     // Static text labels on page
     const heroBadge = document.getElementById('ex-hero-badge');
     const heroTitle = document.getElementById('ex-hero-title');
     const heroDesc = document.getElementById('ex-hero-desc');
-    const selectLabel = document.getElementById('ex-select-label');
 
     if (heroBadge) heroBadge.textContent = isGu ? '🏃 સ્વાસ્થ્ય સમસ્યા મુજબ કસરત' : '🏃 Health Problem Exercise Guide';
     if (heroTitle) heroTitle.innerHTML = isGu 
       ? 'તમારી સમસ્યા માટે <span class="hero-highlight">યોગ્ય કસરત અને ચોક્કસ સમય</span>' 
       : 'Right Exercise for Your Problem, <span class="hero-highlight">With Exact Time</span>';
     if (heroDesc) heroDesc.textContent = isGu
-      ? 'કોઈ અઘરા કેલ્ક્યુલેશન કે અટપટા શબ્દો નહીં! તમારી સ્વાસ્થ્ય સમસ્યા પસંદ કરો અને જાણો કઈ કસરત, કેટલો સમય (મિનિટ) અને ક્યારે કરવી જોઈએ:'
-      : 'No confusing formulas or athletic jargon! Choose your health condition to see targeted exercises with exact minutes, best timing, and built-in timers:';
-    if (selectLabel) selectLabel.textContent = isGu ? '👇 તમારી સ્વાસ્થ્ય સમસ્યા પસંદ કરો:' : '👇 Select Your Health Condition:';
+      ? 'તમારી હોમ પેજ પર પસંદ કરેલ સમસ્યા મુજબ લક્ષિત કસરતો, ચોક્કસ મિનિટ, શ્રેષ્ઠ સમય અને લાઈવ ટાઈમર સાથે:'
+      : 'Targeted exercises tailored directly to your chosen health focus from the Home Page, with exact minutes, best daily timings, and interactive timers:';
 
     // Render 3 Exercise Cards
     if (cardsContainer) {
@@ -3609,15 +3602,17 @@ function initConditionExerciseModule() {
     }
   }
 
-  // Bind Condition Button clicks
-  conditionPills.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const cond = btn.getAttribute('data-condition');
-      if (!cond) return;
-      activeCondition = cond;
-      localStorage.setItem('gh_selected_condition', activeCondition);
+  // Reactive listener for condition changes from Home Page or across tabs
+  window.addEventListener('gh_condition_changed', (e) => {
+    activeCondition = (e && e.detail && e.detail.condition) || localStorage.getItem('gh_selected_condition') || 'general';
+    renderConditionExercises();
+  });
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'gh_selected_condition') {
+      activeCondition = e.newValue || 'general';
       renderConditionExercises();
-    });
+    }
   });
 
   // Reactive listener for language changes

@@ -52,64 +52,36 @@
           તમારી સમસ્યા માટે <span class="hero-highlight">યોગ્ય કસરત અને ચોક્કસ સમય</span>
         </h1>
         <p class="lead" id="ex-hero-desc" style="max-width: 820px; margin: 0 auto;">
-          કોઈ અઘરા કેલ્ક્યુલેશન કે અટપટા શબ્દો નહીં! તમારી સ્વાસ્થ્ય સમસ્યા પસંદ કરો અને જાણો કઈ કસરત, કેટલો સમય (મિનિટ) અને ક્યારે કરવી જોઈએ:
+          તમારી હોમ પેજ પર પસંદ કરેલ સમસ્યા મુજબ લક્ષિત કસરતો, ચોક્કસ મિનિટ, શ્રેષ્ઠ સમય અને લાઈવ ટાઈમર સાથે:
         </p>
-
-        <!-- Condition Selector Buttons Bar -->
-        <div style="margin-top: 2rem;">
-          <div id="ex-select-label" style="font-weight: 800; font-size: 1.05rem; color: #0f172a; margin-bottom: 0.75rem;">
-            👇 તમારી સ્વાસ્થ્ય સમસ્યા પસંદ કરો:
-          </div>
-          <div class="ex-problem-bar" role="tablist">
-            <button type="button" class="ex-problem-btn active" data-condition="general">
-              <span>🌿</span>
-              <span>સામાન્ય ફિટનેસ</span>
-            </button>
-            <button type="button" class="ex-problem-btn" data-condition="digestion">
-              <span>🫄</span>
-              <span>એસિડિટી & ગેસ</span>
-            </button>
-            <button type="button" class="ex-problem-btn" data-condition="weight">
-              <span>⚖️</span>
-              <span>વજન ઘટાડો</span>
-            </button>
-            <button type="button" class="ex-problem-btn" data-condition="stress">
-              <span>🧠</span>
-              <span>માનસિક તણાવ</span>
-            </button>
-            <button type="button" class="ex-problem-btn" data-condition="sleep">
-              <span>😴</span>
-              <span>ઊંઘની સમસ્યા</span>
-            </button>
-            <button type="button" class="ex-problem-btn" data-condition="joints">
-              <span>🦴</span>
-              <span>સાંધાનો દુખાવો</span>
-            </button>
-            <button type="button" class="ex-problem-btn" data-condition="sugar_bp">
-              <span>🩺</span>
-              <span>સુગર & બીપી</span>
-            </button>
-          </div>
-        </div>
       </div>
     </section>
 
     <!-- Main Problem Exercise Container -->
-    <section class="section" style="padding-top: 1rem;">
+    <section class="section" style="padding-top: 1.5rem;">
       <div class="container">
-        <!-- Active Condition Banner -->
+        <!-- Active Health Focus Banner (Linked Directly to Home Page) -->
         <div class="ex-active-banner">
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
-              <span id="ex-active-icon" style="font-size: 2rem;">🌿</span>
-              <h2 id="ex-active-title" style="margin: 0; font-size: 1.5rem; color: #0f172a;">General Wellness</h2>
+          <div style="flex: 1;">
+            <div class="ratio-badge-pill" id="ex-focus-badge" style="margin-bottom: 0.6rem; display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(16, 185, 129, 0.15); color: #047857; font-weight: 800; font-size: 0.82rem; padding: 0.25rem 0.75rem; border-radius: 9999px; border: 1px solid rgba(16, 185, 129, 0.3);">
+              🩺 હોમ પેજ સાથે જોડાયેલ સક્રિય લક્ષ્ય
             </div>
-            <p id="ex-active-desc" style="margin: 0; font-size: 0.95rem; color: #475569;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
+              <span id="ex-active-icon" style="font-size: 2.2rem;">🌿</span>
+              <h2 id="ex-active-title" style="margin: 0; font-size: 1.55rem; font-weight: 800; color: #0f172a;">General Wellness</h2>
+            </div>
+            <p id="ex-active-desc" style="margin: 0; font-size: 0.95rem; color: #475569; line-height: 1.5;">
               Maintain peak natural energy, steady immunity, and balanced health.
             </p>
           </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; background: #ffffff; padding: 0.6rem 1rem; border-radius: var(--radius-md); border: 1px solid #cbd5e1; font-size: 0.88rem; font-weight: 700; color: #0f766e;">
-            <span>⏱️ ચોક્કસ સમય સાથે</span>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.65rem;">
+            <a href="index.html#home-focus-banner" class="btn-change-focus" id="ex-change-focus-btn" style="display: inline-flex; align-items: center; gap: 0.45rem; background: #ffffff; color: #059669; font-weight: 700; font-size: 0.85rem; padding: 0.55rem 1rem; border-radius: 12px; border: 1px solid #10b981; text-decoration: none; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15); transition: all 0.2s ease;">
+              <span>🔄</span>
+              <span id="ex-change-focus-text">Change Focus on Home Page</span>
+            </a>
+            <div style="display: flex; align-items: center; gap: 0.4rem; background: rgba(255, 255, 255, 0.85); padding: 0.4rem 0.85rem; border-radius: 9999px; border: 1px solid #cbd5e1; font-size: 0.82rem; font-weight: 700; color: #0f766e;">
+              <span id="ex-timing-badge">⏱️ ચોક્કસ સમય અને લાઈવ ટાઈમર</span>
+            </div>
           </div>
         </div>
 
