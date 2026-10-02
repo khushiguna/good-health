@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Restorative Sleep Guide - Sleep hygiene, circadian rhythm, digital screen curfew, and an interactive 90-minute sleep cycle calculator.">
+  <title>Restorative Sleep & Rest | Good Health and Well-Being</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🌱</span>
+        <span>Good Health</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="food.html" class="nav-link">Healthy Food</a></li>
+        <li><a href="exercise.html" class="nav-link">Exercise</a></li>
+        <li><a href="mental-health.html" class="nav-link">Mental Well-Being</a></li>
+        <li><a href="sleep.html" class="nav-link active">Sleep</a></li>
+        <li><a href="habits.html" class="nav-link">Healthy Habits</a></li>
+        <li><a href="result.html" class="nav-link">Daily Result</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-auth-slot"><a href="login.html" class="nav-link nav-cta">Sign In</a></li>
+      </ul>
+
+      <div class="header-right-group">
+        <div class="lang-select-box" title="Select Language / ભાષા પસંદ કરો">
+          <span class="lang-globe">🌐</span>
+          <select id="site-lang-select" class="site-lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Hero -->
+    <section class="section section-tint text-center" style="padding-bottom: 2.5rem;">
+      <div class="container">
+        <div class="section-badge">Restoration & Recovery</div>
+        <h1>The Science of <span class="hero-highlight">Restorative Sleep</span></h1>
+        <p class="lead">
+          Sleep is your body's ultimate biological reset button. During deep sleep, your brain consolidates memories, clears metabolic waste, restores energy reserves, and repairs muscular tissues.
+        </p>
+      </div>
+    </section>
+
+    <!-- Interactive Sleep Cycle Calculator (PRD Section 6.5) -->
+    <section class="section" id="calculator">
+      <div class="container" style="max-width: 800px;">
+        <div class="tool-box">
+          <div class="tool-header">
+            <span style="font-size: 2.2rem;">🌙</span>
+            <div>
+              <h3>Interactive 90-Minute Sleep Cycle Calculator</h3>
+              <p class="text-muted" style="margin: 0; font-size: 0.9rem;">
+                Human sleep flows in 90-minute ultradian cycles. Waking up in the middle of a deep sleep cycle causes morning grogginess (sleep inertia). Use this tool to wake up at the end of a cycle feeling energized!
+              </p>
+            </div>
+          </div>
+
+          <form id="sleep-calc-form">
+            <div class="form-group">
+              <label for="sleep-wake-time">What time do you need to wake up?</label>
+              <input type="time" id="sleep-wake-time" class="form-control" value="06:30" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Calculate Optimal Bedtimes</button>
+          </form>
+
+          <div id="sleep-calc-result" class="result-box">
+            <h4>Recommended Times to Fall Asleep:</h4>
+            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem;">
+              Allow approximately 15 minutes to fall asleep. Aim to be in bed closing your eyes at one of the following times:
+            </p>
+            <div id="sleep-times-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Proper Sleep Matters -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Biological Benefits</div>
+          <h2>Why 7-9 Hours of Quality Sleep is Non-Negotiable</h2>
+          <p class="lead">Chronic sleep deprivation impairs memory, impairs immunity, and disrupts metabolic hormones.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="health-card">
+            <div class="card-icon-wrap" style="background: #ede9fe; color: #7c3aed;">🧬</div>
+            <h3>Cellular Repair & Immunity</h3>
+            <p>During stage 3 slow-wave sleep, human growth hormone is secreted to repair tissues and muscles, while the immune system synthesizes cytokines that fight infections.</p>
+          </div>
+
+          <div class="health-card">
+            <div class="card-icon-wrap" style="background: #e0f2fe; color: #0284c7;">🧠</div>
+            <h3>Brain Detoxification</h3>
+            <p>The brain's glymphatic system flushes toxic beta-amyloid proteins during sleep. Adequate rest enhances problem-solving speed, attention span, and emotional resilience.</p>
+          </div>
+
+          <div class="health-card">
+            <div class="card-icon-wrap" style="background: #fef3c7; color: #d97706;">⚖️</div>
+            <h3>Metabolic Regulation</h3>
+            <p>Sleep balances ghrelin and leptin, the appetite hormones. Lack of rest triggers carbohydrate cravings and insulin resistance, contributing to unhealthy weight gain.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Digital Detox & Screen Curfew (PRD Section 6.5) -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Modern Sleep Obstacle</div>
+          <h2>Avoiding Excessive Screens Before Sleep</h2>
+          <p class="lead">Smartphones, laptops, and televisions emit short-wavelength blue light that fools your brain into thinking it is daytime.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="info-card" style="border-left: 4px solid var(--danger);">
+            <h4><span class="icon-pill badge-amber">📱</span> How Screens Disrupt Melatonin</h4>
+            <p class="text-muted">The photoreceptors in your eyes detect blue light and signal the suprachiasmatic nucleus to halt production of <strong>melatonin</strong>, the sleep hormone:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+              <li>Delays sleep onset by 40-60 minutes on average.</li>
+              <li>Reduces REM dream sleep, vital for emotional processing.</li>
+              <li>Dopamine triggers from social media keep your brain stimulated and alert.</li>
+            </ul>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid var(--secondary);">
+            <h4><span class="icon-pill badge-green">📖</span> Evening Wind-Down Alternatives</h4>
+            <p class="text-muted">Establish a relaxing 60-minute screen curfew before bed with soothing rituals:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+              <li>Read a physical paper book or listen to calming audiobooks.</li>
+              <li>Sip non-caffeinated chamomile or lavender herbal tea.</li>
+              <li>Dim overhead bright lights and switch to warm, soft amber lamps.</li>
+              <li>Charge your smartphone outside your bedroom or across the room.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The 5 Sleep Hygiene Commandments -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Sleep Hygiene</div>
+          <h2>5 Essential Habits for Better Sleep</h2>
+          <p class="lead">Small changes to your sleep environment and daily routine produce transformative nightly rest.</p>
+        </div>
+
+        <div class="step-list" style="max-width: 800px; margin: 0 auto;">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Consistent Sleep-Wake Schedule</h4>
+              <p class="text-muted" style="margin: 0;">Go to bed and wake up at the same time every day—even on weekends. Consistency anchors your body's natural circadian clock.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Keep Your Bedroom Cool & Dark</h4>
+              <p class="text-muted" style="margin: 0;">Optimal sleeping temperature is around 18-20°C (65-68°F). Use blackout curtains or an eye mask and earplugs if living in a noisy area.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Caffeine Curfew</h4>
+              <p class="text-muted" style="margin: 0;">Caffeine has a half-life of 5-7 hours. Avoid coffee, energy drinks, and strong sodas after 2:00 PM.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Early Morning Sunlight Exposure</h4>
+              <p class="text-muted" style="margin: 0;">Get 10-15 minutes of outdoor sunlight within 30 minutes of waking. This sets your brain's timer to release melatonin 14-16 hours later.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span class="brand-icon">🌱</span>
+            <h3 style="margin: 0; font-size: 1.4rem;">Good Health and Well-Being</h3>
+          </div>
+          <p>Helping you build sustainable sleep rituals that revitalize your body and mind every day.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Health Guides</h4>
+          <ul class="footer-links">
+            <li><a href="food.html">Healthy Food</a></li>
+            <li><a href="exercise.html">Exercise Routines</a></li>
+            <li><a href="mental-health.html">Mental Well-Being</a></li>
+            <li><a href="sleep.html">Sleep Hygiene</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Interactive Tools</h4>
+          <ul class="footer-links">
+            <li><a href="sleep.html#calculator">Sleep Calculator</a></li>
+            <li><a href="habits.html">Habit Tracker</a></li>
+            <li><a href="mental-health.html#breathing">Breathing Bubble</a></li>
+            <li><a href="food.html#calculator">Water Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Next Step</h4>
+          <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem;">Bring it all together with daily healthy habits.</p>
+          <a href="habits.html" class="btn btn-sm btn-primary">Go to Habits Tracker →</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Good Health and Well-Being Project.</div>
+        <div>Supporting UN SDG 3: Good Health and Well-Being</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

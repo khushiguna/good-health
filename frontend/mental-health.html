@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mental Well-Being - Simple strategies for reducing stress, relaxation, meditation, positive thinking, and an interactive 4-7-8 breathing circle tool.">
+  <title>Mental Well-Being & Stress Relief | Good Health and Well-Being</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🌱</span>
+        <span>Good Health</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="food.html" class="nav-link">Healthy Food</a></li>
+        <li><a href="exercise.html" class="nav-link">Exercise</a></li>
+        <li><a href="mental-health.html" class="nav-link active">Mental Well-Being</a></li>
+        <li><a href="sleep.html" class="nav-link">Sleep</a></li>
+        <li><a href="habits.html" class="nav-link">Healthy Habits</a></li>
+        <li><a href="result.html" class="nav-link">Daily Result</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-auth-slot"><a href="login.html" class="nav-link nav-cta">Sign In</a></li>
+      </ul>
+
+      <div class="header-right-group">
+        <div class="lang-select-box" title="Select Language / ભાષા પસંદ કરો">
+          <span class="lang-globe">🌐</span>
+          <select id="site-lang-select" class="site-lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Hero -->
+    <section class="section section-tint text-center" style="padding-bottom: 2.5rem;">
+      <div class="container">
+        <div class="section-badge">Mindfulness & Inner Peace</div>
+        <h1>Cultivate <span class="hero-highlight">Mental Well-Being</span> & Serenity</h1>
+        <p class="lead">
+          Mental health is just as vital as physical fitness. In a fast-paced world filled with deadlines and digital stimulation, taking intentional moments to pause, breathe, and reset protects your brain from chronic stress and emotional burnout.
+        </p>
+      </div>
+    </section>
+
+    <!-- Interactive 4-7-8 Guided Breathing Tool (PRD Section 6.4) -->
+    <section class="section" id="breathing">
+      <div class="container" style="max-width: 800px;">
+        <div class="tool-box breathing-box">
+          <div class="tool-header" style="justify-content: center; border-bottom: none; margin-bottom: 0;">
+            <span style="font-size: 2.2rem;">✨</span>
+            <div>
+              <h3>Interactive 4-7-8 Relaxation Breathing Guide</h3>
+              <p class="text-muted" style="margin: 0; font-size: 0.9rem;">
+                Developed by Dr. Andrew Weil, the 4-7-8 technique acts as a natural tranquilizer for your nervous system by stimulating the vagus nerve.
+              </p>
+            </div>
+          </div>
+
+          <!-- Animated Breathing Bubble -->
+          <div class="breathing-circle-container">
+            <div class="breathing-circle-outer"></div>
+            <div id="breathing-circle" class="breathing-circle">
+              <span id="breathing-phase" class="breathing-phase">Ready</span>
+              <span id="breathing-timer" class="breathing-timer">4</span>
+            </div>
+          </div>
+
+          <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 480px; margin-bottom: 1.5rem;">
+            <strong>How it works:</strong> Inhale silently through nose for <strong>4s</strong>, hold breath for <strong>7s</strong>, and exhale completely with whoosh sound through mouth for <strong>8s</strong>.
+          </p>
+
+          <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap;">
+            <button id="btn-breathing-start" class="btn btn-primary">Start 4-7-8 Breathing</button>
+            <button id="btn-breathing-reset" class="btn btn-secondary">Reset</button>
+          </div>
+
+          <div style="margin-top: 1.25rem; font-size: 0.9rem; font-weight: 600; color: var(--primary);">
+            Cycles Completed: <span id="breathing-cycles">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Pillars of Stress Reduction -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Everyday Calm</div>
+          <h2>4 Practical Ways to Reduce Daily Stress</h2>
+          <p class="lead">Actionable, zero-cost practices you can incorporate into your daily routine starting today.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="info-card">
+            <h4><span class="icon-pill badge-green">🌿</span> 1. The 5-4-3-2-1 Sensory Grounding Technique</h4>
+            <p class="text-muted">When feeling overwhelmed or anxious, reconnect with the present moment by naming:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+              <li><strong>5 things</strong> you can see around you</li>
+              <li><strong>4 things</strong> you can physically feel or touch</li>
+              <li><strong>3 sounds</strong> you can hear right now</li>
+              <li><strong>2 scents</strong> you can smell in the air</li>
+              <li><strong>1 taste</strong> or physical sensation in your mouth</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h4><span class="icon-pill badge-blue">⏸️</span> 2. Take Intentional Mindful Breaks</h4>
+            <p class="text-muted">Continuous work without rest causes cognitive overload and brain fatigue:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+              <li>Step away from your workstation every 50-60 minutes.</li>
+              <li>Gaze out a window at nature or distant trees to rest your optic nerves.</li>
+              <li>Drink a warm cup of herbal tea without looking at a smartphone.</li>
+              <li>Stretch and roll your shoulders to release physical tension.</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h4><span class="icon-pill badge-amber">📝</span> 3. Gratitude & Positive Reframing</h4>
+            <p class="text-muted">Neuroscience proves that gratitude rewires neural pathways toward optimism:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+              <li>Write down 3 specific things you are grateful for each morning.</li>
+              <li>Replace self-critical internal monologues with encouraging self-talk.</li>
+              <li>Acknowledge small daily wins instead of fixating only on unfinished tasks.</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h4><span class="icon-pill badge-purple">🤝</span> 4. Meaningful Human Connection</h4>
+            <p class="text-muted">Isolation compounds anxiety. Nurturing authentic social bonds is medicine:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+              <li>Call or meet a trusted friend or family member for a relaxed chat.</li>
+              <li>Share how you are honestly feeling rather than bottling emotions up.</li>
+              <li>Seek supportive communities, study groups, or professional counseling when needed.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simple 5-Minute Meditation Guide -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Inner Focus</div>
+          <h2>A Simple 5-Minute Daily Meditation Routine</h2>
+          <p class="lead">Meditation is simply the practice of gently returning your attention whenever it wanders.</p>
+        </div>
+
+        <div class="step-list" style="max-width: 800px; margin: 0 auto;">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Find a Comfortable Seat</h4>
+              <p class="text-muted" style="margin: 0;">Sit upright in a chair or cross-legged on a cushion. Keep your back comfortably erect and let your hands rest gently on your lap.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Close Your Eyes & Soften Your Gaze</h4>
+              <p class="text-muted" style="margin: 0;">Relax your jaw, drop your shoulders away from your ears, and let go of any tension in your forehead.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Focus on the Natural Breath</h4>
+              <p class="text-muted" style="margin: 0;">Feel the cool air entering your nostrils, and warm air gently flowing out. Do not force the breath—simply observe it like watching ocean waves.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div>
+              <h4 style="margin-bottom: 0.25rem;">Notice Wandering Thoughts Without Judgment</h4>
+              <p class="text-muted" style="margin: 0;">When your mind drifts to a chore, memory, or worry, silently say "thinking" with compassion and return your attention back to your breath.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span class="brand-icon">🌱</span>
+            <h3 style="margin: 0; font-size: 1.4rem;">Good Health and Well-Being</h3>
+          </div>
+          <p>Fostering emotional resilience, mindfulness, and mental clarity through accessible everyday habits.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Health Guides</h4>
+          <ul class="footer-links">
+            <li><a href="food.html">Healthy Food</a></li>
+            <li><a href="exercise.html">Exercise Routines</a></li>
+            <li><a href="mental-health.html">Mental Well-Being</a></li>
+            <li><a href="sleep.html">Sleep Hygiene</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Interactive Tools</h4>
+          <ul class="footer-links">
+            <li><a href="mental-health.html#breathing">Breathing Bubble</a></li>
+            <li><a href="habits.html">Habit Tracker</a></li>
+            <li><a href="food.html#calculator">Water Calculator</a></li>
+            <li><a href="sleep.html#calculator">Sleep Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Next Step</h4>
+          <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem;">Restorative sleep allows your mind to heal and recharge.</p>
+          <a href="sleep.html" class="btn btn-sm btn-primary">Go to Sleep Guide →</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Good Health and Well-Being Project.</div>
+        <div>Supporting UN SDG 3: Good Health and Well-Being</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

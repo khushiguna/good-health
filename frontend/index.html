@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Good Health and Well-Being - A simple web platform dedicated to spreading awareness, healthy food, exercise, mental well-being, sleep, and daily habits.">
+  <title>Good Health and Well-Being | Healthy Living Platform</title>
+  <link rel="stylesheet" href="css/style.css?v=1.7">
+  <link rel="stylesheet" href="css/animations.css?v=1.7">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🌱</span>
+        <span>Good Health</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="food.html" class="nav-link">Healthy Food</a></li>
+        <li><a href="exercise.html" class="nav-link">Exercise</a></li>
+        <li><a href="mental-health.html" class="nav-link">Mental Well-Being</a></li>
+        <li><a href="sleep.html" class="nav-link">Sleep</a></li>
+        <li><a href="habits.html" class="nav-link">Healthy Habits</a></li>
+        <li><a href="result.html" class="nav-link">Daily Result</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-auth-slot"><a href="login.html" class="nav-link nav-cta">Sign In</a></li>
+      </ul>
+
+      <div class="header-right-group">
+        <div class="lang-select-box" title="Select Language / ભાષા પસંદ કરો">
+          <span class="lang-globe">🌐</span>
+          <select id="site-lang-select" class="site-lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="home-container">
+      
+      <!-- Daily Health Tips Rotating Glass Banner -->
+      <aside class="daily-tips-box" id="daily-tips-box" aria-label="Daily Health Tips">
+        <div class="tips-box-header">
+          <div class="tip-badge">
+            <span class="tip-badge-icon">💡</span>
+            <span class="tip-badge-title" id="tip-badge-title">Health Tip of the Day</span>
+          </div>
+          <div class="tip-nav-controls">
+            <button type="button" class="tip-ctrl-btn" id="tip-prev-btn" title="Previous Tip" aria-label="Previous Tip">❮</button>
+            <span class="tip-counter" id="tip-counter">1 / 10</span>
+            <button type="button" class="tip-ctrl-btn" id="tip-next-btn" title="Next Tip" aria-label="Next Tip">❯</button>
+          </div>
+        </div>
+        <div class="tip-body">
+          <span class="tip-body-icon" id="tip-body-icon">💧</span>
+          <p class="tip-text" id="tip-text-content">Drink a glass of warm water first thing in the morning to awaken digestion and flush metabolic toxins.</p>
+        </div>
+      </aside>
+
+      <!-- 1. Problem Selector: User ne problem shu che -->
+      <section class="home-step-card problem-select-card" id="home-step1-card">
+        <div class="step-card-header">
+          <div class="ratio-badge-pill" id="home-step1-badge">🩺 Step 1: Health Assessment</div>
+          <h1 id="home-step1-title">
+            Do you have any health issues?
+          </h1>
+          <p id="home-step1-desc">
+            Select your health status below to see tailored daily guidance and your checklist:
+          </p>
+
+        </div>
+
+        <!-- 7 Problem Selection Buttons -->
+        <div class="problem-buttons-grid" id="home-problem-buttons" role="tablist">
+          <button class="problem-btn active" data-condition="general" type="button" role="tab" aria-selected="true">
+            <div class="problem-btn-icon-wrap">
+              <span class="problem-btn-icon">🌿</span>
+            </div>
+            <div class="problem-btn-text">
+              <strong>No Problem</strong>
+              <span>Daily Vitality</span>
+            </div>
+          </button>
+
+          <button class="problem-btn" data-condition="digestion" type="button" role="tab" aria-selected="false">
+            <div class="problem-btn-icon-wrap">
+              <span class="problem-btn-icon">🫄</span>
+            </div>
+            <div class="problem-btn-text">
+              <strong>Acidity &amp; Gas</strong>
+              <span>Digestive Care</span>
+            </div>
+          </button>
+
+          <button class="problem-btn" data-condition="weight" type="button" role="tab" aria-selected="false">
+            <div class="problem-btn-icon-wrap">
+              <span class="problem-btn-icon">⚖️</span>
+            </div>
+            <div class="problem-btn-text">
+              <strong>Weight Loss</strong>
+              <span>Fat Control</span>
+            </div>
+          </button>
+
+          <button class="problem-btn" data-condition="stress" type="button" role="tab" aria-selected="false">
+            <div class="problem-btn-icon-wrap">
+              <span class="problem-btn-icon">🧠</span>
+            </div>
+            <div class="problem-btn-text">
+              <strong>Stress Care</strong>
+              <span>Mental Peace</span>
+            </div>
+          </button>
+
+          <button class="problem-btn" data-condition="sleep" type="button" role="tab" aria-selected="false">
+            <div class="problem-btn-icon-wrap">
+              <span class="problem-btn-icon">🌙</span>
+            </div>
+            <div class="problem-btn-text">
+              <strong>Sleep Issues</strong>
+              <span>Insomnia Support</span>
+            </div>
+          </button>
+
+          <button class="problem-btn" data-condition="joints" type="button" role="tab" aria-selected="false">
+            <div class="problem-btn-icon-wrap">
+              <span class="problem-btn-icon">🦴</span>
+            </div>
+            <div class="problem-btn-text">
+              <strong>Joint &amp; Back</strong>
+              <span>Mobility Care</span>
+            </div>
+          </button>
+
+          <button class="problem-btn" data-condition="sugar_bp" type="button" role="tab" aria-selected="false">
+            <div class="problem-btn-icon-wrap">
+              <span class="problem-btn-icon">🩺</span>
+            </div>
+            <div class="problem-btn-text">
+              <strong>Sugar &amp; BP</strong>
+              <span>Cardio Care</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. Interactive Checkboxes: Today's Action Checklist -->
+      <section class="home-checklist-card">
+        <div class="checklist-header-row">
+          <div>
+            <div class="ratio-badge-pill" id="home-step2-badge" style="margin-bottom: 0.35rem;">✅ Step 2: Today's Action Checklist</div>
+            <h3 id="home-step2-title" style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.25rem;">
+              What You Need to Do Today
+            </h3>
+            <p id="home-step2-desc" style="color: var(--text-muted); font-size: 0.88rem; margin: 0;">
+              Check the box for each task you have completed today:
+            </p>
+          </div>
+          <!-- Live Ratio Widget in Step 2 Header -->
+          <div class="step2-ratio-widget" id="home-ratio-widget">
+            <div class="step2-donut" id="home-ratio-donut">
+              <span id="home-ratio-donut-pct">0%</span>
+            </div>
+            <div class="step2-ratio-meta">
+              <span class="checklist-progress-chip" id="home-checklist-progress">0 of 6 Done</span>
+              <span class="step2-grade-label" id="home-ratio-grade">Pending</span>
+            </div>
+          </div>
+
+        <!-- Action Bar: Create Custom Task Button -->
+        <div class="step2-actions-bar">
+          <button type="button" class="btn-add-task-pill" id="home-btn-add-task">
+            <span class="btn-icon">➕</span>
+            <span id="home-btn-add-task-text">Add Custom Task</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Checkboxes Container -->
+        <div class="home-checkboxes-list" id="home-checkboxes-container">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <p id="home-footer-hint" style="margin: 0; font-size: 0.88rem; color: #64748b;">
+            💡 Your daily score and recovery plan are calculated from this checklist.
+          </p>
+          <a href="result.html" id="home-btn-result" class="btn btn-sm btn-primary" style="display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 700;">
+            📊 View Daily Result &rarr;
+          </a>
+        </div>
+      </section>
+
+      <!-- Interactive Health Activity Calendar & History -->
+      <section class="health-calendar-section" id="health-calendar-section">
+        <div class="calendar-card glass-panel">
+          <div class="calendar-header-row">
+            <div class="calendar-title-wrap">
+              <span class="calendar-badge-icon">📅</span>
+              <div>
+                <h3 class="calendar-title" id="cal-heading-title">Daily Health Activity Calendar</h3>
+                <p class="calendar-subtitle">Click any date to see exactly what tasks and healthy habits you completed on that day.</p>
+              </div>
+            </div>
+
+            <!-- Month Navigator Controls -->
+            <div class="calendar-nav-controls">
+              <button type="button" class="btn-cal-nav" id="cal-btn-prev" title="Previous Month">◀</button>
+              <span class="cal-month-year-label" id="cal-month-year-label">October 2026</span>
+              <button type="button" class="btn-cal-nav" id="cal-btn-next" title="Next Month">▶</button>
+              <button type="button" class="btn-cal-today" id="cal-btn-today">Today</button>
+            </div>
+          </div>
+
+          <!-- Calendar Quick Stats / Legend Bar -->
+          <div class="calendar-legend-bar">
+            <div class="cal-legend-item">
+              <span class="cal-legend-dot dot-high"></span>
+              <span>70%+ Completed (Consistent)</span>
+            </div>
+            <div class="cal-legend-item">
+              <span class="cal-legend-dot dot-mid"></span>
+              <span>30%-69% (In Progress)</span>
+            </div>
+            <div class="cal-legend-item">
+              <span class="cal-legend-dot dot-low"></span>
+              <span>1%-29% (Started)</span>
+            </div>
+            <div class="cal-legend-item">
+              <span class="cal-legend-dot dot-none"></span>
+              <span>Rest / No Record</span>
+            </div>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="calendar-grid-wrap">
+            <div class="calendar-days-header">
+              <span>Sun</span>
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+            </div>
+            <div class="calendar-days-grid" id="cal-days-grid">
+              <!-- Dynamically populated day cells by calendar.js -->
+            </div>
+          </div>
+
+          <!-- Day Completion Details Drawer/Panel -->
+          <div class="cal-day-details-panel" id="cal-day-details-panel">
+            <div class="cal-details-header">
+              <div>
+                <h4 id="cal-details-date-title" style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #1e293b;">
+                  📅 Selected Date
+                </h4>
+                <p id="cal-details-date-sub" style="margin: 0.2rem 0 0; font-size: 0.88rem; color: #64748b;">
+                  Loading completed tasks...
+                </p>
+              </div>
+              <div class="cal-details-score-badge" id="cal-details-score-badge">
+                --
+              </div>
+            </div>
+
+            <!-- List of tasks completed on this selected date -->
+            <div class="cal-completed-tasks-list" id="cal-completed-tasks-list">
+              <!-- Dynamically populated with tasks done on this day -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 3. What User Needs to Do: Guidance -->
+      <section class="problem-guidance-card">
+        <div class="guidance-title-row">
+          <div>
+            <span class="guidance-tag-pill" id="home-guidance-tag">📋 Step 3: Daily Health Prescription</span>
+            <h2 id="home-condition-title" style="font-size: 1.45rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; margin-bottom: 0.25rem;">
+              🌿 General Wellness &amp; Daily Vitality
+            </h2>
+            <p id="home-condition-desc" style="color: var(--text-muted); font-size: 0.92rem; margin: 0;">
+              Maintain peak natural energy, steady immunity, and balanced health.
+            </p>
+          </div>
+        </div>
+
+        <div class="guidance-pillars-grid">
+          <!-- Pillar 1: What to Eat -->
+          <div class="guidance-pillar-box pillar-eat">
+            <div class="guidance-pillar-head">
+              <span class="pillar-icon">🥗</span>
+              <div>
+                <h4 id="pillar-eat-title">What to Eat</h4>
+                <span id="pillar-eat-sub">Beneficial foods for your body</span>
+              </div>
+            </div>
+            <ul class="guidance-list" id="home-eat-list"></ul>
+          </div>
+
+          <!-- Pillar 2: What to Strictly Avoid -->
+          <div class="guidance-pillar-box pillar-avoid">
+            <div class="guidance-pillar-head">
+              <span class="pillar-icon">🛑</span>
+              <div>
+                <h4 id="pillar-avoid-title">What to Strictly Avoid</h4>
+                <span id="pillar-avoid-sub">Harmful triggers to eliminate</span>
+              </div>
+            </div>
+            <ul class="guidance-list" id="home-avoid-list"></ul>
+          </div>
+
+          <!-- Pillar 3: Exercise Routine -->
+          <div class="guidance-pillar-box pillar-exercise">
+            <div class="guidance-pillar-head">
+              <span class="pillar-icon">🏃‍♂️</span>
+              <div>
+                <h4 id="pillar-exercise-title">Exercise Routine</h4>
+                <span id="pillar-exercise-sub">Target daily physical activity</span>
+              </div>
+            </div>
+            <ul class="guidance-list" id="home-exercise-list"></ul>
+          </div>
+
+          <!-- Pillar 4: Sleep Target -->
+          <div class="guidance-pillar-box pillar-sleep">
+            <div class="guidance-pillar-head">
+              <span class="pillar-icon">🌙</span>
+              <div>
+                <h4 id="pillar-sleep-title">Sleep Target</h4>
+                <span id="pillar-sleep-sub">Restorative recovery goal</span>
+              </div>
+            </div>
+            <ul class="guidance-list" id="home-sleep-list"></ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span class="brand-icon">🌱</span>
+            <h3 style="margin: 0; font-size: 1.4rem;">Good Health and Well-Being</h3>
+          </div>
+          <p>
+            A simple, open educational platform promoting physical health, balanced nutrition, mental wellness, restorative sleep, and sustainable daily habits.
+          </p>
+          <div class="disclaimer-box">
+            <strong>Disclaimer:</strong> This website is for educational and awareness purposes and is not a substitute for professional medical advice or treatment.
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Health Guides</h4>
+          <ul class="footer-links">
+            <li><a href="food.html">Healthy Food</a></li>
+            <li><a href="exercise.html">Exercise Routines</a></li>
+            <li><a href="mental-health.html">Mental Well-Being</a></li>
+            <li><a href="sleep.html">Sleep Hygiene</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Interactive Tools</h4>
+          <ul class="footer-links">
+            <li><a href="habits.html">Habit Tracker</a></li>
+            <li><a href="food.html#calculator">Water Calculator</a></li>
+            <li><a href="mental-health.html#breathing">Breathing Bubble</a></li>
+            <li><a href="sleep.html#calculator">Sleep Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Get Involved</h4>
+          <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem;">
+            Have questions or ideas to improve health awareness in your community?
+          </p>
+          <a href="about.html#contact" class="btn btn-sm btn-primary">Send Feedback</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Good Health and Well-Being Project. Dedicated to Global Health Awareness.</div>
+        <div>Aligned with UN SDG 3: Good Health and Well-Being</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal: Create & Update Custom Health Task -->
+  <div class="task-modal-backdrop" id="task-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+    <div class="task-modal-card glass-panel">
+      <div class="task-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span class="task-modal-badge-icon" id="task-modal-badge-icon">📝</span>
+          <h3 id="task-modal-title" style="margin: 0; font-size: 1.15rem; font-weight: 800;">Add Custom Task</h3>
+        </div>
+        <button type="button" class="task-modal-close" id="task-modal-close" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <form id="task-form" class="task-modal-form">
+        <input type="hidden" id="task-edit-id" value="">
+
+        <div class="form-group" style="margin-bottom: 0.9rem;">
+          <label for="task-input-title" id="task-label-title" style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem; color: #1e293b;">
+            Task Name
+          </label>
+          <input type="text" id="task-input-title" class="task-input" placeholder="e.g., Morning 20m Yoga, Drink Green Tea..." required maxlength="65">
+        </div>
+
+        
+        <div class="form-group" style="margin-bottom: 0.9rem;">
+          <label for="task-input-category" style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem; color: #1e293b;">
+            Category
+          </label>
+          <select id="task-input-category" class="task-input" required style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit;">
+            <option value="food">Diet & Food 🥗</option>
+            <option value="exercise">Exercise & Movement 🏃</option>
+            <option value="mental">Mental Well-Being 🧘</option>
+            <option value="sleep">Sleep & Rest 🌙</option>
+            <option value="habits">Daily Habits ✨</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0.9rem;">
+          <label for="task-input-tip" id="task-label-tip" style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem; color: #1e293b;">
+            Health Benefit / Tip
+          </label>
+          <input type="text" id="task-input-tip" class="task-input" placeholder="e.g., Promotes joint flexibility & stress relief" maxlength="90">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label id="task-label-icon" style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem; color: #1e293b;">
+            Choose an Icon
+          </label>
+          <div class="task-icon-picker" id="task-icon-picker">
+            <button type="button" class="icon-opt active" data-icon="📝">📝</button>
+            <button type="button" class="icon-opt" data-icon="💧">💧</button>
+            <button type="button" class="icon-opt" data-icon="🏃">🏃</button>
+            <button type="button" class="icon-opt" data-icon="🥗">🥗</button>
+            <button type="button" class="icon-opt" data-icon="🧘">🧘</button>
+            <button type="button" class="icon-opt" data-icon="🍵">🍵</button>
+            <button type="button" class="icon-opt" data-icon="🌙">🌙</button>
+            <button type="button" class="icon-opt" data-icon="🍎">🍎</button>
+            <button type="button" class="icon-opt" data-icon="☀️">☀️</button>
+            <button type="button" class="icon-opt" data-icon="💊">💊</button>
+          </div>
+          <input type="hidden" id="task-selected-icon" value="📝">
+        </div>
+
+        <div class="task-modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="task-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-sm btn-primary" id="task-modal-submit">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/api.js?v=4.0"></script>
+  <script src="js/tools.js?v=4.0"></script>
+  <script src="js/calendar.js?v=4.0"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

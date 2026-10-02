@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign In - Good Health and Well-Being platform. Access your personal health dashboard, save habit streaks, and track daily wellness.">
+  <title>Login / Sign In | Good Health and Well-Being</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🌱</span>
+        <span>Good Health</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="food.html" class="nav-link">Healthy Food</a></li>
+        <li><a href="exercise.html" class="nav-link">Exercise</a></li>
+        <li><a href="mental-health.html" class="nav-link">Mental Well-Being</a></li>
+        <li><a href="sleep.html" class="nav-link">Sleep</a></li>
+        <li><a href="habits.html" class="nav-link">Healthy Habits</a></li>
+        <li><a href="result.html" class="nav-link">Daily Result</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-auth-slot"><a href="login.html" class="nav-link nav-cta active">Sign In</a></li>
+      </ul>
+
+      <div class="header-right-group">
+        <div class="lang-select-box" title="Select Language / ભાષા પસંદ કરો">
+          <span class="lang-globe">🌐</span>
+          <select id="site-lang-select" class="site-lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="auth-section">
+      <div class="container auth-container">
+        
+        <!-- Left Side: Login Information & Platform Logo -->
+        <div class="auth-info-card">
+          <div class="auth-logo-header">
+            <div class="auth-logo-badge">🌱</div>
+            <div class="auth-logo-text">
+              <h2>Good Health & Well-Being</h2>
+              <span>Personal Wellness Portal</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.45rem; color: var(--primary); margin-bottom: 0.75rem;">
+            Your Personal Journey to Better Health Starts Here
+          </h3>
+          <p class="text-muted" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+            Logging in unlocks personalized tools designed to help you maintain consistent daily habits, balanced nutrition, restful sleep, and mental calm.
+          </p>
+
+          <!-- Why Log In? Information List -->
+          <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary);">
+            Why Create an Account or Log In?
+          </div>
+
+          <ul class="auth-benefits-list">
+            <li class="auth-benefit-item">
+              <div class="auth-benefit-icon">🔥</div>
+              <div class="auth-benefit-text">
+                <h4>Save Habit Streaks & Progress</h4>
+                <p>Never lose your streak count. Keep your daily checklists synced and track your continuous progress over weeks and months.</p>
+              </div>
+            </li>
+
+            <li class="auth-benefit-item">
+              <div class="auth-benefit-icon">💧</div>
+              <div class="auth-benefit-text">
+                <h4>Personalized Hydration & Sleep Targets</h4>
+                <p>Save your custom water intake goal (liters & glasses) and 90-minute sleep cycle bedtime recommendations.</p>
+              </div>
+            </li>
+
+            <li class="auth-benefit-item">
+              <div class="auth-benefit-icon">🧘</div>
+              <div class="auth-benefit-text">
+                <h4>Customized Mindful Breaks</h4>
+                <p>Bookmark your favorite 4-7-8 breathing sessions and 5-minute desk stretch routines for quick daily access.</p>
+              </div>
+            </li>
+
+            <li class="auth-benefit-item">
+              <div class="auth-benefit-icon">🔒</div>
+              <div class="auth-benefit-text">
+                <h4>100% Free, Private & Secure</h4>
+                <p>Aligned with UN SDG Goal 3. We respect your privacy—your health metrics remain completely private and confidential.</p>
+              </div>
+            </li>
+          </ul>
+
+          <div style="background: white; border-radius: var(--radius-md); padding: 1rem 1.25rem; border: 1px solid #a7f3d0; display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 1.6rem;">🌍</span>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              <strong>UN SDG Goal 3:</strong> "Ensure healthy lives and promote well-being for all at all ages."
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Login / Register Form Card -->
+        <div class="auth-form-card">
+          <div class="auth-form-header">
+            <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; background: var(--secondary-light); color: var(--primary); font-size: 1.5rem; margin-bottom: 0.75rem;">
+              🌱
+            </div>
+            <h2 id="auth-card-title">Welcome Back</h2>
+            <p id="auth-card-subtitle" class="text-muted" style="font-size: 0.9rem; margin-bottom: 0;">
+              Sign in to access your saved wellness goals
+            </p>
+          </div>
+
+          <!-- Tab Switcher: Login / Register -->
+          <div class="auth-tabs">
+            <button id="tab-login" class="auth-tab active" type="button">Sign In</button>
+            <button id="tab-register" class="auth-tab" type="button">Create Account</button>
+          </div>
+
+          <form id="auth-form">
+            <!-- Full Name (Register mode only) -->
+            <div class="form-group" id="group-name" style="display: none;">
+              <label for="auth-name">Full Name</label>
+              <input type="text" id="auth-name" class="form-control" placeholder="e.g. Maya Sharma">
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="auth-email">Email Address</label>
+              <input type="email" id="auth-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="auth-password">Password</label>
+              <div class="input-with-icon">
+                <input type="password" id="auth-password" class="form-control" placeholder="Enter your password (min 6 chars)" minlength="6" required>
+                <button type="button" id="btn-toggle-password" class="password-toggle-btn" title="Toggle password visibility">👁️</button>
+              </div>
+            </div>
+
+            <!-- Options -->
+            <div class="form-options">
+              <label class="remember-me">
+                <input type="checkbox" id="auth-remember" checked>
+                <span>Remember me</span>
+              </label>
+              <a href="#" class="forgot-link" onclick="alert('Password Reset:\nA recovery link will be sent to your registered email address.'); return false;">Forgot Password?</a>
+            </div>
+
+            <button type="submit" id="btn-auth-submit" class="btn btn-primary btn-full" style="padding: 0.85rem;">
+              Sign In to Your Account
+            </button>
+
+            <div class="auth-divider">
+              <span>or test instantly</span>
+            </div>
+
+            <!-- 1-Click Demo Login -->
+            <button type="button" id="btn-demo-login" class="btn btn-demo">
+              ⚡ 1-Click Demo Sign In (Guest User)
+            </button>
+          </form>
+
+          <div style="margin-top: 1.5rem; text-align: center; font-size: 0.875rem; color: var(--text-muted);">
+            Want to explore first without an account?
+            <a href="index.html" style="font-weight: 600; color: var(--primary);">Continue to Home →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span class="brand-icon">🌱</span>
+            <h3 style="margin: 0; font-size: 1.4rem;">Good Health and Well-Being</h3>
+          </div>
+          <p>Inspiring proactive physical fitness, restorative rest, and mindful living for people around the world.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Health Guides</h4>
+          <ul class="footer-links">
+            <li><a href="food.html">Healthy Food</a></li>
+            <li><a href="exercise.html">Exercise Routines</a></li>
+            <li><a href="mental-health.html">Mental Well-Being</a></li>
+            <li><a href="sleep.html">Sleep Hygiene</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Interactive Tools</h4>
+          <ul class="footer-links">
+            <li><a href="habits.html">Habit Tracker</a></li>
+            <li><a href="food.html#calculator">Water Calculator</a></li>
+            <li><a href="mental-health.html#breathing">Breathing Bubble</a></li>
+            <li><a href="sleep.html#calculator">Sleep Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Need Assistance?</h4>
+          <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem;">Have questions about your health account?</p>
+          <a href="about.html#contact" class="btn btn-sm btn-primary">Contact Support</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Good Health and Well-Being Project.</div>
+        <div>Supporting UN SDG 3: Good Health and Well-Being</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

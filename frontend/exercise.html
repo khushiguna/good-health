@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Problem-Specific Exercise Guide - Good Health & Well-Being</title>
+  <link rel="stylesheet" href="css/style.css?v=1.2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🌱</span>
+        <span>Good Health</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="food.html" class="nav-link">Healthy Food</a></li>
+        <li><a href="exercise.html" class="nav-link active">Exercise</a></li>
+        <li><a href="mental-health.html" class="nav-link">Mental Well-Being</a></li>
+        <li><a href="sleep.html" class="nav-link">Sleep</a></li>
+        <li><a href="habits.html" class="nav-link">Healthy Habits</a></li>
+        <li><a href="result.html" class="nav-link">Daily Result</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-auth-slot"><a href="login.html" class="nav-link nav-cta">Sign In</a></li>
+      </ul>
+
+      <div class="header-right-group">
+        <div class="lang-select-box" title="Select Language / ભાષા પસંદ કરો">
+          <span class="lang-globe">🌐</span>
+          <select id="site-lang-select" class="site-lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="problem-exercise-app">
+    <!-- Page Hero -->
+    <section class="section section-tint text-center" style="padding: 2.5rem 0 2rem;">
+      <div class="container">
+        <div class="section-badge" id="ex-hero-badge">🏃 સ્વાસ્થ્ય સમસ્યા મુજબ કસરત</div>
+        <h1 id="ex-hero-title">
+          તમારી સમસ્યા માટે <span class="hero-highlight">યોગ્ય કસરત અને ચોક્કસ સમય</span>
+        </h1>
+        <p class="lead" id="ex-hero-desc" style="max-width: 820px; margin: 0 auto;">
+          કોઈ અઘરા કેલ્ક્યુલેશન કે અટપટા શબ્દો નહીં! તમારી સ્વાસ્થ્ય સમસ્યા પસંદ કરો અને જાણો કઈ કસરત, કેટલો સમય (મિનિટ) અને ક્યારે કરવી જોઈએ:
+        </p>
+
+        <!-- Condition Selector Buttons Bar -->
+        <div style="margin-top: 2rem;">
+          <div id="ex-select-label" style="font-weight: 800; font-size: 1.05rem; color: #0f172a; margin-bottom: 0.75rem;">
+            👇 તમારી સ્વાસ્થ્ય સમસ્યા પસંદ કરો:
+          </div>
+          <div class="ex-problem-bar" role="tablist">
+            <button type="button" class="ex-problem-btn active" data-condition="general">
+              <span>🌿</span>
+              <span>સામાન્ય ફિટનેસ</span>
+            </button>
+            <button type="button" class="ex-problem-btn" data-condition="digestion">
+              <span>🫄</span>
+              <span>એસિડિટી & ગેસ</span>
+            </button>
+            <button type="button" class="ex-problem-btn" data-condition="weight">
+              <span>⚖️</span>
+              <span>વજન ઘટાડો</span>
+            </button>
+            <button type="button" class="ex-problem-btn" data-condition="stress">
+              <span>🧠</span>
+              <span>માનસિક તણાવ</span>
+            </button>
+            <button type="button" class="ex-problem-btn" data-condition="sleep">
+              <span>😴</span>
+              <span>ઊંઘની સમસ્યા</span>
+            </button>
+            <button type="button" class="ex-problem-btn" data-condition="joints">
+              <span>🦴</span>
+              <span>સાંધાનો દુખાવો</span>
+            </button>
+            <button type="button" class="ex-problem-btn" data-condition="sugar_bp">
+              <span>🩺</span>
+              <span>સુગર & બીપી</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Problem Exercise Container -->
+    <section class="section" style="padding-top: 1rem;">
+      <div class="container">
+        <!-- Active Condition Banner -->
+        <div class="ex-active-banner">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
+              <span id="ex-active-icon" style="font-size: 2rem;">🌿</span>
+              <h2 id="ex-active-title" style="margin: 0; font-size: 1.5rem; color: #0f172a;">General Wellness</h2>
+            </div>
+            <p id="ex-active-desc" style="margin: 0; font-size: 0.95rem; color: #475569;">
+              Maintain peak natural energy, steady immunity, and balanced health.
+            </p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: #ffffff; padding: 0.6rem 1rem; border-radius: var(--radius-md); border: 1px solid #cbd5e1; font-size: 0.88rem; font-weight: 700; color: #0f766e;">
+            <span>⏱️ ચોક્કસ સમય સાથે</span>
+          </div>
+        </div>
+
+        <!-- Problem Exercise Cards (Dynamic 3 Cards) -->
+        <div class="ex-cards-grid" id="ex-cards-container">
+          <!-- Dynamic rendering by initConditionExerciseModule() -->
+        </div>
+
+        <!-- Helpful Gentle Tips Box -->
+        <div style="background: #f8fafc; border-radius: var(--radius-xl); border: 1.5px solid #e2e8f0; padding: 1.75rem; margin-top: 2rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+            💡 <span>મહત્વની સરળ સલાહ (Important Guidelines):</span>
+          </h3>
+          <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.95rem; color: #475569; line-height: 1.7;">
+            <li><strong>નિયમિતતા જરૂરી છે:</strong> એક જ દિવસમાં બહુ બધી કસરત કરવા કરતાં દરરોજ દર્શાવેલ સમય (૧૦ થી ૩૦ મિનિટ) નિયમિત આપવો વધુ ફાયદાકારક છે.</li>
+            <li><strong>તમારી ક્ષમતા મુજબ કરો:</strong> જો શરૂઆતમાં ૧૫ મિનિટ અઘરી લાગે તો ૫ મિનિટથી શરૂ કરો અને ધીમે ધીમે સમય વધારો.</li>
+            <li><strong>પાણી પીવાનું રાખો:</strong> કસરત શરૂ કરતાં પહેલાં અને પછી પૂરતા પ્રમાણમાં સાદું પાણી પીવો.</li>
+            <li><strong>દુખાવો થાય તો અટકાવો:</strong> કોઈ આસન કે ચાલતી વખતે તીક્ષ્ણ દુખાવો થાય તો તરત અટકી જવું અને તમારા ડોક્ટરની સલાહ લેવી.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">
+            <span class="brand-icon">🌱</span>
+            <span>Good Health</span>
+          </a>
+          <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
+            Evidence-based daily wellness and targeted guidance for everyday vitality.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Health Pillars</h4>
+          <ul class="footer-links">
+            <li><a href="food.html">Healthy Food</a></li>
+            <li><a href="exercise.html">Targeted Exercise</a></li>
+            <li><a href="mental-health.html">Mental Well-Being</a></li>
+            <li><a href="sleep.html">Sleep Hygiene</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Interactive Tools</h4>
+          <ul class="footer-links">
+            <li><a href="exercise.html">Condition Exercise Guide</a></li>
+            <li><a href="index.html">Daily Health Tracker</a></li>
+            <li><a href="result.html">Daily Health Result</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Next Step</h4>
+          <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem;">Nurture your emotional and psychological health next.</p>
+          <a href="mental-health.html" class="btn btn-sm btn-primary">Go to Mental Well-Being →</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Good Health and Well-Being Project.</div>
+        <div>Supporting UN SDG 3: Good Health and Well-Being</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

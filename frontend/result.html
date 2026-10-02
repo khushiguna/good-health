@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Health Result & Extra Recovery Plan | Good Health and Well-Being</title>
+  <meta name="description" content="Review your daily health score, audit what actions and avoidances you completed or skipped, and get an immediate clinical recovery plan for what extra steps you need to do now.">
+  <link rel="stylesheet" href="css/style.css?v=1.2">
+  <link rel="stylesheet" href="css/animations.css?v=1.2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="logo" aria-label="Good Health and Well-Being Platform Home">
+        <span class="logo-icon">🌿</span>
+        <span class="logo-text">GoodHealth<span class="logo-accent">.3</span></span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="food.html" class="nav-link">Healthy Food</a></li>
+        <li><a href="exercise.html" class="nav-link">Exercise</a></li>
+        <li><a href="mental-health.html" class="nav-link">Mental Well-Being</a></li>
+        <li><a href="sleep.html" class="nav-link">Sleep</a></li>
+        <li><a href="habits.html" class="nav-link">Healthy Habits</a></li>
+        <li><a href="result.html" class="nav-link active">Daily Result</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-auth-slot"><a href="login.html" class="nav-link nav-cta">Sign In</a></li>
+      </ul>
+
+      <div class="header-right-group">
+        <div class="lang-select-box" title="Select Language / ભાષા પસંદ કરો">
+          <span class="lang-globe">🌐</span>
+          <select id="site-lang-select" class="site-lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="result-page-container">
+    <!-- Page Hero Banner -->
+    <section class="result-hero">
+      <div class="container">
+        <div class="section-badge" id="result-hero-badge" style="background: rgba(255,255,255,0.15); color: #99f6e4; border: 1px solid rgba(153, 246, 228, 0.4);">
+          📊 Daily Health Evaluation & Recovery Engine
+        </div>
+        <h1 id="result-hero-title">Your Daily Health Result & <span class="hero-highlight" style="color: #6ee7b7;">Recovery Protocol</span></h1>
+        <p class="lead" id="result-hero-desc">
+          <strong>Daily Evaluation & Recovery Plan:</strong> Review your daily score, audit what was completed or skipped, and follow your condition-specific compensatory protocol to maintain peak health.
+        </p>
+      </div>
+    </section>
+
+    <!-- Controls & Profile Switcher Bar -->
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div class="result-controls-bar">
+          <div class="condition-switch-wrap">
+            <label for="result-condition-select" id="result-condition-label">🩺 Health Condition Target:</label>
+            <select id="result-condition-select" class="result-select" title="Switch your health target profile">
+              <option value="general">🌿 General Health & Vitality</option>
+              <option value="digestion">🫄 Acidity, Gas & Bloating</option>
+              <option value="weight">⚖️ Weight Loss & Fat Burn</option>
+              <option value="stress">🧠 Stress & Anxiety Care</option>
+              <option value="sleep">🌙 Insomnia / Sleep Issues</option>
+              <option value="joints">🦴 Back & Joint Stiffness</option>
+              <option value="sugar_bp">🩺 Blood Sugar & BP Support</option>
+            </select>
+          </div>
+
+          <div>
+            <span class="result-date-badge" id="result-today-date">📅 Today</span>
+          </div>
+        </div>
+
+        <!-- Result Overview Score Banner -->
+        <div class="result-score-banner">
+          <div class="score-visual-col">
+            <div class="score-donut-large" id="result-score-donut">
+              <div class="score-donut-inner">
+                <span class="score-num" id="result-score-num">0%</span>
+                <span class="score-lbl" id="result-score-lbl">Health Score</span>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;" id="result-score-sub">Live Day Evaluation</p>
+          </div>
+
+          <div class="score-details-col">
+            <div class="score-badge-row">
+              <div class="score-grade-pill grade-good" id="result-grade-pill">Awaiting Today's Log</div>
+              <div class="score-stats-pills">
+                <span class="score-stat-chip chip-done" id="chip-done-count">🟢 0 Completed</span>
+                <span class="score-stat-chip chip-skip" id="chip-skip-count">🔴 0 Need Extra Care</span>
+                <span class="score-stat-chip chip-pending" id="chip-pending-count" style="display: none;">⚪ 0 Pending</span>
+              </div>
+            </div>
+
+            <div class="score-diagnosis-box" id="result-diagnosis-text">
+              Loading your daily health evaluation and personalized recovery diagnosis...
+            </div>
+          </div>
+        <!-- Interactive Health Activity Calendar & History -->
+        <section class="health-calendar-section" id="health-calendar-section" style="margin-top: 2rem;">
+          <div class="calendar-card glass-panel">
+            <div class="calendar-header-row">
+              <div class="calendar-title-wrap">
+                <span class="calendar-badge-icon">📅</span>
+                <div>
+                  <h3 class="calendar-title" id="cal-heading-title">Daily Health Activity Calendar</h3>
+                  <p class="calendar-subtitle">Click any date to see which tasks and recovery actions you completed on that day.</p>
+                </div>
+              </div>
+
+              <!-- Month Navigator Controls -->
+              <div class="calendar-nav-controls">
+                <button type="button" class="btn-cal-nav" id="cal-btn-prev" title="Previous Month">◀</button>
+                <span class="cal-month-year-label" id="cal-month-year-label">October 2026</span>
+                <button type="button" class="btn-cal-nav" id="cal-btn-next" title="Next Month">▶</button>
+                <button type="button" class="btn-cal-today" id="cal-btn-today">Today</button>
+              </div>
+            </div>
+
+            <!-- Calendar Legend Bar -->
+            <div class="calendar-legend-bar">
+              <div class="cal-legend-item">
+                <span class="cal-legend-dot dot-high"></span>
+                <span>70%+ Completed (Consistent)</span>
+              </div>
+              <div class="cal-legend-item">
+                <span class="cal-legend-dot dot-mid"></span>
+                <span>30%-69% (In Progress)</span>
+              </div>
+              <div class="cal-legend-item">
+                <span class="cal-legend-dot dot-low"></span>
+                <span>1%-29% (Started)</span>
+              </div>
+              <div class="cal-legend-item">
+                <span class="cal-legend-dot dot-none"></span>
+                <span>Rest / No Record</span>
+              </div>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div class="calendar-grid-wrap">
+              <div class="calendar-days-header">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
+              <div class="calendar-days-grid" id="cal-days-grid">
+                <!-- Dynamically populated day cells by calendar.js -->
+              </div>
+            </div>
+
+            <!-- Day Completion Details Drawer/Panel -->
+            <div class="cal-day-details-panel" id="cal-day-details-panel">
+              <div class="cal-details-header">
+                <div>
+                  <h4 id="cal-details-date-title" style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #1e293b;">
+                    📅 Selected Date
+                  </h4>
+                  <p id="cal-details-date-sub" style="margin: 0.2rem 0 0; font-size: 0.88rem; color: #64748b;">
+                    Loading completed tasks...
+                  </p>
+                </div>
+                <div class="cal-details-score-badge" id="cal-details-score-badge">
+                  --
+                </div>
+              </div>
+
+              <!-- List of tasks done on this selected date -->
+              <div class="cal-completed-tasks-list" id="cal-completed-tasks-list">
+                <!-- Dynamically populated with tasks done on this day -->
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Two Columns Dashboard: Status (Left) vs. What Extra You Need To Do Now (Right) -->
+        <div class="result-grid-columns">
+          
+          <!-- Column 1: Today's Tasks Status -->
+          <div class="audit-card">
+            <div class="audit-card-header">
+              <h3 id="result-audit-title"><span>📋</span> Today's Tasks Status</h3>
+              <p id="result-audit-sub">Tasks checked on Home Page Step 2 are loaded automatically (tick to update):</p>
+            </div>
+
+            <div class="audit-tasks-list" id="result-audit-list">
+              <!-- Dynamically generated by tools.js -->
+            </div>
+          </div>
+
+          <!-- Column 2: What Extra You Need To Do Now (Compensatory Action Protocol) -->
+          <div class="recovery-card">
+            <div class="recovery-header">
+              <span class="recovery-badge-tag" id="recovery-badge-tag">🚨 Action Required</span>
+              <h3 id="recovery-card-title"><span>👉</span> What Extra You Need To Do Now</h3>
+              <p id="recovery-card-desc">
+                <strong>Compensatory Action Protocol:</strong> Based on the habits you missed or prohibited foods/actions you cheated on today, here are your immediate compensatory steps to recover and balance your body.
+              </p>
+            </div>
+
+            <!-- Progress bar for compensatory actions -->
+            <div class="recovery-progress-box" id="recovery-progress-box" style="display: none;">
+              <div class="recovery-progress-info">
+                <span id="recovery-progress-lbl">Recovery Checklist Progress</span>
+                <span id="recovery-progress-text">0 of 0 Completed (0%)</span>
+              </div>
+              <div class="recovery-bar">
+                <div class="recovery-bar-fill" id="recovery-bar-fill"></div>
+              </div>
+            </div>
+
+            <div class="recovery-tasks-list" id="result-recovery-list">
+              <!-- Dynamically generated by tools.js based on skipped/cheated items -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Action Toolbar -->
+        <div class="result-footer-actions">
+          <div class="result-footer-left">
+            <button type="button" class="btn btn-primary" id="btn-print-report">
+              <span>🖨️ Print / Save Daily Health Report</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="btn-reset-report">
+              <span>🔄 Reset Today's Log</span>
+            </button>
+          </div>
+
+          <a href="index.html" class="btn btn-outline" id="btn-return-home">
+            <span>🏠 Return to Home Page</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">🌿 GoodHealth<span>.3</span></div>
+        <p>A simple, accessible web platform dedicated to UN Sustainable Development Goal 3: Good Health and Well-Being. Empowering healthy habits every day.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-title">Explore Guides</h4>
+        <ul class="footer-links">
+          <li><a href="food.html">Healthy Food & Nutrition</a></li>
+          <li><a href="exercise.html">Home Exercise & Workouts</a></li>
+          <li><a href="mental-health.html">Mental Well-Being & Calm</a></li>
+          <li><a href="sleep.html">Sleep Hygiene & Cycles</a></li>
+          <li><a href="habits.html">Daily Habit Tracker</a></li>
+          <li><a href="result.html">Daily Result & Recovery</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-title">Quick Health Tools</h4>
+        <ul class="footer-links">
+          <li><a href="index.html#top-ratio-tracker">Circular Ratio Tracker</a></li>
+          <li><a href="result.html">Recovery Action Protocol</a></li>
+          <li><a href="food.html#water-calculator">Water Intake Calculator</a></li>
+          <li><a href="mental-health.html#breathing-guide">4-7-8 Breathing Circle</a></li>
+          <li><a href="sleep.html#sleep-calculator">Sleep Cycle Calculator</a></li>
+          <li><a href="exercise.html#stretch-timer">5-Minute Stretch Timer</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-title">Contact & Mission</h4>
+        <p>Aligned with UN SDG Goal 3. Promoting health education for all ages.</p>
+        <p style="margin-top: 0.5rem;"><a href="about.html#contact" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Send Feedback</a></p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Good Health and Well-Being Platform. All rights reserved. Designed for UN SDG Goal 3 awareness.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/api.js?v=4.0"></script>
+  <script src="js/tools.js?v=4.0"></script>
+  <script src="js/calendar.js?v=4.0"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

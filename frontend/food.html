@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Healthy Food & Nutrition Guide - Balanced diet, fruits and vegetables, hydration tips, foods to avoid, and personalized water calculator.">
+  <title>Healthy Food & Nutrition | Good Health and Well-Being</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🌱</span>
+        <span>Good Health</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="food.html" class="nav-link active">Healthy Food</a></li>
+        <li><a href="exercise.html" class="nav-link">Exercise</a></li>
+        <li><a href="mental-health.html" class="nav-link">Mental Well-Being</a></li>
+        <li><a href="sleep.html" class="nav-link">Sleep</a></li>
+        <li><a href="habits.html" class="nav-link">Healthy Habits</a></li>
+        <li><a href="result.html" class="nav-link">Daily Result</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-auth-slot"><a href="login.html" class="nav-link nav-cta">Sign In</a></li>
+      </ul>
+
+      <div class="header-right-group">
+        <div class="lang-select-box" title="Select Language / ભાષા પસંદ કરો">
+          <span class="lang-globe">🌐</span>
+          <select id="site-lang-select" class="site-lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Hero -->
+    <section class="section section-tint text-center" style="padding-bottom: 2.5rem;">
+      <div class="container">
+        <div class="section-badge">Nutrition & Vitality</div>
+        <h1>Nourish Your Body with <span class="hero-highlight">Healthy Food</span></h1>
+        <p class="lead">
+          Wholesome food fuels your brain, strengthens your immunity, regulates energy levels, and protects against lifestyle ailments. Discover how simple it is to build a nourishing daily plate.
+        </p>
+      </div>
+    </section>
+
+    <!-- The Balanced Plate Guide -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Science-Backed Nutrition</div>
+          <h2>The Balanced Plate Model</h2>
+          <p class="lead">Instead of restrictive diets, aim for balance at every meal with this standard nutritional proportion guide.</p>
+        </div>
+
+        <div class="plate-container">
+          <div class="plate-slice vegetables">
+            <span class="badge-tag badge-green">50% of Your Plate</span>
+            <h3>🥦 Vegetables & Fruits</h3>
+            <p>Fill half your plate with colorful vegetables and whole fruits. High in natural vitamins (A, C, K), minerals, antioxidants, and dietary fiber that promotes gut health and digestion.</p>
+            <ul style="padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-muted);">
+              <li>Dark leafy greens (spinach, kale)</li>
+              <li>Cruciferous veggies (broccoli, cauliflower)</li>
+              <li>Fresh seasonal berries, citrus & apples</li>
+            </ul>
+          </div>
+
+          <div class="plate-slice grains">
+            <span class="badge-tag badge-amber">25% of Your Plate</span>
+            <h3>🌾 Whole Grains</h3>
+            <p>Opt for complex carbohydrates rather than refined white flour. Whole grains provide sustained slow-release glucose, keeping your energy stable throughout the workday.</p>
+            <ul style="padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-muted);">
+              <li>Brown or wild rice, quinoa</li>
+              <li>Whole oats & whole wheat</li>
+              <li>Millets, barley, and buckwheat</li>
+            </ul>
+          </div>
+
+          <div class="plate-slice proteins">
+            <span class="badge-tag badge-purple">25% of Your Plate</span>
+            <h3>🍳 Wholesome Proteins</h3>
+            <p>Protein builds and repairs muscle tissue, manufactures enzymes, and keeps you feeling satiated. Balance plant and lean animal proteins.</p>
+            <ul style="padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-muted);">
+              <li>Lentils, chickpeas, beans & tofu</li>
+              <li>Nuts, pumpkin & chia seeds</li>
+              <li>Eggs, fish, or skinless poultry</li>
+            </ul>
+          </div>
+
+          <div class="plate-slice water">
+            <span class="badge-tag badge-blue">Crucial Daily</span>
+            <h3>💧 Water & Healthy Fats</h3>
+            <p>Water is essential for every metabolic reaction. Pair with healthy unsaturated fats that nourish cell membranes and aid vitamin absorption.</p>
+            <ul style="padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-muted);">
+              <li>Pure water & herbal infusions</li>
+              <li>Extra virgin olive oil & avocados</li>
+              <li>Omega-3 rich walnuts & flaxseeds</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Water Calculator Tool (PRD Section 6.2) -->
+    <section class="section" id="calculator">
+      <div class="container" style="max-width: 800px;">
+        <div class="tool-box">
+          <div class="tool-header">
+            <span style="font-size: 2.2rem;">💧</span>
+            <div>
+              <h3>Interactive Daily Hydration Calculator</h3>
+              <p class="text-muted" style="margin: 0; font-size: 0.9rem;">Calculate your baseline water intake based on your body weight and daily activity level.</p>
+            </div>
+          </div>
+
+          <form id="water-calc-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="water-weight">Your Body Weight</label>
+                <input type="number" id="water-weight" class="form-control" placeholder="e.g. 68" min="20" max="300" required>
+              </div>
+              <div class="form-group">
+                <label for="water-unit">Weight Unit</label>
+                <select id="water-unit" class="form-control">
+                  <option value="kg">Kilograms (kg)</option>
+                  <option value="lbs">Pounds (lbs)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="water-activity">Daily Physical Activity</label>
+              <select id="water-activity" class="form-control">
+                <option value="sedentary">Sedentary / Desk Work (Minimal exercise)</option>
+                <option value="light">Light Activity (15-30 mins walking/stretching)</option>
+                <option value="moderate" selected>Moderate Exercise (30-60 mins workout/sports)</option>
+                <option value="intense">Intense Training / Manual Work (>60 mins active)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Calculate My Hydration Goal</button>
+          </form>
+
+          <div id="water-calc-result" class="result-box">
+            <h4>Recommended Daily Water Intake:</h4>
+            <div id="water-liters" class="result-metric">2.6 Liters</div>
+            <p id="water-glasses" style="font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">~10 Glasses (250 ml each)</p>
+            <p id="water-advice" style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0;"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Foods to Prioritize vs. Foods to Limit -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Smart Choices</div>
+          <h2>Foods to Embrace vs. Foods to Limit</h2>
+          <p class="lead">Healthy eating isn't about punishment; it's about crowding out empty calories with nutrient-dense nourishment.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Embrace Card -->
+          <div class="info-card" style="border-left: 4px solid var(--secondary);">
+            <h4><span class="icon-pill badge-green">✓</span> Foods to Embrace Daily</h4>
+            <p class="text-muted">Fill your kitchen with whole, unrefined foods that boost energy and vitality:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.95rem; line-height: 1.8; color: var(--text-main);">
+              <li><strong>Fresh whole fruits:</strong> Oranges, bananas, papayas, berries, and apples.</li>
+              <li><strong>Colorful veggies:</strong> Carrots, bell peppers, leafy greens, tomatoes, and cucumbers.</li>
+              <li><strong>Legumes & pulses:</strong> Lentils (dal), chickpeas, black beans, edamame.</li>
+              <li><strong>Nuts and seeds:</strong> Almonds, walnuts, chia, and flaxseeds for brain health.</li>
+              <li><strong>Fermented foods:</strong> Plain yogurt, kefir, or kimchi for optimal gut microbiome.</li>
+            </ul>
+          </div>
+
+          <!-- Limit Card -->
+          <div class="info-card" style="border-left: 4px solid var(--danger);">
+            <h4><span class="icon-pill badge-amber">⚠</span> Foods to Limit or Avoid</h4>
+            <p class="text-muted">Minimize items linked to systemic inflammation, blood sugar spikes, and lethargy:</p>
+            <ul style="padding-left: 1.25rem; font-size: 0.95rem; line-height: 1.8; color: var(--text-main);">
+              <li><strong>Sugar-sweetened beverages:</strong> Sodas, energy drinks, bottled iced teas, and packaged fruit syrups.</li>
+              <li><strong>Ultra-processed snacks:</strong> Deep-fried chips, instant noodles, and packaged pastries with trans fats.</li>
+              <li><strong>Excess sodium:</strong> Canned processed meats and instant seasoning mixes that elevate blood pressure.</li>
+              <li><strong>Refined flours:</strong> White bread and pastries stripped of natural fiber and minerals.</li>
+              <li><strong>Late-night heavy meals:</strong> Disrupts restorative digestion and restful sleep.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Wholesome Meal Ideas -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Practical Habits</div>
+          <h2>Easy 10-Minute Wholesome Ideas</h2>
+          <p class="lead">Quick, balanced ideas that anyone can prepare between study sessions or busy shifts.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="health-card">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🥣</div>
+            <h3>Power Oatmeal Bowl</h3>
+            <p>Rolled oats cooked in water or milk, topped with sliced banana, a dash of cinnamon, a spoon of chia seeds, and crushed walnuts.</p>
+            <span class="badge-tag badge-green">Fiber + Complex Carbs</span>
+          </div>
+
+          <div class="health-card">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🥗</div>
+            <h3>Rainbow Chickpea Salad</h3>
+            <p>Boiled chickpeas tossed with chopped cucumber, cherry tomatoes, fresh coriander, lemon juice, olive oil, and a pinch of black pepper.</p>
+            <span class="badge-tag badge-blue">Plant Protein + Fresh Veggies</span>
+          </div>
+
+          <div class="health-card">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🥑</div>
+            <h3>Spiced Egg & Avocado Toast</h3>
+            <p>Whole-grain toast layered with mashed avocado, a boiled or poached egg, red chili flakes, and sesame seeds.</p>
+            <span class="badge-tag badge-amber">Healthy Fats + Micronutrients</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span class="brand-icon">🌱</span>
+            <h3 style="margin: 0; font-size: 1.4rem;">Good Health and Well-Being</h3>
+          </div>
+          <p>A simple platform dedicated to spreading awareness about physical, mental, and nutritional wellness for every stage of life.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Health Guides</h4>
+          <ul class="footer-links">
+            <li><a href="food.html">Healthy Food</a></li>
+            <li><a href="exercise.html">Exercise Routines</a></li>
+            <li><a href="mental-health.html">Mental Well-Being</a></li>
+            <li><a href="sleep.html">Sleep Hygiene</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Interactive Tools</h4>
+          <ul class="footer-links">
+            <li><a href="food.html#calculator">Water Calculator</a></li>
+            <li><a href="habits.html">Habit Tracker</a></li>
+            <li><a href="mental-health.html#breathing">Breathing Bubble</a></li>
+            <li><a href="sleep.html#calculator">Sleep Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Next Step</h4>
+          <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem;">Pair your nutrition with daily active movement.</p>
+          <a href="exercise.html" class="btn btn-sm btn-primary">Go to Exercise Guide →</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Good Health and Well-Being Project.</div>
+        <div>Supporting UN SDG 3: Good Health and Well-Being</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
