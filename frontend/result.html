@@ -107,8 +107,10 @@
               Loading your daily health evaluation and personalized recovery diagnosis...
             </div>
           </div>
+        </div>
+
         <!-- Interactive Health Activity Calendar & History -->
-        <section class="health-calendar-section" id="health-calendar-section" style="margin-top: 2rem;">
+        <section class="health-calendar-section" id="health-calendar-section" style="margin-top: 2.5rem; margin-bottom: 2.5rem;">
           <div class="calendar-card glass-panel">
             <div class="calendar-header-row">
               <div class="calendar-title-wrap">
@@ -125,6 +127,19 @@
                 <span class="cal-month-year-label" id="cal-month-year-label">October 2026</span>
                 <button type="button" class="btn-cal-nav" id="cal-btn-next" title="Next Month">▶</button>
                 <button type="button" class="btn-cal-today" id="cal-btn-today">Today</button>
+              </div>
+            </div>
+
+            <!-- Calendar Category Filter: Shows category chosen by user -->
+            <div class="calendar-cat-bar" id="calendar-cat-bar">
+              <span class="cal-cat-bar-label">Showing Category:</span>
+              <div class="calendar-cat-pills" id="cal-cat-pills">
+                <button type="button" class="cal-cat-pill active" data-cat="all">🌟 All Categories</button>
+                <button type="button" class="cal-cat-pill" data-cat="food">🥗 Diet &amp; Food</button>
+                <button type="button" class="cal-cat-pill" data-cat="exercise">🏃 Exercise &amp; Movement</button>
+                <button type="button" class="cal-cat-pill" data-cat="mental">🧘 Mental Well-Being</button>
+                <button type="button" class="cal-cat-pill" data-cat="sleep">🌙 Sleep &amp; Rest</button>
+                <button type="button" class="cal-cat-pill" data-cat="habits">✨ Daily Habits</button>
               </div>
             </div>
 
