@@ -1578,8 +1578,10 @@ function initHomePageHub() {
       const cond = btn.getAttribute('data-condition');
       const data = HEALTH_CONDITIONS[cond];
       if (data) {
-        const strong = btn.querySelector('strong');
-        const span = btn.querySelector('span');
+        const icon = btn.querySelector('.problem-btn-icon');
+        const strong = btn.querySelector('.problem-btn-text strong');
+        const span = btn.querySelector('.problem-btn-text span');
+        if (icon && data.icon) icon.textContent = data.icon;
         if (strong) strong.textContent = data['btn_title_' + lang] || data.btn_title_en;
         if (span) span.textContent = data['btn_sub_' + lang] || data.btn_sub_en;
       }
@@ -1791,8 +1793,13 @@ function initHomePageHub() {
   function renderCheckboxes(condKey, data, lang, labels) {
     updateCategoryPillsUI();
     checkboxesContainer.innerHTML = '';
-    const allTasks = getCustomTasks().filter(t => !t.condition_key || t.condition_key === condKey);
-    console.log('RENDER allTasks:', allTasks, 'condKey:', condKey);
+    const validCats = ['food', 'exercise', 'mental', 'sleep', 'habits'];
+    const allTasks = getCustomTasks()
+      .filter(t => !t.condition_key || t.condition_key === condKey)
+      .map(t => ({
+        ...t,
+        category: (t.category && validCats.includes(t.category)) ? t.category : 'habits'
+      }));
     const storageKey = getStorageKey(condKey);
     let taskStates = {};
     try { taskStates = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch(e) {}
@@ -1843,16 +1850,11 @@ function initHomePageHub() {
       return;
     }
 
-    let mappedTaskIds = new Set();
-    
     visibleCategories.forEach(cat => {
-      const catTasks = allTasks.filter(t => t.category === cat.key);
+      const catTasks = relevantTasks.filter(t => t.category === cat.key);
       if (catTasks.length === 0) return;
-      
-      catTasks.forEach(t => mappedTaskIds.add(t.id));
 
       const catSection = document.createElement('div');
-
       catSection.style.marginBottom = '1.5rem';
       
       const catHeader = document.createElement('h4');
@@ -1948,78 +1950,6 @@ function initHomePageHub() {
       
       checkboxesContainer.appendChild(catSection);
     });
-
-    const unmappedTasks = allTasks.filter(t => !mappedTaskIds.has(t.id));
-    if (unmappedTasks.length > 0) {
-      const catSection = document.createElement('div');
-      catSection.style.marginBottom = '1.5rem';
-      const catHeader = document.createElement('h4');
-      catHeader.textContent = '📦 Other Tasks';
-      catHeader.style.fontSize = '1.05rem';
-      catHeader.style.fontWeight = '700';
-      catHeader.style.color = '#64748b';
-      catHeader.style.marginBottom = '0.75rem';
-      catHeader.style.paddingBottom = '0.4rem';
-      catHeader.style.borderBottom = '1px solid #e2e8f0';
-      catSection.appendChild(catHeader);
-
-      unmappedTasks.forEach(task => {
-        const isDone = (taskStates[task.id] === 'done') || (task.status === 'done');
-        if (isDone && taskStates[task.id] !== 'done') taskStates[task.id] = 'done';
-        
-        const taskName = task['name_' + lang] || task.name_en || task.name;
-        const taskTip = task['tip_' + lang] || task.tip_en || task.tip;
-        const isCustom = task.user_id !== null && task.user_id !== undefined;
-
-        const row = document.createElement('label');
-        row.className = `home-check-row ${isDone ? 'checked' : ''}`;
-        row.setAttribute('for', `home-task-${task.id}`);
-
-        const customBadgeHtml = isCustom ? `<span class="task-custom-badge">${labels.custom_badge || 'Custom'}</span>` : '';
-        const actionBtnsHtml = isCustom ? `<div class="task-actions-wrap">
-               <button type="button" class="task-action-btn edit-task-btn" data-task-id="${task.id}" title="Edit">✏️</button>
-               <button type="button" class="task-action-btn del-task-btn" data-task-id="${task.id}" title="Delete">🗑️</button>
-             </div>` : '';
-
-        row.innerHTML = `
-          <input type="checkbox" id="home-task-${task.id}" class="home-check-box" ${isDone ? 'checked' : ''}>
-          <span class="custom-check-box"></span>
-          <div class="home-check-text">
-            <span class="home-check-title">${task.icon || '📝'} ${taskName} ${customBadgeHtml}</span>
-            ${taskTip ? `<span class="home-check-sub">${taskTip}</span>` : ''}
-          </div>
-          ${actionBtnsHtml}
-        `;
-
-        const cb = row.querySelector('.home-check-box');
-        cb.addEventListener('change', (e) => {
-          e.stopPropagation();
-          const newStatus = cb.checked ? 'done' : 'pending';
-          taskStates[task.id] = newStatus;
-          row.classList.toggle('checked', cb.checked);
-          localStorage.setItem(storageKey, JSON.stringify(taskStates));
-          updateCounter();
-          if (window.HealthAPI && window.HealthAPI.toggleCompletion) {
-            window.HealthAPI.toggleCompletion(task.id, newStatus, condKey, new Date().toISOString().slice(0, 10), task.category || 'general').then(() => {
-              if (window.refreshHealthCalendar) window.refreshHealthCalendar();
-            });
-          }
-        });
-
-        if (isCustom) {
-          const editBtn = row.querySelector('.edit-task-btn');
-          const delBtn = row.querySelector('.del-task-btn');
-          if (editBtn) editBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); if (typeof openTaskModal === 'function') openTaskModal(task.id); });
-          if (delBtn) delBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); 
-            let currentTasks = getCustomTasks(); currentTasks = currentTasks.filter(t => t.id !== task.id); saveCustomTasks(currentTasks);
-            if (window.HealthAPI && window.HealthAPI.deleteTask) window.HealthAPI.deleteTask(task.id); renderHomeConditionData();
-          });
-        }
-        catSection.appendChild(row);
-      });
-      checkboxesContainer.appendChild(catSection);
-    }
-
 
     updateCounter();
   }
