@@ -5334,3 +5334,270 @@ header {
   color: #64748b;
   font-weight: 600;
 }
+
+/* ==========================================================================
+   Active Health Focus Banner (Replaces bulky Step 1 on Dashboard)
+   ========================================================================== */
+.active-focus-banner {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+    0 2px 6px rgba(0, 0, 0, 0.02),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
+  padding: 1.35rem 1.85rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.active-focus-banner:hover {
+  box-shadow: 
+    0 14px 30px -5px rgba(16, 185, 129, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.03);
+}
+
+.focus-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+}
+
+.focus-banner-icon-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  border: 1.5px solid #86efac;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.85rem;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.active-focus-banner:hover .focus-banner-icon-badge {
+  transform: scale(1.05);
+}
+
+.focus-banner-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.focus-banner-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #059669;
+  margin-bottom: 0.2rem;
+}
+
+.focus-banner-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.2rem;
+  line-height: 1.25;
+}
+
+.focus-banner-desc {
+  font-size: 0.86rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.focus-banner-right {
+  flex-shrink: 0;
+}
+
+.btn-change-focus {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  color: #15803d;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.08);
+  font-family: inherit;
+}
+
+.btn-change-focus:hover {
+  background: #dcfce7;
+  border-color: #4ade80;
+  color: #166534;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.18);
+}
+
+@media (max-width: 768px) {
+  .active-focus-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.2rem;
+    gap: 1rem;
+  }
+  .btn-change-focus {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Health Assessment Mini Screen Modal (Step 1 Onboarding Dialog)
+   ========================================================================== */
+.assessment-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+
+.assessment-modal-card {
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.95) !important;
+  border-radius: 26px !important;
+  padding: 2rem 2.25rem !important;
+  box-shadow: 
+    0 28px 60px -14px rgba(15, 23, 42, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 1) !important;
+  animation: modalFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+}
+
+.assessment-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.assessment-modal-close {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.35rem;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.assessment-modal-close:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  transform: rotate(90deg);
+}
+
+.assessment-modal-intro {
+  margin-bottom: 1.25rem;
+}
+
+.assessment-modal-intro h2 {
+  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.015em;
+}
+
+.assessment-modal-intro p {
+  font-size: 0.92rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.modal-problem-grid {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.assessment-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1.5px solid #f1f5f9;
+  padding-top: 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.assessment-footer-hint {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0;
+  max-width: 440px;
+}
+
+.btn-confirm-assessment {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  padding: 0.75rem 1.65rem !important;
+  border-radius: 12px !important;
+  border: none !important;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+  transition: all 0.22s ease !important;
+  font-family: inherit;
+}
+
+.btn-confirm-assessment:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.45) !important;
+}
+
+@media (max-width: 640px) {
+  .assessment-modal-card {
+    padding: 1.35rem !important;
+  }
+  .assessment-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-confirm-assessment {
+    width: 100%;
+    text-align: center;
+  }
+}
+

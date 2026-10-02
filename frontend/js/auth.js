@@ -18,6 +18,7 @@ function setLoggedInUser(user, token) {
   localStorage.setItem('gh_user', JSON.stringify(user));
   if (token) localStorage.setItem('gh_token', token);
   localStorage.removeItem('gh_custom_tasks'); // Force fresh sync for this user
+  localStorage.setItem('gh_show_assessment_on_login', 'true'); // Triggers health assessment mini-screen
   renderNavbarAuth();
 }
 
@@ -25,6 +26,8 @@ function logoutUser() {
   localStorage.removeItem('gh_user');
   localStorage.removeItem('gh_token');
   localStorage.removeItem('gh_custom_tasks');
+  localStorage.removeItem('gh_selected_condition');
+  localStorage.removeItem('gh_show_assessment_on_login');
   // Clear all cached task completion and state keys for complete user isolation
   Object.keys(localStorage).forEach(k => {
     if (k.startsWith('gh_ratio_') || k.startsWith('gh_state_')) {

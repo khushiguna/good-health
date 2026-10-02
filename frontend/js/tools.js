@@ -1458,7 +1458,11 @@ const HOME_UI_LABELS = {
     btn_save: 'Save Task',
     btn_cancel: 'Cancel',
     custom_badge: 'Custom',
-    confirm_delete: 'Delete this custom task?'
+    confirm_delete: 'Delete this custom task?',
+    focus_banner_label: 'Active Health Focus',
+    btn_change_focus: 'Change Health Status',
+    btn_confirm_assessment: 'Confirm & See My Personalized Plan →',
+    assessment_footer_hint: '💡 Select your health concern to personalize your checklist, diet rules, and exercise routines.'
   },
   gu: {
     tip_box_title: '💡 હેલ્થ ટીપ (Health Tip)',
@@ -1495,7 +1499,11 @@ const HOME_UI_LABELS = {
     btn_save: 'સેવ કરો',
     btn_cancel: 'રદ કરો',
     custom_badge: 'કસ્ટમ',
-    confirm_delete: 'આ કસ્ટમ કાર્ય ડિલીટ કરવું છે?'
+    confirm_delete: 'આ કસ્ટમ કાર્ય ડિલીટ કરવું છે?',
+    focus_banner_label: 'હાલની સ્વાસ્થ્ય સ્થિતિ',
+    btn_change_focus: 'સ્વાસ્થ્ય સ્થિતિ બદલો',
+    btn_confirm_assessment: 'ખાતરી કરો અને પ્લાન જુઓ →',
+    assessment_footer_hint: '💡 તમારા ચેકલિસ્ટ, આહારના નિયમો અને કસરતોને વ્યક્તિગત કરવા તમારી સ્વાસ્થ્ય સમસ્યા પસંદ કરો.'
   }
 };
 
@@ -1511,6 +1519,20 @@ function initHomePageHub() {
   const step1Title = document.getElementById('home-step1-title');
   const step1Desc = document.getElementById('home-step1-desc');
   const step1ActiveLabel = document.getElementById('home-step1-active-label');
+
+  // Active Health Focus Banner (Dashboard)
+  const focusBannerIcon = document.getElementById('focus-banner-icon');
+  const focusBannerTitle = document.getElementById('focus-banner-title');
+  const focusBannerDesc = document.getElementById('focus-banner-desc');
+  const focusBannerLabel = document.getElementById('focus-banner-label');
+  const btnChangeFocusText = document.getElementById('btn-change-text');
+  const btnOpenModal = document.getElementById('btn-open-assessment-modal');
+
+  // Health Assessment Mini Screen Modal
+  const assessmentModal = document.getElementById('health-assessment-modal');
+  const assessmentModalClose = document.getElementById('assessment-modal-close');
+  const btnConfirmAssessment = document.getElementById('btn-confirm-assessment');
+  const assessmentFooterHint = document.getElementById('assessment-footer-hint');
 
   const step2Badge = document.getElementById('home-step2-badge');
   const step2Title = document.getElementById('home-step2-title');
@@ -1547,7 +1569,7 @@ function initHomePageHub() {
     return localStorage.getItem('gh_lang') || 'en';
   }
 
-  // Bind problem buttons
+  // Bind problem buttons inside modal
   const buttons = buttonsContainer.querySelectorAll('.problem-btn');
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1588,6 +1610,51 @@ function initHomePageHub() {
     });
   }
 
+  // Health Assessment Modal Controller (Mini-screen Onboarding & Switcher)
+  function openAssessmentModal() {
+    if (assessmentModal) {
+      assessmentModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      updateActiveButton();
+    }
+  }
+
+  function closeAssessmentModal() {
+    if (assessmentModal) {
+      assessmentModal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (btnOpenModal) {
+    btnOpenModal.addEventListener('click', openAssessmentModal);
+  }
+  if (assessmentModalClose) {
+    assessmentModalClose.addEventListener('click', closeAssessmentModal);
+  }
+  if (btnConfirmAssessment) {
+    btnConfirmAssessment.addEventListener('click', () => {
+      closeAssessmentModal();
+      renderHomeConditionData();
+      syncCompletionsForCondition(currentCondition);
+    });
+  }
+  if (assessmentModal) {
+    assessmentModal.addEventListener('click', (e) => {
+      if (e.target === assessmentModal) {
+        closeAssessmentModal();
+      }
+    });
+  }
+
+  // Auto-open Assessment Mini Screen if user just logged in or hasn't selected a condition yet
+  const shouldShowOnLogin = localStorage.getItem('gh_show_assessment_on_login') === 'true';
+  const hasSelectedCondition = localStorage.getItem('gh_selected_condition');
+  if (shouldShowOnLogin || !hasSelectedCondition) {
+    openAssessmentModal();
+    localStorage.removeItem('gh_show_assessment_on_login');
+  }
+
   function getStorageKey(cond) {
     return `gh_ratio_${cond}_${todayKey}`;
   }
@@ -1597,7 +1664,20 @@ function initHomePageHub() {
     const labels = HOME_UI_LABELS[lang] || HOME_UI_LABELS.en;
     const data = HEALTH_CONDITIONS[currentCondition] || HEALTH_CONDITIONS.general;
 
-    // Update static UI text labels
+    // Update Active Health Focus Banner
+    if (focusBannerIcon) focusBannerIcon.textContent = data.icon;
+    if (focusBannerTitle) {
+      const activeBtnTitle = data['btn_title_' + lang] || data.btn_title_en;
+      const activeBtnSub = data['btn_sub_' + lang] || data.btn_sub_en;
+      focusBannerTitle.textContent = `${activeBtnTitle} (${activeBtnSub})`;
+    }
+    if (focusBannerDesc) focusBannerDesc.textContent = data['desc_' + lang] || data.desc_en;
+    if (focusBannerLabel) focusBannerLabel.textContent = labels.focus_banner_label || 'Active Health Focus';
+    if (btnChangeFocusText) btnChangeFocusText.textContent = labels.btn_change_focus || 'Change Health Status';
+    if (btnConfirmAssessment) btnConfirmAssessment.textContent = labels.btn_confirm_assessment || 'Confirm & See My Personalized Plan →';
+    if (assessmentFooterHint) assessmentFooterHint.textContent = labels.assessment_footer_hint || '💡 Select your health concern to personalize your checklist, diet rules, and exercise routines.';
+
+    // Update static UI text labels in modal
     if (step1Badge) step1Badge.textContent = labels.step1_badge;
     if (step1Title) step1Title.textContent = labels.step1_title;
     if (step1Desc) step1Desc.textContent = labels.step1_desc;

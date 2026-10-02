@@ -65,89 +65,20 @@
         </div>
       </aside>
 
-      <!-- 1. Problem Selector: User ne problem shu che -->
-      <section class="home-step-card problem-select-card" id="home-step1-card">
-        <div class="step-card-header">
-          <div class="ratio-badge-pill" id="home-step1-badge">🩺 Step 1: Health Assessment</div>
-          <h1 id="home-step1-title">
-            Do you have any health issues?
-          </h1>
-          <p id="home-step1-desc">
-            Select your health status below to see tailored daily guidance and your checklist:
-          </p>
-
+      <!-- Active Health Focus Banner (Replaces bulky Step 1 on the dashboard) -->
+      <section class="active-focus-banner" id="home-active-focus-banner">
+        <div class="focus-banner-left">
+          <div class="focus-banner-icon-badge" id="focus-banner-icon">🌿</div>
+          <div class="focus-banner-text">
+            <span class="focus-banner-label" id="focus-banner-label">Active Health Focus</span>
+            <h2 class="focus-banner-title" id="focus-banner-title">No Problem (Daily Vitality)</h2>
+            <p class="focus-banner-desc" id="focus-banner-desc">Showing daily tailored guidelines, action checklist &amp; wellness goals</p>
+          </div>
         </div>
-
-        <!-- 7 Problem Selection Buttons -->
-        <div class="problem-buttons-grid" id="home-problem-buttons" role="tablist">
-          <button class="problem-btn active" data-condition="general" type="button" role="tab" aria-selected="true">
-            <div class="problem-btn-icon-wrap">
-              <span class="problem-btn-icon">🌿</span>
-            </div>
-            <div class="problem-btn-text">
-              <strong>No Problem</strong>
-              <span>Daily Vitality</span>
-            </div>
-          </button>
-
-          <button class="problem-btn" data-condition="digestion" type="button" role="tab" aria-selected="false">
-            <div class="problem-btn-icon-wrap">
-              <span class="problem-btn-icon">🫄</span>
-            </div>
-            <div class="problem-btn-text">
-              <strong>Acidity &amp; Gas</strong>
-              <span>Digestive Care</span>
-            </div>
-          </button>
-
-          <button class="problem-btn" data-condition="weight" type="button" role="tab" aria-selected="false">
-            <div class="problem-btn-icon-wrap">
-              <span class="problem-btn-icon">⚖️</span>
-            </div>
-            <div class="problem-btn-text">
-              <strong>Weight Loss</strong>
-              <span>Fat Control</span>
-            </div>
-          </button>
-
-          <button class="problem-btn" data-condition="stress" type="button" role="tab" aria-selected="false">
-            <div class="problem-btn-icon-wrap">
-              <span class="problem-btn-icon">🧠</span>
-            </div>
-            <div class="problem-btn-text">
-              <strong>Stress Care</strong>
-              <span>Mental Peace</span>
-            </div>
-          </button>
-
-          <button class="problem-btn" data-condition="sleep" type="button" role="tab" aria-selected="false">
-            <div class="problem-btn-icon-wrap">
-              <span class="problem-btn-icon">🌙</span>
-            </div>
-            <div class="problem-btn-text">
-              <strong>Sleep Issues</strong>
-              <span>Insomnia Support</span>
-            </div>
-          </button>
-
-          <button class="problem-btn" data-condition="joints" type="button" role="tab" aria-selected="false">
-            <div class="problem-btn-icon-wrap">
-              <span class="problem-btn-icon">🦴</span>
-            </div>
-            <div class="problem-btn-text">
-              <strong>Joint &amp; Back</strong>
-              <span>Mobility Care</span>
-            </div>
-          </button>
-
-          <button class="problem-btn" data-condition="sugar_bp" type="button" role="tab" aria-selected="false">
-            <div class="problem-btn-icon-wrap">
-              <span class="problem-btn-icon">🩺</span>
-            </div>
-            <div class="problem-btn-text">
-              <strong>Sugar &amp; BP</strong>
-              <span>Cardio Care</span>
-            </div>
+        <div class="focus-banner-right">
+          <button type="button" class="btn-change-focus" id="btn-open-assessment-modal" title="Change your health condition">
+            <span class="btn-change-icon">🔄</span>
+            <span id="btn-change-text">Change Health Status</span>
           </button>
         </div>
       </section>
@@ -412,6 +343,103 @@
       </div>
     </div>
   </footer>
+
+  <!-- Health Assessment Mini Screen Modal (Step 1 Onboarding & Health Focus Switcher) -->
+  <div class="assessment-modal-backdrop" id="health-assessment-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="home-step1-title">
+    <div class="assessment-modal-card glass-panel">
+      <div class="assessment-modal-header">
+        <div class="ratio-badge-pill" id="home-step1-badge">🩺 Step 1: Health Assessment</div>
+        <button type="button" class="assessment-modal-close" id="assessment-modal-close" aria-label="Close Assessment Modal">&times;</button>
+      </div>
+
+      <div class="assessment-modal-intro">
+        <h2 id="home-step1-title">Do you have any health issues?</h2>
+        <p id="home-step1-desc">
+          Select your health status below to see tailored daily guidance, today's action checklist, and personalized recovery recommendations:
+        </p>
+      </div>
+
+      <!-- 7 Problem Selection Buttons inside Mini Screen -->
+      <div class="problem-buttons-grid modal-problem-grid" id="home-problem-buttons" role="tablist">
+        <button class="problem-btn active" data-condition="general" type="button" role="tab" aria-selected="true">
+          <div class="problem-btn-icon-wrap">
+            <span class="problem-btn-icon">🌿</span>
+          </div>
+          <div class="problem-btn-text">
+            <strong>No Problem</strong>
+            <span>Daily Vitality</span>
+          </div>
+        </button>
+
+        <button class="problem-btn" data-condition="digestion" type="button" role="tab" aria-selected="false">
+          <div class="problem-btn-icon-wrap">
+            <span class="problem-btn-icon">🫄</span>
+          </div>
+          <div class="problem-btn-text">
+            <strong>Acidity &amp; Gas</strong>
+            <span>Digestive Care</span>
+          </div>
+        </button>
+
+        <button class="problem-btn" data-condition="weight" type="button" role="tab" aria-selected="false">
+          <div class="problem-btn-icon-wrap">
+            <span class="problem-btn-icon">⚖️</span>
+          </div>
+          <div class="problem-btn-text">
+            <strong>Weight Loss</strong>
+            <span>Fat Control</span>
+          </div>
+        </button>
+
+        <button class="problem-btn" data-condition="stress" type="button" role="tab" aria-selected="false">
+          <div class="problem-btn-icon-wrap">
+            <span class="problem-btn-icon">🧠</span>
+          </div>
+          <div class="problem-btn-text">
+            <strong>Stress Care</strong>
+            <span>Mental Peace</span>
+          </div>
+        </button>
+
+        <button class="problem-btn" data-condition="sleep" type="button" role="tab" aria-selected="false">
+          <div class="problem-btn-icon-wrap">
+            <span class="problem-btn-icon">🌙</span>
+          </div>
+          <div class="problem-btn-text">
+            <strong>Sleep Issues</strong>
+            <span>Insomnia Support</span>
+          </div>
+        </button>
+
+        <button class="problem-btn" data-condition="joints" type="button" role="tab" aria-selected="false">
+          <div class="problem-btn-icon-wrap">
+            <span class="problem-btn-icon">🦴</span>
+          </div>
+          <div class="problem-btn-text">
+            <strong>Joint &amp; Back</strong>
+            <span>Mobility Care</span>
+          </div>
+        </button>
+
+        <button class="problem-btn" data-condition="sugar_bp" type="button" role="tab" aria-selected="false">
+          <div class="problem-btn-icon-wrap">
+            <span class="problem-btn-icon">🩺</span>
+          </div>
+          <div class="problem-btn-text">
+            <strong>Sugar &amp; BP</strong>
+            <span>Cardio Care</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="assessment-modal-footer">
+        <p class="assessment-footer-hint" id="assessment-footer-hint">💡 Select your health concern to personalize your checklist, diet rules, and exercise routines.</p>
+        <button type="button" class="btn btn-primary btn-confirm-assessment" id="btn-confirm-assessment">
+          Confirm &amp; See My Personalized Plan →
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal: Create & Update Custom Health Task -->
   <div class="task-modal-backdrop" id="task-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
