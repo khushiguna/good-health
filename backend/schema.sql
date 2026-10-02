@@ -135,6 +135,35 @@ CREATE TABLE IF NOT EXISTS `user_daily_logs` (
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- 4b. Category-Wise Daily Logs (Category specific completions and score)
+CREATE TABLE IF NOT EXISTS `user_category_daily_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `log_date` DATE NOT NULL,
+  `condition_key` VARCHAR(50) DEFAULT 'general',
+  `category` VARCHAR(50) NOT NULL,
+  `tasks_done` INT DEFAULT 0,
+  `tasks_total` INT DEFAULT 0,
+  `score_percent` DECIMAL(5,2) DEFAULT 0.00,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `uq_user_date_cond_cat` (`user_id`, `log_date`, `condition_key`, `category`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  INDEX `idx_user_date` (`user_id`, `log_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 4c. User Category Preferences (Allows user to select which categories they want to focus on)
+CREATE TABLE IF NOT EXISTS `user_category_preferences` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `category` VARCHAR(50) NOT NULL,
+  `is_enabled` TINYINT(1) DEFAULT 1,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `uq_user_cat` (`user_id`, `category`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- 5. Weekly Reports
 CREATE TABLE IF NOT EXISTS `weekly_reports` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,

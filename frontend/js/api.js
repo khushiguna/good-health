@@ -134,11 +134,32 @@ const HealthAPI = {
       } catch(e) { return null; }
   },
 
-  async getCalendarDay(date) {
+  async getCalendarDay(date, conditionKey) {
       try {
-          const res = await fetchWithAuth(`${API_BASE}/api/tasks/calendar-day?date=${date}`, { headers: getHeaders() });
+          const q = conditionKey ? `&conditionKey=${conditionKey}` : '';
+          const res = await fetchWithAuth(`${API_BASE}/api/tasks/calendar-day?date=${date}${q}`, { headers: getHeaders() });
           const data = await res.json();
           return data.success ? data : null;
+      } catch(e) { return null; }
+  },
+
+  async getCategoryPreferences() {
+      try {
+          const res = await fetchWithAuth(`${API_BASE}/api/tasks/preferences`, { headers: getHeaders() });
+          const data = await res.json();
+          return data.success ? data.categories : null;
+      } catch(e) { return null; }
+  },
+
+  async saveCategoryPreferences(categories) {
+      try {
+          const res = await fetchWithAuth(`${API_BASE}/api/tasks/preferences`, {
+              method: 'POST',
+              headers: getHeaders(),
+              body: JSON.stringify({ categories })
+          });
+          const data = await res.json();
+          return data.success ? data.categories : null;
       } catch(e) { return null; }
   },
   

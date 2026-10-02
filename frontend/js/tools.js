@@ -1741,7 +1741,55 @@ function initHomePageHub() {
   }
 
   
+  let activeCategoryFilter = localStorage.getItem('gh_active_cat_filter') || 'all';
+
+  function initCategoryFilterPills() {
+    const filterContainer = document.getElementById('home-category-filter-pills');
+    if (!filterContainer) return;
+
+    if (window.HealthAPI && window.HealthAPI.getCategoryPreferences) {
+      window.HealthAPI.getCategoryPreferences().then(savedCats => {
+        if (savedCats && Array.isArray(savedCats) && savedCats.length === 1) {
+          activeCategoryFilter = savedCats[0];
+          localStorage.setItem('gh_active_cat_filter', activeCategoryFilter);
+          updateCategoryPillsUI();
+          renderHomeConditionData();
+        }
+      }).catch(() => {});
+    }
+
+    const pills = filterContainer.querySelectorAll('.cat-pill');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        activeCategoryFilter = pill.getAttribute('data-cat') || 'all';
+        localStorage.setItem('gh_active_cat_filter', activeCategoryFilter);
+        updateCategoryPillsUI();
+        renderHomeConditionData();
+
+        if (window.HealthAPI && window.HealthAPI.saveCategoryPreferences) {
+          const selected = activeCategoryFilter === 'all'
+            ? ['food', 'exercise', 'mental', 'sleep', 'habits']
+            : [activeCategoryFilter];
+          window.HealthAPI.saveCategoryPreferences(selected);
+        }
+      });
+    });
+
+    updateCategoryPillsUI();
+  }
+
+  function updateCategoryPillsUI() {
+    const filterContainer = document.getElementById('home-category-filter-pills');
+    if (!filterContainer) return;
+    const pills = filterContainer.querySelectorAll('.cat-pill');
+    pills.forEach(pill => {
+      const cat = pill.getAttribute('data-cat') || 'all';
+      pill.classList.toggle('active', cat === activeCategoryFilter);
+    });
+  }
+  
   function renderCheckboxes(condKey, data, lang, labels) {
+    updateCategoryPillsUI();
     checkboxesContainer.innerHTML = '';
     const allTasks = getCustomTasks().filter(t => !t.condition_key || t.condition_key === condKey);
     console.log('RENDER allTasks:', allTasks, 'condKey:', condKey);
@@ -1757,9 +1805,17 @@ function initHomePageHub() {
       { key: 'habits', title: '✨ Daily Habits', color: '#ec4899' }
     ];
 
+    const visibleCategories = activeCategoryFilter === 'all'
+      ? categories
+      : categories.filter(c => c.key === activeCategoryFilter);
+
+    const relevantTasks = activeCategoryFilter === 'all'
+      ? allTasks
+      : allTasks.filter(t => t.category === activeCategoryFilter);
+
     function updateCounter() {
-      const completed = allTasks.filter(t => taskStates[t.id] === 'done' || t.status === 'done').length;
-      const total = allTasks.length || 1;
+      const completed = relevantTasks.filter(t => taskStates[t.id] === 'done' || t.status === 'done').length;
+      const total = relevantTasks.length || 1;
       const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
       if (progressChip) {
@@ -1781,16 +1837,15 @@ function initHomePageHub() {
       }
     }
 
-    if (allTasks.length === 0) {
-      checkboxesContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No tasks configured for this condition.</p>';
+    if (relevantTasks.length === 0) {
+      checkboxesContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 1.5rem 0;">No tasks found for this selected category filter.</p>';
       updateCounter();
       return;
     }
 
-    
     let mappedTaskIds = new Set();
     
-    categories.forEach(cat => {
+    visibleCategories.forEach(cat => {
       const catTasks = allTasks.filter(t => t.category === cat.key);
       if (catTasks.length === 0) return;
       
@@ -2128,6 +2183,7 @@ function initHomePageHub() {
 
   // Initial load
   updateActiveButton();
+  initCategoryFilterPills();
   renderHomeConditionData();
   syncTasksWithBackend();
 }

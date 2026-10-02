@@ -201,9 +201,45 @@
       if (subEl) subEl.textContent = 'No activity recorded or rest day.';
     }
 
+    const categoryBreakdown = (dayData && dayData.categoryBreakdown) || [];
+
+    let breakdownHtml = '';
+    if (categoryBreakdown.length > 0) {
+      breakdownHtml = `
+        <div style="margin-bottom: 1.25rem;">
+          <h5 style="margin: 0 0 0.65rem; font-size: 0.95rem; font-weight: 800; color: #334155;">
+            📊 Category-Wise Completion Report
+          </h5>
+          <div class="cal-category-breakdown-grid">
+            ${categoryBreakdown.map(cat => `
+              <div class="cal-cat-summary-card">
+                <div class="cal-cat-card-header">
+                  <div class="cal-cat-title">
+                    <span>${cat.icon}</span>
+                    <span>${cat.name}</span>
+                  </div>
+                  <span class="cal-cat-pct-badge ${cat.done > 0 && cat.done >= cat.total ? 'badge-done' : ''}">
+                    ${cat.score}%
+                  </span>
+                </div>
+                <div class="cal-cat-progress-track">
+                  <div class="cal-cat-progress-fill" style="width: ${cat.score}%; background: ${cat.color};"></div>
+                </div>
+                <div class="cal-cat-stats-row">
+                  <span>${cat.done} of ${cat.total} Completed</span>
+                  <span>${cat.done >= cat.total && cat.total > 0 ? '🎉 Complete' : (cat.done > 0 ? '⚡ In Progress' : '⚪ Not Started')}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
     if (completedTasks.length === 0) {
       listEl.innerHTML = `
-        <div class="cal-empty-msg">
+        ${breakdownHtml}
+        <div class="cal-empty-msg" style="border: 1px dashed #cbd5e1; border-radius: 14px; padding: 1.75rem 1rem;">
           <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">⚪</span>
           <strong>No tasks were completed on ${dateFormatted}.</strong>
           <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: #94a3b8;">
@@ -214,29 +250,32 @@
       return;
     }
 
-    listEl.innerHTML = '';
-    completedTasks.forEach(task => {
-      const card = document.createElement('div');
-      card.className = 'cal-task-card';
-
-      const catKey = task.category || 'habits';
-      const catClass = `cal-cat-${catKey}`;
-
-      card.innerHTML = `
-        <div class="cal-task-info">
-          <span class="cal-task-icon">${task.icon || '📝'}</span>
-          <div>
-            <div class="cal-task-name">${task.name}</div>
-            ${task.tip ? `<div class="cal-task-tip">${task.tip}</div>` : ''}
-          </div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 0.65rem;">
-          <span class="cal-category-tag ${catClass}">${catKey}</span>
-          <span style="color: #10b981; font-weight: 800; font-size: 1.1rem;" title="Completed on this date">✓</span>
-        </div>
-      `;
-      listEl.appendChild(card);
-    });
+    listEl.innerHTML = breakdownHtml + `
+      <h5 style="margin: 1.25rem 0 0.65rem; font-size: 0.95rem; font-weight: 800; color: #334155;">
+        ✅ Itemized Tasks Completed (${completedTasks.length})
+      </h5>
+      <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+        ${completedTasks.map(task => {
+          const catKey = task.category || 'habits';
+          const catClass = `cal-cat-${catKey}`;
+          return `
+            <div class="cal-task-card">
+              <div class="cal-task-info">
+                <span class="cal-task-icon">${task.icon || '📝'}</span>
+                <div>
+                  <div class="cal-task-name">${task.name}</div>
+                  ${task.tip ? `<div class="cal-task-tip">${task.tip}</div>` : ''}
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <span class="cal-category-tag ${catClass}">${catKey}</span>
+                <span style="color: #10b981; font-weight: 800; font-size: 1.1rem;" title="Completed on this date">✓</span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
   }
 
   // Expose global calendar refresh

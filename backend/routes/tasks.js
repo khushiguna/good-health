@@ -257,7 +257,7 @@ router.post('/toggle-completion', async (req, res) => {
                 );
             }
             
-            // Update user_daily_logs
+            // Update user_daily_logs (Overall day score)
             const [completions] = await getPool().query(
                 'SELECT COUNT(*) as doneCount FROM task_completions WHERE log_date = ? AND condition_key = ? AND user_id = ? AND status = "done"',
                 [date, cond, req.userId]
@@ -279,8 +279,30 @@ router.post('/toggle-completion', async (req, res) => {
                 'INSERT INTO user_daily_logs (user_id, log_date, condition_key, tasks_done, tasks_total, score_percent) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE tasks_done = VALUES(tasks_done), tasks_total = VALUES(tasks_total), score_percent = VALUES(score_percent)',
                 [req.userId, date, cond, doneCount, totalTasks, score]
             );
+
+            // Update user_category_daily_logs for this specific category
+            const validCats = ['food', 'exercise', 'mental', 'sleep', 'habits'];
+            const targetCat = validCats.includes(cat) ? cat : 'habits';
+
+            const [catDoneRow] = await getPool().query(
+                'SELECT COUNT(*) as catDone FROM task_completions WHERE log_date = ? AND condition_key = ? AND category = ? AND user_id = ? AND status = "done"',
+                [date, cond, targetCat, req.userId]
+            );
+            const catDoneCount = catDoneRow[0].catDone;
+
+            const [catTotalRow] = await getPool().query(
+                `SELECT COUNT(*) as catTotal FROM tasks_${targetCat} WHERE (user_id = ? OR user_id IS NULL) AND condition_key = ? AND is_active = 1`,
+                [req.userId, cond]
+            );
+            const catTotal = catTotalRow[0].catTotal > 0 ? catTotalRow[0].catTotal : (catDoneCount > 0 ? catDoneCount : 1);
+            const catScore = (catDoneCount / catTotal) * 100;
+
+            await getPool().query(
+                'INSERT INTO user_category_daily_logs (user_id, log_date, condition_key, category, tasks_done, tasks_total, score_percent) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE tasks_done = VALUES(tasks_done), tasks_total = VALUES(tasks_total), score_percent = VALUES(score_percent)',
+                [req.userId, date, cond, targetCat, catDoneCount, catTotal, catScore]
+            );
             
-            return res.json({ success: true, status, doneCount, score });
+            return res.json({ success: true, status, doneCount, score, category: targetCat, catDoneCount, catScore });
         } else {
             const mem = getMemoryStore().task_completions;
             let comp = mem.find(c => c.task_id === taskId && c.log_date === date && c.condition_key === cond && c.user_id === req.userId);
@@ -390,7 +412,8 @@ router.get('/calendar', async (req, res) => {
 router.get('/calendar-day', async (req, res) => {
     try {
         const date = req.query.date || getLocalDateString();
-        if (!getIsConnected()) return res.json({ success: true, date, completedTasks: [], log: null });
+        const conditionKey = req.query.conditionKey || 'general';
+        if (!getIsConnected()) return res.json({ success: true, date, completedTasks: [], categoryBreakdown: [], log: null });
         
         const [logs] = await getPool().query(
             'SELECT log_date as date, score_percent as score, score_percent, tasks_done as done, tasks_done, tasks_total as total, tasks_total, condition_key FROM user_daily_logs WHERE user_id = ? AND log_date = ?',
@@ -412,15 +435,108 @@ LEFT JOIN tasks_habits th ON tc.task_id = th.id
 WHERE tc.user_id = ? AND tc.log_date = ? AND tc.status = 'done'
 ORDER BY tc.created_at ASC
         `, [req.userId, date]);
+
+        // Category breakdown across all 5 wellness pillars
+        const validCats = [
+            { key: 'food', name: 'Diet & Food', icon: '🥗', color: '#10b981' },
+            { key: 'exercise', name: 'Exercise & Movement', icon: '🏃', color: '#f59e0b' },
+            { key: 'mental', name: 'Mental Well-Being', icon: '🧘', color: '#8b5cf6' },
+            { key: 'sleep', name: 'Sleep & Rest', icon: '🌙', color: '#3b82f6' },
+            { key: 'habits', name: 'Daily Habits', icon: '✨', color: '#ec4899' }
+        ];
+
+        const [catLogs] = await getPool().query(
+            'SELECT category, tasks_done as done, tasks_total as total, score_percent as score FROM user_category_daily_logs WHERE user_id = ? AND log_date = ?',
+            [req.userId, date]
+        );
+        const catLogMap = {};
+        catLogs.forEach(c => { catLogMap[c.category] = c; });
+
+        const categoryBreakdown = [];
+        for (const cat of validCats) {
+            const completedInCat = completions.filter(c => c.category === cat.key);
+            const savedLog = catLogMap[cat.key];
+
+            let done = completedInCat.length;
+            let total = 0;
+            if (savedLog && savedLog.total > 0) {
+                total = savedLog.total;
+            } else {
+                const [totalRow] = await getPool().query(
+                    `SELECT COUNT(*) as cnt FROM tasks_${cat.key} WHERE (user_id = ? OR user_id IS NULL) AND condition_key = ? AND is_active = 1`,
+                    [req.userId, conditionKey]
+                );
+                total = totalRow[0].cnt || (done > 0 ? done : 1);
+            }
+
+            const score = total > 0 ? Math.round((done / total) * 100) : 0;
+            categoryBreakdown.push({
+                category: cat.key,
+                name: cat.name,
+                icon: cat.icon,
+                color: cat.color,
+                done,
+                total,
+                score,
+                completedTasks: completedInCat
+            });
+        }
         
         return res.json({
             success: true,
             date,
             log: logs[0] || null,
+            categoryBreakdown,
             completedTasks: completions
         });
     } catch(err) {
         console.error('Calendar day error:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+// GET /api/tasks/preferences (Get user's preferred categories)
+router.get('/preferences', async (req, res) => {
+    try {
+        if (!getIsConnected()) {
+            return res.json({ success: true, categories: ['food', 'exercise', 'mental', 'sleep', 'habits'] });
+        }
+        const [rows] = await getPool().query(
+            'SELECT category, is_enabled FROM user_category_preferences WHERE user_id = ?',
+            [req.userId]
+        );
+        if (rows.length === 0) {
+            return res.json({ success: true, categories: ['food', 'exercise', 'mental', 'sleep', 'habits'] });
+        }
+        const enabled = rows.filter(r => r.is_enabled === 1).map(r => r.category);
+        return res.json({ success: true, categories: enabled.length > 0 ? enabled : ['food', 'exercise', 'mental', 'sleep', 'habits'] });
+    } catch (err) {
+        console.error('Get preferences error:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+// POST /api/tasks/preferences (Save user's preferred categories)
+router.post('/preferences', async (req, res) => {
+    try {
+        const { categories } = req.body;
+        if (!Array.isArray(categories)) {
+            return res.status(400).json({ success: false, error: 'Categories array required' });
+        }
+        if (!getIsConnected()) {
+            return res.json({ success: true, categories });
+        }
+        const validCats = ['food', 'exercise', 'mental', 'sleep', 'habits'];
+        for (const cat of validCats) {
+            const isEnabled = categories.includes(cat) ? 1 : 0;
+            await getPool().query(
+                'INSERT INTO user_category_preferences (user_id, category, is_enabled) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE is_enabled = VALUES(is_enabled)',
+                [req.userId, cat, isEnabled]
+            );
+        }
+        return res.json({ success: true, categories });
+    } catch (err) {
+        console.error('Save preferences error:', err);
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
