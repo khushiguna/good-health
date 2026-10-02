@@ -1580,6 +1580,7 @@ function initHomePageHub() {
       updateActiveButton();
       renderHomeConditionData();
       syncCompletionsForCondition(currentCondition);
+      window.dispatchEvent(new CustomEvent('gh_condition_changed', { detail: { condition: currentCondition } }));
       if (typeof window.refreshHealthCalendar === 'function') {
         window.refreshHealthCalendar();
       }
@@ -1640,6 +1641,10 @@ function initHomePageHub() {
       closeAssessmentModal();
       renderHomeConditionData();
       syncCompletionsForCondition(currentCondition);
+      window.dispatchEvent(new CustomEvent('gh_condition_changed', { detail: { condition: currentCondition } }));
+      if (typeof window.refreshHealthCalendar === 'function') {
+        window.refreshHealthCalendar();
+      }
     });
   }
   if (assessmentModal) {
@@ -2339,6 +2344,10 @@ function initTopRatioTracker() {
       localStorage.setItem('gh_selected_condition', activeConditionKey);
       syncWithAssessmentSection(activeConditionKey);
       renderConditionRatio();
+      window.dispatchEvent(new CustomEvent('gh_condition_changed', { detail: { condition: activeConditionKey } }));
+      if (typeof window.refreshHealthCalendar === 'function') {
+        window.refreshHealthCalendar();
+      }
     });
   }
 
@@ -2528,6 +2537,10 @@ function initTopRatioTracker() {
     activeConditionKey = newKey;
     if (conditionSelect) conditionSelect.value = newKey;
     renderConditionRatio();
+    window.dispatchEvent(new CustomEvent('gh_condition_changed', { detail: { condition: newKey } }));
+    if (typeof window.refreshHealthCalendar === 'function') {
+      window.refreshHealthCalendar();
+    }
   };
 
   renderConditionRatio();
@@ -2589,6 +2602,10 @@ function initPersonalizedHealthAdviser() {
       window.renderAssessmentCondition(key);
       if (typeof window.switchGlobalCondition === 'function') {
         window.switchGlobalCondition(key);
+      }
+      window.dispatchEvent(new CustomEvent('gh_condition_changed', { detail: { condition: key } }));
+      if (typeof window.refreshHealthCalendar === 'function') {
+        window.refreshHealthCalendar();
       }
     });
   });

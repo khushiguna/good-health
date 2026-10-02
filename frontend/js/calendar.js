@@ -133,6 +133,7 @@
 
     // Listen to condition changes
     window.addEventListener('gh_condition_changed', () => {
+      calMonthCache = {};
       renderCalendarMonth();
     });
 
@@ -273,15 +274,29 @@
       }
     }
 
-    const log = (dayData && dayData.log) || calMonthCache[dateKey] || null;
+    const log = dayData ? dayData.log : (calMonthCache[dateKey] || null);
     const completedTasks = (dayData && dayData.completedTasks) || [];
 
-    const doneVal = (log && (log.done !== undefined ? log.done : log.tasks_done)) || completedTasks.length;
-    const totalVal = (log && (log.total !== undefined ? log.total : log.tasks_total)) || (doneVal > 0 ? doneVal : 22);
-    const scoreVal = (log && (log.score !== undefined ? log.score : log.score_percent)) || (totalVal > 0 ? (doneVal / totalVal) * 100 : 0);
+    const doneVal = (log && log.done != null ? Number(log.done) : (log && log.tasks_done != null ? Number(log.tasks_done) : completedTasks.length));
+    let totalVal = (log && log.total != null ? Number(log.total) : (log && log.tasks_total != null ? Number(log.tasks_total) : 0));
+    if (totalVal === 0 && dayData && Array.isArray(dayData.categoryBreakdown) && dayData.categoryBreakdown.length > 0) {
+      if (calActiveCategory !== 'all') {
+        const catInfo = dayData.categoryBreakdown.find(b => b.category === calActiveCategory);
+        if (catInfo) totalVal = catInfo.total;
+      } else {
+        totalVal = dayData.categoryBreakdown.reduce((sum, b) => sum + (b.total || 0), 0);
+      }
+    }
+    if (totalVal === 0) {
+      totalVal = doneVal > 0 ? doneVal : 22;
+    }
+
+    const scoreVal = (log && log.score != null ? Number(log.score) : (log && log.score_percent != null ? Number(log.score_percent) : (totalVal > 0 ? (doneVal / totalVal) * 100 : 0)));
     const score = Math.round(Number(scoreVal) || 0);
 
-    const condTitle = log && log.condition_key ? `Condition: ${log.condition_key.replace('_', ' ').toUpperCase()}` : '';
+    const condTitle = (log && log.condition_key)
+      ? `Condition: ${log.condition_key.replace('_', ' ').toUpperCase()}`
+      : (activeCondition ? `Condition: ${activeCondition.replace('_', ' ').toUpperCase()}` : '');
 
     if (doneVal > 0) {
       if (scoreBadge) {
@@ -304,9 +319,11 @@
         scoreBadge.textContent = calActiveCategory !== 'all' ? `0% (${catMeta.name})` : '0% Score';
       }
       if (subEl) {
-        subEl.textContent = calActiveCategory !== 'all'
-          ? `No ${catMeta.name} tasks recorded for this date.`
-          : 'No activity recorded or rest day.';
+        if (calActiveCategory !== 'all') {
+          subEl.textContent = `0 of ${totalVal} ${catMeta.name} tasks completed. ${condTitle}`;
+        } else {
+          subEl.textContent = `0 of ${totalVal} tasks completed. ${condTitle}`;
+        }
       }
     }
 

@@ -388,15 +388,12 @@ router.get('/calendar', async (req, res) => {
         if (!getIsConnected()) return res.json({ success: true, history: [] });
         
         const { year, month, days, category, conditionKey } = req.query;
+        const cond = (conditionKey && conditionKey !== 'all') ? conditionKey : 'general';
         let query, params;
 
         if (category && category !== 'all') {
-            query = 'SELECT log_date as date, score_percent as score, tasks_done as done, tasks_total as total, condition_key, category FROM user_category_daily_logs WHERE user_id = ? AND category = ?';
-            params = [req.userId, category];
-            if (conditionKey && conditionKey !== 'all') {
-                query += ' AND condition_key = ?';
-                params.push(conditionKey);
-            }
+            query = 'SELECT log_date as date, score_percent as score, tasks_done as done, tasks_total as total, condition_key, category FROM user_category_daily_logs WHERE user_id = ? AND category = ? AND condition_key = ?';
+            params = [req.userId, category, cond];
             if (year && month) {
                 query += ' AND YEAR(log_date) = ? AND MONTH(log_date) = ? ORDER BY log_date ASC';
                 params.push(parseInt(year), parseInt(month));
@@ -406,12 +403,8 @@ router.get('/calendar', async (req, res) => {
                 params.push(limitDays);
             }
         } else {
-            query = 'SELECT log_date as date, score_percent as score, tasks_done as done, tasks_total as total, condition_key FROM user_daily_logs WHERE user_id = ?';
-            params = [req.userId];
-            if (conditionKey && conditionKey !== 'all') {
-                query += ' AND condition_key = ?';
-                params.push(conditionKey);
-            }
+            query = 'SELECT log_date as date, score_percent as score, tasks_done as done, tasks_total as total, condition_key FROM user_daily_logs WHERE user_id = ? AND condition_key = ?';
+            params = [req.userId, cond];
             if (year && month) {
                 query += ' AND YEAR(log_date) = ? AND MONTH(log_date) = ? ORDER BY log_date ASC';
                 params.push(parseInt(year), parseInt(month));
@@ -423,7 +416,7 @@ router.get('/calendar', async (req, res) => {
         }
         
         const [history] = await getPool().query(query, params);
-        return res.json({ success: true, history, category: category || 'all' });
+        return res.json({ success: true, history, category: category || 'all', conditionKey: cond });
     } catch(err) {
         console.error('Calendar error:', err);
         res.status(500).json({ success: false, error: 'Internal server error' });
@@ -438,20 +431,23 @@ router.get('/calendar-day', async (req, res) => {
         const category = req.query.category || 'all';
         if (!getIsConnected()) return res.json({ success: true, date, completedTasks: [], categoryBreakdown: [], log: null });
         
+        // 1. Specific condition daily log
         const [logs] = await getPool().query(
-            'SELECT log_date as date, score_percent as score, score_percent, tasks_done as done, tasks_done, tasks_total as total, tasks_total, condition_key FROM user_daily_logs WHERE user_id = ? AND log_date = ?',
-            [req.userId, date]
+            'SELECT log_date as date, score_percent as score, score_percent, tasks_done as done, tasks_done, tasks_total as total, tasks_total, condition_key FROM user_daily_logs WHERE user_id = ? AND log_date = ? AND condition_key = ?',
+            [req.userId, date, conditionKey]
         );
 
+        // 2. Specific condition + category log
         let catLog = null;
         if (category && category !== 'all') {
             const [catLogs] = await getPool().query(
-                'SELECT log_date as date, score_percent as score, score_percent, tasks_done as done, tasks_done, tasks_total as total, tasks_total, condition_key, category FROM user_category_daily_logs WHERE user_id = ? AND log_date = ? AND category = ?',
-                [req.userId, date, category]
+                'SELECT log_date as date, score_percent as score, score_percent, tasks_done as done, tasks_done, tasks_total as total, tasks_total, condition_key, category FROM user_category_daily_logs WHERE user_id = ? AND log_date = ? AND category = ? AND condition_key = ?',
+                [req.userId, date, category, conditionKey]
             );
             if (catLogs.length > 0) catLog = catLogs[0];
         }
         
+        // 3. Itemized task completions strictly for this user, date, and conditionKey
         const [completions] = await getPool().query(`
 SELECT 
     tc.task_id, tc.category, tc.condition_key, tc.status, tc.created_at,
@@ -459,16 +455,16 @@ SELECT
     COALESCE(tf.tip, te.tip, tm.tip, ts.tip, th.tip, '') as tip,
     COALESCE(tf.icon, te.icon, tm.icon, ts.icon, th.icon, '📝') as icon
 FROM task_completions tc
-LEFT JOIN tasks_food tf ON tc.task_id = tf.id
-LEFT JOIN tasks_exercise te ON tc.task_id = te.id
-LEFT JOIN tasks_mental tm ON tc.task_id = tm.id
-LEFT JOIN tasks_sleep ts ON tc.task_id = ts.id
-LEFT JOIN tasks_habits th ON tc.task_id = th.id
-WHERE tc.user_id = ? AND tc.log_date = ? AND tc.status = 'done'
+LEFT JOIN tasks_food tf ON (tc.task_id = tf.id AND tf.condition_key = tc.condition_key)
+LEFT JOIN tasks_exercise te ON (tc.task_id = te.id AND te.condition_key = tc.condition_key)
+LEFT JOIN tasks_mental tm ON (tc.task_id = tm.id AND tm.condition_key = tc.condition_key)
+LEFT JOIN tasks_sleep ts ON (tc.task_id = ts.id AND ts.condition_key = tc.condition_key)
+LEFT JOIN tasks_habits th ON (tc.task_id = th.id AND th.condition_key = tc.condition_key)
+WHERE tc.user_id = ? AND tc.log_date = ? AND tc.condition_key = ? AND tc.status = 'done'
 ORDER BY tc.created_at ASC
-        `, [req.userId, date]);
+        `, [req.userId, date, conditionKey]);
 
-        // Category breakdown across all 5 wellness pillars
+        // Category breakdown across all 5 wellness pillars for this condition
         const validCats = [
             { key: 'food', name: 'Diet & Food', icon: '🥗', color: '#10b981' },
             { key: 'exercise', name: 'Exercise & Movement', icon: '🏃', color: '#f59e0b' },
@@ -478,13 +474,14 @@ ORDER BY tc.created_at ASC
         ];
 
         const [catLogs] = await getPool().query(
-            'SELECT category, tasks_done as done, tasks_total as total, score_percent as score FROM user_category_daily_logs WHERE user_id = ? AND log_date = ?',
-            [req.userId, date]
+            'SELECT category, tasks_done as done, tasks_total as total, score_percent as score FROM user_category_daily_logs WHERE user_id = ? AND log_date = ? AND condition_key = ?',
+            [req.userId, date, conditionKey]
         );
         const catLogMap = {};
         catLogs.forEach(c => { catLogMap[c.category] = c; });
 
         const categoryBreakdown = [];
+        let totalConditionTasksAcrossCats = 0;
         for (const cat of validCats) {
             const completedInCat = completions.filter(c => c.category === cat.key);
             const savedLog = catLogMap[cat.key];
@@ -493,14 +490,16 @@ ORDER BY tc.created_at ASC
             let total = 0;
             if (savedLog && savedLog.total > 0) {
                 total = savedLog.total;
+                done = savedLog.done;
             } else {
                 const [totalRow] = await getPool().query(
                     `SELECT COUNT(*) as cnt FROM tasks_${cat.key} WHERE (user_id = ? OR user_id IS NULL) AND condition_key = ? AND is_active = 1`,
                     [req.userId, conditionKey]
                 );
-                total = totalRow[0].cnt || (done > 0 ? done : 1);
+                total = totalRow[0].cnt || (done > 0 ? done : 0);
             }
 
+            totalConditionTasksAcrossCats += total;
             const score = total > 0 ? Math.round((done / total) * 100) : 0;
             categoryBreakdown.push({
                 category: cat.key,
@@ -517,12 +516,42 @@ ORDER BY tc.created_at ASC
         const filteredTasks = (category && category !== 'all')
             ? completions.filter(c => c.category === category)
             : completions;
+
+        let activeLog;
+        if (category && category !== 'all') {
+            const catInfo = categoryBreakdown.find(b => b.category === category);
+            activeLog = catLog || {
+                date,
+                condition_key: conditionKey,
+                category,
+                tasks_done: catInfo ? catInfo.done : 0,
+                done: catInfo ? catInfo.done : 0,
+                tasks_total: catInfo ? catInfo.total : 0,
+                total: catInfo ? catInfo.total : 0,
+                score_percent: catInfo ? catInfo.score : 0,
+                score: catInfo ? catInfo.score : 0
+            };
+        } else {
+            const totalDone = categoryBreakdown.reduce((sum, b) => sum + (b.done || 0), 0);
+            const overallScore = totalConditionTasksAcrossCats > 0 ? Math.round((totalDone / totalConditionTasksAcrossCats) * 100) : 0;
+            activeLog = logs[0] || {
+                date,
+                condition_key: conditionKey,
+                tasks_done: totalDone,
+                done: totalDone,
+                tasks_total: totalConditionTasksAcrossCats || 22,
+                total: totalConditionTasksAcrossCats || 22,
+                score_percent: overallScore,
+                score: overallScore
+            };
+        }
         
         return res.json({
             success: true,
             date,
+            conditionKey,
             category: category || 'all',
-            log: (category && category !== 'all' && catLog) ? catLog : (logs[0] || null),
+            log: activeLog,
             overallLog: logs[0] || null,
             categoryLog: catLog,
             categoryBreakdown,
