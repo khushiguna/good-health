@@ -126,18 +126,23 @@ const HealthAPI = {
       } catch(e) { return null; }
   },
 
-  async getCalendarMonth(year, month) {
+  async getCalendarMonth(year, month, category, conditionKey) {
       try {
-          const res = await fetchWithAuth(`${API_BASE}/api/tasks/calendar?year=${year}&month=${month}`, { headers: getHeaders() });
+          const params = new URLSearchParams({ year, month });
+          if (category && category !== 'all') params.append('category', category);
+          if (conditionKey && conditionKey !== 'all') params.append('conditionKey', conditionKey);
+          const res = await fetchWithAuth(`${API_BASE}/api/tasks/calendar?${params.toString()}`, { headers: getHeaders() });
           const data = await res.json();
           return data.success ? data.history : null;
       } catch(e) { return null; }
   },
 
-  async getCalendarDay(date, conditionKey) {
+  async getCalendarDay(date, conditionKey, category) {
       try {
-          const q = conditionKey ? `&conditionKey=${conditionKey}` : '';
-          const res = await fetchWithAuth(`${API_BASE}/api/tasks/calendar-day?date=${date}${q}`, { headers: getHeaders() });
+          const params = new URLSearchParams({ date });
+          if (conditionKey && conditionKey !== 'all') params.append('conditionKey', conditionKey);
+          if (category && category !== 'all') params.append('category', category);
+          const res = await fetchWithAuth(`${API_BASE}/api/tasks/calendar-day?${params.toString()}`, { headers: getHeaders() });
           const data = await res.json();
           return data.success ? data : null;
       } catch(e) { return null; }

@@ -387,21 +387,43 @@ router.get('/calendar', async (req, res) => {
     try {
         if (!getIsConnected()) return res.json({ success: true, history: [] });
         
-        const { year, month, days } = req.query;
-        let query = 'SELECT log_date as date, score_percent as score, tasks_done as done, tasks_total as total, condition_key FROM user_daily_logs WHERE user_id = ?';
-        let params = [req.userId];
-        
-        if (year && month) {
-            query += ' AND YEAR(log_date) = ? AND MONTH(log_date) = ? ORDER BY log_date ASC';
-            params.push(parseInt(year), parseInt(month));
+        const { year, month, days, category, conditionKey } = req.query;
+        let query, params;
+
+        if (category && category !== 'all') {
+            query = 'SELECT log_date as date, score_percent as score, tasks_done as done, tasks_total as total, condition_key, category FROM user_category_daily_logs WHERE user_id = ? AND category = ?';
+            params = [req.userId, category];
+            if (conditionKey && conditionKey !== 'all') {
+                query += ' AND condition_key = ?';
+                params.push(conditionKey);
+            }
+            if (year && month) {
+                query += ' AND YEAR(log_date) = ? AND MONTH(log_date) = ? ORDER BY log_date ASC';
+                params.push(parseInt(year), parseInt(month));
+            } else {
+                const limitDays = parseInt(days) || 60;
+                query += ' ORDER BY log_date DESC LIMIT ?';
+                params.push(limitDays);
+            }
         } else {
-            const limitDays = parseInt(days) || 60;
-            query += ' ORDER BY log_date DESC LIMIT ?';
-            params.push(limitDays);
+            query = 'SELECT log_date as date, score_percent as score, tasks_done as done, tasks_total as total, condition_key FROM user_daily_logs WHERE user_id = ?';
+            params = [req.userId];
+            if (conditionKey && conditionKey !== 'all') {
+                query += ' AND condition_key = ?';
+                params.push(conditionKey);
+            }
+            if (year && month) {
+                query += ' AND YEAR(log_date) = ? AND MONTH(log_date) = ? ORDER BY log_date ASC';
+                params.push(parseInt(year), parseInt(month));
+            } else {
+                const limitDays = parseInt(days) || 60;
+                query += ' ORDER BY log_date DESC LIMIT ?';
+                params.push(limitDays);
+            }
         }
         
         const [history] = await getPool().query(query, params);
-        return res.json({ success: true, history });
+        return res.json({ success: true, history, category: category || 'all' });
     } catch(err) {
         console.error('Calendar error:', err);
         res.status(500).json({ success: false, error: 'Internal server error' });
@@ -413,12 +435,22 @@ router.get('/calendar-day', async (req, res) => {
     try {
         const date = req.query.date || getLocalDateString();
         const conditionKey = req.query.conditionKey || 'general';
+        const category = req.query.category || 'all';
         if (!getIsConnected()) return res.json({ success: true, date, completedTasks: [], categoryBreakdown: [], log: null });
         
         const [logs] = await getPool().query(
             'SELECT log_date as date, score_percent as score, score_percent, tasks_done as done, tasks_done, tasks_total as total, tasks_total, condition_key FROM user_daily_logs WHERE user_id = ? AND log_date = ?',
             [req.userId, date]
         );
+
+        let catLog = null;
+        if (category && category !== 'all') {
+            const [catLogs] = await getPool().query(
+                'SELECT log_date as date, score_percent as score, score_percent, tasks_done as done, tasks_done, tasks_total as total, tasks_total, condition_key, category FROM user_category_daily_logs WHERE user_id = ? AND log_date = ? AND category = ?',
+                [req.userId, date, category]
+            );
+            if (catLogs.length > 0) catLog = catLogs[0];
+        }
         
         const [completions] = await getPool().query(`
 SELECT 
@@ -481,13 +513,21 @@ ORDER BY tc.created_at ASC
                 completedTasks: completedInCat
             });
         }
+
+        const filteredTasks = (category && category !== 'all')
+            ? completions.filter(c => c.category === category)
+            : completions;
         
         return res.json({
             success: true,
             date,
-            log: logs[0] || null,
+            category: category || 'all',
+            log: (category && category !== 'all' && catLog) ? catLog : (logs[0] || null),
+            overallLog: logs[0] || null,
+            categoryLog: catLog,
             categoryBreakdown,
-            completedTasks: completions
+            completedTasks: filteredTasks,
+            allCompletedTasks: completions
         });
     } catch(err) {
         console.error('Calendar day error:', err);

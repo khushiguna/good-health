@@ -1,6 +1,7 @@
 /**
  * Good Health and Well-Being - Interactive Health Activity Calendar & History
- * Displays daily task completion history and allows inspecting any date's completed tasks.
+ * Displays daily task completion history and allows inspecting any date's completed tasks,
+ * with full category-wise reporting and user-chosen category filtering.
  */
 
 (function () {
@@ -8,11 +9,21 @@
   let calCurrentMonth = new Date().getMonth() + 1; // 1-12
   let calSelectedDate = new Date().toISOString().slice(0, 10);
   let calMonthCache = {};
+  let calActiveCategory = localStorage.getItem('gh_active_cat_filter') || 'all';
 
   const MONTH_NAMES = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+
+  const CAT_META = {
+    all: { name: 'All Categories', icon: '🌟', color: '#10b981' },
+    food: { name: 'Diet & Food', icon: '🥗', color: '#10b981' },
+    exercise: { name: 'Exercise & Movement', icon: '🏃', color: '#f59e0b' },
+    mental: { name: 'Mental Well-Being', icon: '🧘', color: '#8b5cf6' },
+    sleep: { name: 'Sleep & Rest', icon: '🌙', color: '#3b82f6' },
+    habits: { name: 'Daily Habits', icon: '✨', color: '#ec4899' }
+  };
 
   document.addEventListener('DOMContentLoaded', () => {
     const calendarSection = document.getElementById('health-calendar-section');
@@ -23,6 +34,21 @@
 
   function getTodayString() {
     return new Date().toISOString().slice(0, 10);
+  }
+
+  function getActiveCondition() {
+    return localStorage.getItem('gh_selected_condition') || 'general';
+  }
+
+  function updateCalendarCatPills() {
+    calActiveCategory = localStorage.getItem('gh_active_cat_filter') || 'all';
+    const calPillsContainer = document.getElementById('cal-cat-pills');
+    if (!calPillsContainer) return;
+    const pills = calPillsContainer.querySelectorAll('.cal-cat-pill');
+    pills.forEach(pill => {
+      const cat = pill.getAttribute('data-cat') || 'all';
+      pill.classList.toggle('active', cat === calActiveCategory);
+    });
   }
 
   async function initCalendarUI() {
@@ -62,6 +88,55 @@
       });
     }
 
+    // Bind Calendar Category Pills
+    const calPillsContainer = document.getElementById('cal-cat-pills');
+    if (calPillsContainer) {
+      const pills = calPillsContainer.querySelectorAll('.cal-cat-pill');
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          const cat = pill.getAttribute('data-cat') || 'all';
+          calActiveCategory = cat;
+          localStorage.setItem('gh_active_cat_filter', cat);
+          updateCalendarCatPills();
+          renderCalendarMonth();
+
+          // Sync home category pills if present
+          const homeFilterContainer = document.getElementById('home-category-filter-pills');
+          if (homeFilterContainer) {
+            homeFilterContainer.querySelectorAll('.cat-pill').forEach(hp => {
+              hp.classList.toggle('active', (hp.getAttribute('data-cat') || 'all') === cat);
+            });
+          }
+
+          // Save preference to backend
+          if (window.HealthAPI && window.HealthAPI.saveCategoryPreferences) {
+            const selected = cat === 'all'
+              ? ['food', 'exercise', 'mental', 'sleep', 'habits']
+              : [cat];
+            window.HealthAPI.saveCategoryPreferences(selected);
+          }
+
+          // Dispatch event for other listeners
+          window.dispatchEvent(new CustomEvent('gh_category_changed', { detail: { category: cat } }));
+        });
+      });
+    }
+
+    // Listen to category changes from Home Page checklist pills
+    window.addEventListener('gh_category_changed', (e) => {
+      if (e.detail && e.detail.category && e.detail.category !== calActiveCategory) {
+        calActiveCategory = e.detail.category;
+        updateCalendarCatPills();
+        renderCalendarMonth();
+      }
+    });
+
+    // Listen to condition changes
+    window.addEventListener('gh_condition_changed', () => {
+      renderCalendarMonth();
+    });
+
+    updateCalendarCatPills();
     await renderCalendarMonth();
   }
 
@@ -69,6 +144,10 @@
     const monthYearLabel = document.getElementById('cal-month-year-label');
     const gridContainer = document.getElementById('cal-days-grid');
     if (!gridContainer) return;
+
+    calActiveCategory = localStorage.getItem('gh_active_cat_filter') || 'all';
+    updateCalendarCatPills();
+    const activeCondition = getActiveCondition();
 
     if (monthYearLabel) {
       monthYearLabel.textContent = `${MONTH_NAMES[calCurrentMonth - 1]} ${calCurrentYear}`;
@@ -78,7 +157,7 @@
     let monthLogs = {};
     if (window.HealthAPI && window.HealthAPI.getCalendarMonth) {
       try {
-        const history = await window.HealthAPI.getCalendarMonth(calCurrentYear, calCurrentMonth);
+        const history = await window.HealthAPI.getCalendarMonth(calCurrentYear, calCurrentMonth, calActiveCategory, activeCondition);
         if (history && Array.isArray(history)) {
           history.forEach(item => {
             const dateKey = typeof item.date === 'string' ? item.date.slice(0, 10) : new Date(item.date).toISOString().slice(0, 10);
@@ -95,6 +174,7 @@
     const firstDay = new Date(calCurrentYear, calCurrentMonth - 1, 1).getDay(); // 0 (Sun) to 6 (Sat)
     const daysInMonth = new Date(calCurrentYear, calCurrentMonth, 0).getDate();
     const todayStr = getTodayString();
+    const catMeta = CAT_META[calActiveCategory] || { name: 'All', icon: '🌟' };
 
     gridContainer.innerHTML = '';
 
@@ -126,7 +206,11 @@
         if (score >= 70) badgeClass = 'status-high';
         else if (score >= 30) badgeClass = 'status-mid';
 
-        badgeHtml = `<span class="cal-day-badge ${badgeClass}" title="${score}% (${log.done}/${log.total || log.done} done)">${score}%</span>`;
+        const titleText = calActiveCategory !== 'all'
+          ? `${score}% (${log.done}/${log.total || log.done} ${catMeta.name} tasks completed)`
+          : `${score}% (${log.done}/${log.total || log.done} tasks completed)`;
+
+        badgeHtml = `<span class="cal-day-badge ${badgeClass}" title="${titleText}">${score}%</span>`;
       }
 
       cell.innerHTML = `
@@ -155,13 +239,23 @@
     const listEl = document.getElementById('cal-completed-tasks-list');
     if (!listEl) return;
 
+    calActiveCategory = localStorage.getItem('gh_active_cat_filter') || 'all';
+    const activeCondition = getActiveCondition();
+    const catMeta = CAT_META[calActiveCategory] || { name: 'All Categories', icon: '🌟' };
+
     // Format human-readable date
     const [y, m, d] = dateKey.split('-').map(Number);
     const dateObj = new Date(y, m - 1, d);
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const dateFormatted = dateObj.toLocaleDateString('en-US', options);
 
-    if (titleEl) titleEl.textContent = `📅 Activity on ${dateFormatted}`;
+    if (titleEl) {
+      if (calActiveCategory !== 'all') {
+        titleEl.textContent = `📅 Activity on ${dateFormatted} • ${catMeta.icon} ${catMeta.name}`;
+      } else {
+        titleEl.textContent = `📅 Activity on ${dateFormatted}`;
+      }
+    }
     if (subEl) subEl.textContent = `Checking completed tasks for ${dateKey}...`;
     if (scoreBadge) {
       scoreBadge.className = 'cal-details-score-badge';
@@ -173,7 +267,7 @@
     let dayData = null;
     if (window.HealthAPI && window.HealthAPI.getCalendarDay) {
       try {
-        dayData = await window.HealthAPI.getCalendarDay(dateKey);
+        dayData = await window.HealthAPI.getCalendarDay(dateKey, activeCondition, calActiveCategory);
       } catch (err) {
         console.warn('Could not fetch calendar day details:', err);
       }
@@ -187,18 +281,33 @@
     const scoreVal = (log && (log.score !== undefined ? log.score : log.score_percent)) || (totalVal > 0 ? (doneVal / totalVal) * 100 : 0);
     const score = Math.round(Number(scoreVal) || 0);
 
+    const condTitle = log && log.condition_key ? `Condition: ${log.condition_key.replace('_', ' ').toUpperCase()}` : '';
+
     if (doneVal > 0) {
       if (scoreBadge) {
-        scoreBadge.textContent = `🏆 ${score}% Health Score (${doneVal} Done)`;
+        if (calActiveCategory !== 'all') {
+          scoreBadge.textContent = `🏆 ${score}% (${catMeta.name})`;
+        } else {
+          scoreBadge.textContent = `🏆 ${score}% Health Score (${doneVal} Done)`;
+        }
         if (score >= 70) scoreBadge.classList.add('badge-green');
       }
       if (subEl) {
-        const condTitle = log && log.condition_key ? `Condition: ${log.condition_key.replace('_', ' ').toUpperCase()}` : '';
-        subEl.textContent = `${doneVal} of ${totalVal} tasks completed. ${condTitle}`;
+        if (calActiveCategory !== 'all') {
+          subEl.textContent = `${doneVal} of ${totalVal} ${catMeta.name} tasks completed. ${condTitle}`;
+        } else {
+          subEl.textContent = `${doneVal} of ${totalVal} tasks completed. ${condTitle}`;
+        }
       }
     } else {
-      if (scoreBadge) scoreBadge.textContent = '0% Score';
-      if (subEl) subEl.textContent = 'No activity recorded or rest day.';
+      if (scoreBadge) {
+        scoreBadge.textContent = calActiveCategory !== 'all' ? `0% (${catMeta.name})` : '0% Score';
+      }
+      if (subEl) {
+        subEl.textContent = calActiveCategory !== 'all'
+          ? `No ${catMeta.name} tasks recorded for this date.`
+          : 'No activity recorded or rest day.';
+      }
     }
 
     const categoryBreakdown = (dayData && dayData.categoryBreakdown) || [];
@@ -207,12 +316,17 @@
     if (categoryBreakdown.length > 0) {
       breakdownHtml = `
         <div style="margin-bottom: 1.25rem;">
-          <h5 style="margin: 0 0 0.65rem; font-size: 0.95rem; font-weight: 800; color: #334155;">
-            📊 Category-Wise Completion Report
-          </h5>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h5 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: #334155;">
+              📊 Category-Wise Completion Report
+            </h5>
+            ${calActiveCategory !== 'all' ? `<span style="font-size: 0.8rem; color: #10b981; font-weight: 700; background: #ecfdf5; padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid #a7f3d0;">Selected Focus: ${catMeta.name}</span>` : ''}
+          </div>
           <div class="cal-category-breakdown-grid">
-            ${categoryBreakdown.map(cat => `
-              <div class="cal-cat-summary-card">
+            ${categoryBreakdown.map(cat => {
+              const isSelected = cat.category === calActiveCategory;
+              return `
+              <div class="cal-cat-summary-card ${isSelected ? 'cat-card-selected' : ''}" data-cat="${cat.category}" style="cursor: pointer;" title="Click to filter calendar by ${cat.name}">
                 <div class="cal-cat-card-header">
                   <div class="cal-cat-title">
                     <span>${cat.icon}</span>
@@ -230,8 +344,19 @@
                   <span>${cat.done >= cat.total && cat.total > 0 ? '🎉 Complete' : (cat.done > 0 ? '⚡ In Progress' : '⚪ Not Started')}</span>
                 </div>
               </div>
-            `).join('')}
+            `;
+            }).join('')}
           </div>
+        </div>
+      `;
+    }
+
+    let filterNotice = '';
+    if (calActiveCategory !== 'all') {
+      filterNotice = `
+        <div style="display: flex; align-items: center; justify-content: space-between; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 0.55rem 0.9rem; border-radius: 12px; margin-bottom: 0.95rem; font-size: 0.85rem; color: #166534;">
+          <span>Showing only <strong>${catMeta.name}</strong> tasks.</span>
+          <button type="button" id="btn-cal-show-all" style="background: white; border: 1px solid #86efac; color: #059669; font-weight: 700; cursor: pointer; border-radius: 9999px; padding: 0.25rem 0.75rem; font-size: 0.82rem; transition: all 0.2s ease;">🌟 Show All Categories</button>
         </div>
       `;
     }
@@ -239,18 +364,20 @@
     if (completedTasks.length === 0) {
       listEl.innerHTML = `
         ${breakdownHtml}
+        ${filterNotice}
         <div class="cal-empty-msg" style="border: 1px dashed #cbd5e1; border-radius: 14px; padding: 1.75rem 1rem;">
           <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">⚪</span>
-          <strong>No tasks were completed on ${dateFormatted}.</strong>
+          <strong>No ${calActiveCategory !== 'all' ? catMeta.name : ''} tasks completed on ${dateFormatted}.</strong>
           <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: #94a3b8;">
             Check tasks off on today's checklist to record your progress!
           </p>
         </div>
       `;
+      attachCategoryCardClickHandlers();
       return;
     }
 
-    listEl.innerHTML = breakdownHtml + `
+    listEl.innerHTML = breakdownHtml + filterNotice + `
       <h5 style="margin: 1.25rem 0 0.65rem; font-size: 0.95rem; font-weight: 800; color: #334155;">
         ✅ Itemized Tasks Completed (${completedTasks.length})
       </h5>
@@ -276,6 +403,61 @@
         }).join('')}
       </div>
     `;
+
+    attachCategoryCardClickHandlers();
+  }
+
+  function attachCategoryCardClickHandlers() {
+    const showAllBtn = document.getElementById('btn-cal-show-all');
+    if (showAllBtn) {
+      showAllBtn.addEventListener('click', () => {
+        calActiveCategory = 'all';
+        localStorage.setItem('gh_active_cat_filter', 'all');
+        updateCalendarCatPills();
+        renderCalendarMonth();
+
+        // Sync home category pills if present
+        const homeFilterContainer = document.getElementById('home-category-filter-pills');
+        if (homeFilterContainer) {
+          homeFilterContainer.querySelectorAll('.cat-pill').forEach(hp => {
+            hp.classList.toggle('active', (hp.getAttribute('data-cat') || 'all') === 'all');
+          });
+        }
+
+        if (window.HealthAPI && window.HealthAPI.saveCategoryPreferences) {
+          window.HealthAPI.saveCategoryPreferences(['food', 'exercise', 'mental', 'sleep', 'habits']);
+        }
+
+        window.dispatchEvent(new CustomEvent('gh_category_changed', { detail: { category: 'all' } }));
+      });
+    }
+
+    const cards = document.querySelectorAll('.cal-cat-summary-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const cat = card.getAttribute('data-cat');
+        if (cat) {
+          calActiveCategory = cat;
+          localStorage.setItem('gh_active_cat_filter', cat);
+          updateCalendarCatPills();
+          renderCalendarMonth();
+
+          // Sync home category pills if present
+          const homeFilterContainer = document.getElementById('home-category-filter-pills');
+          if (homeFilterContainer) {
+            homeFilterContainer.querySelectorAll('.cat-pill').forEach(hp => {
+              hp.classList.toggle('active', (hp.getAttribute('data-cat') || 'all') === cat);
+            });
+          }
+
+          if (window.HealthAPI && window.HealthAPI.saveCategoryPreferences) {
+            window.HealthAPI.saveCategoryPreferences([cat]);
+          }
+
+          window.dispatchEvent(new CustomEvent('gh_category_changed', { detail: { category: cat } }));
+        }
+      });
+    });
   }
 
   // Expose global calendar refresh

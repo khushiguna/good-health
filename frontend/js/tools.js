@@ -1426,11 +1426,11 @@ const HOME_UI_LABELS = {
   en: {
     tip_box_title: 'Health Tip of the Moment',
     tip_counter: (cur, tot) => `Tip ${cur} / ${tot}`,
-    step1_badge: '🩺 Step 1: Health Assessment',
+    step1_badge: '🩺 Health Assessment',
     step1_title: 'Do you have any health issues?',
     step1_desc: 'Select your health status below to see tailored daily guidance and your checklist:',
     step1_active: (name) => `Selected: ${name}`,
-    step2_badge: "✅ Step 2: Today's Action Checklist",
+    step2_badge: "✅ Today's Action Checklist",
     step2_title: "What You Need to Do Today",
     step2_desc: "Check the box for each task you have completed today:",
     completed_of: (done, total) => `${done} of ${total} Done`,
@@ -1438,7 +1438,7 @@ const HOME_UI_LABELS = {
     score_grade: (pct) => pct >= 85 ? '🌟 Excellent' : (pct >= 65 ? '✅ Good' : (pct >= 40 ? '⚠️ Fair' : '🛑 Needs Care')),
     footer_hint: '💡 Your daily score and recovery plan are calculated from this checklist.',
     btn_result: '📊 View Daily Result →',
-    step3_badge: '📋 Step 3: Daily Health Prescription',
+    step3_badge: '📋 Daily Health Prescription',
     pillar_eat_title: 'What to Eat',
     pillar_eat_sub: 'Beneficial nourishment for your body',
     pillar_avoid_title: 'What to Strictly Avoid',
@@ -1467,11 +1467,11 @@ const HOME_UI_LABELS = {
   gu: {
     tip_box_title: '💡 હેલ્થ ટીપ (Health Tip)',
     tip_counter: (cur, tot) => `ટીપ ${cur} / ${tot}`,
-    step1_badge: '🩺 પગલું ૧: સ્વાસ્થ્ય તપાસ',
+    step1_badge: '🩺 સ્વાસ્થ્ય તપાસ',
     step1_title: 'તમને કોઈ સ્વાસ્થ્ય સમસ્યા છે કે નહીં?',
     step1_desc: 'જો તમને કોઈ સમસ્યા હોય તો નીચેથી પસંદ કરો, અથવા સામાન્ય ફિટનેસ માટે "કોઈ સમસ્યા નથી" પસંદ કરો:',
     step1_active: (name) => `પસંદ કરેલ: ${name}`,
-    step2_badge: '✅ પગલું ૨: તમારે આજે શું શું કરવાનું છે',
+    step2_badge: '✅ દૈનિક ચેકલિસ્ટ',
     step2_title: 'આજે તમારે શું કરવાનું છે (Daily Tasks)',
     step2_desc: 'તમે આજે જે કાર્ય પૂરું કર્યું હોય તેના પર ટીક (✓) કરો:',
     completed_of: (done, total) => `${done} / ${total} પૂર્ણ`,
@@ -1479,7 +1479,7 @@ const HOME_UI_LABELS = {
     score_grade: (pct) => pct >= 85 ? '🌟 ઉત્તમ' : (pct >= 65 ? '✅ સારું' : (pct >= 40 ? '⚠️ સામાન્ય' : '🛑 કાળજી જરૂરી')),
     footer_hint: '💡 આ ચેકલિસ્ટ પરથી તમારો દૈનિક હેલ્થ સ્કોર અને રિકવરી પ્લાન ગણાય છે.',
     btn_result: '📊 દૈનિક પરિણામ જુઓ →',
-    step3_badge: '📋 પગલું ૩: દૈનિક માર્ગદર્શન (વિગતવાર)',
+    step3_badge: '📋 દૈનિક માર્ગદર્શન',
     pillar_eat_title: 'શું ખાવું (What to Eat)',
     pillar_eat_sub: 'શરીર માટે ફાયદાકારક આહાર',
     pillar_avoid_title: 'શું અવોઇડ કરવું (What to Avoid)',
@@ -1580,6 +1580,9 @@ function initHomePageHub() {
       updateActiveButton();
       renderHomeConditionData();
       syncCompletionsForCondition(currentCondition);
+      if (typeof window.refreshHealthCalendar === 'function') {
+        window.refreshHealthCalendar();
+      }
     });
   });
 
@@ -1836,6 +1839,9 @@ function initHomePageHub() {
           localStorage.setItem('gh_active_cat_filter', activeCategoryFilter);
           updateCategoryPillsUI();
           renderHomeConditionData();
+          if (typeof window.refreshHealthCalendar === 'function') {
+            window.refreshHealthCalendar();
+          }
         }
       }).catch(() => {});
     }
@@ -1854,7 +1860,20 @@ function initHomePageHub() {
             : [activeCategoryFilter];
           window.HealthAPI.saveCategoryPreferences(selected);
         }
+
+        window.dispatchEvent(new CustomEvent('gh_category_changed', { detail: { category: activeCategoryFilter } }));
+        if (typeof window.refreshHealthCalendar === 'function') {
+          window.refreshHealthCalendar();
+        }
       });
+    });
+
+    window.addEventListener('gh_category_changed', (e) => {
+      if (e.detail && e.detail.category && e.detail.category !== activeCategoryFilter) {
+        activeCategoryFilter = e.detail.category;
+        updateCategoryPillsUI();
+        renderHomeConditionData();
+      }
     });
 
     updateCategoryPillsUI();

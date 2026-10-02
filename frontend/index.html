@@ -87,7 +87,7 @@
       <section class="home-checklist-card">
         <div class="checklist-header-row">
           <div>
-            <div class="ratio-badge-pill" id="home-step2-badge" style="margin-bottom: 0.35rem;">✅ Step 2: Today's Action Checklist</div>
+            <div class="ratio-badge-pill" id="home-step2-badge" style="margin-bottom: 0.35rem;">✅ Today's Action Checklist</div>
             <h3 id="home-step2-title" style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.25rem;">
               What You Need to Do Today
             </h3>
@@ -162,6 +162,19 @@
             </div>
           </div>
 
+          <!-- Calendar Category Filter: Shows category chosen by user -->
+          <div class="calendar-cat-bar" id="calendar-cat-bar">
+            <span class="cal-cat-bar-label">Showing Category:</span>
+            <div class="calendar-cat-pills" id="cal-cat-pills">
+              <button type="button" class="cal-cat-pill active" data-cat="all">🌟 All Categories</button>
+              <button type="button" class="cal-cat-pill" data-cat="food">🥗 Diet &amp; Food</button>
+              <button type="button" class="cal-cat-pill" data-cat="exercise">🏃 Exercise &amp; Movement</button>
+              <button type="button" class="cal-cat-pill" data-cat="mental">🧘 Mental Well-Being</button>
+              <button type="button" class="cal-cat-pill" data-cat="sleep">🌙 Sleep &amp; Rest</button>
+              <button type="button" class="cal-cat-pill" data-cat="habits">✨ Daily Habits</button>
+            </div>
+          </div>
+
           <!-- Calendar Quick Stats / Legend Bar -->
           <div class="calendar-legend-bar">
             <div class="cal-legend-item">
@@ -227,7 +240,7 @@
       <section class="problem-guidance-card">
         <div class="guidance-title-row">
           <div>
-            <span class="guidance-tag-pill" id="home-guidance-tag">📋 Step 3: Daily Health Prescription</span>
+            <span class="guidance-tag-pill" id="home-guidance-tag">📋 Daily Health Prescription</span>
             <h2 id="home-condition-title" style="font-size: 1.45rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; margin-bottom: 0.25rem;">
               🌿 General Wellness &amp; Daily Vitality
             </h2>
@@ -348,7 +361,7 @@
   <div class="assessment-modal-backdrop" id="health-assessment-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="home-step1-title">
     <div class="assessment-modal-card glass-panel">
       <div class="assessment-modal-header">
-        <div class="ratio-badge-pill" id="home-step1-badge">🩺 Step 1: Health Assessment</div>
+        <div class="ratio-badge-pill" id="home-step1-badge">🩺 Health Assessment</div>
         <button type="button" class="assessment-modal-close" id="assessment-modal-close" aria-label="Close Assessment Modal">&times;</button>
       </div>
 
