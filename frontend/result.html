@@ -62,6 +62,25 @@
     <!-- Controls & Profile Switcher Bar -->
     <section class="section" style="padding-top: 0;">
       <div class="container">
+        <!-- Daily Health Tips Rotating Glass Banner -->
+        <aside class="daily-tips-box" id="daily-tips-box" aria-label="Daily Health Tips" style="margin-bottom: 1.75rem;">
+          <div class="tips-box-header">
+            <div class="tip-badge">
+              <span class="tip-badge-icon">💡</span>
+              <span class="tip-badge-title" id="tip-badge-title">Health Tip of the Day</span>
+            </div>
+            <div class="tip-nav-controls">
+              <button type="button" class="tip-ctrl-btn" id="tip-prev-btn" title="Previous Tip" aria-label="Previous Tip">❮</button>
+              <span class="tip-counter" id="tip-counter">1 / 10</span>
+              <button type="button" class="tip-ctrl-btn" id="tip-next-btn" title="Next Tip" aria-label="Next Tip">❯</button>
+            </div>
+          </div>
+          <div class="tip-body">
+            <span class="tip-body-icon" id="tip-body-icon">💧</span>
+            <p class="tip-text" id="tip-text-content">Drink a glass of warm water first thing in the morning to awaken digestion and flush metabolic toxins.</p>
+          </div>
+        </aside>
+
         <div class="result-controls-bar">
           <div class="condition-switch-wrap">
             <label for="result-condition-select" id="result-condition-label">🩺 Health Condition Target:</label>
@@ -87,7 +106,7 @@
             <div class="score-donut-large" id="result-score-donut">
               <div class="score-donut-inner">
                 <span class="score-num" id="result-score-num">0%</span>
-                <span class="score-lbl" id="result-score-lbl">Health Score</span>
+                <span class="score-lbl" id="result-score-lbl">Health Score Ratio</span>
               </div>
             </div>
             <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;" id="result-score-sub">Live Day Evaluation</p>

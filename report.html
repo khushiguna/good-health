@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<title>Good Health and Well-Being - Comprehensive Project &amp; Viva Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 16mm 14mm 16mm 14mm;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Shruti", "Gujarati MT", "Noto Sans Gujarati", "Segoe UI", Roboto, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    font-size: 10.5pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Cover Page */
+  .cover-page {
+    page-break-after: always;
+    height: 96vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 35px 25px;
+    box-sizing: border-box;
+    text-align: center;
+    border: 3px solid #059669;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 55%, #f0fdf4 100%);
+  }
+
+  .cover-badge {
+    display: inline-block;
+    background: #059669;
+    color: white;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 11pt;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .cover-title {
+    font-size: 26pt;
+    color: #065f46;
+    margin: 10px 0;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .cover-subtitle {
+    font-size: 15pt;
+    color: #047857;
+    margin: 15px 0 25px 0;
+    font-weight: 600;
+  }
+
+  .cover-desc {
+    font-size: 11.5pt;
+    color: #334155;
+    max-width: 88%;
+    margin: 0 auto 30px auto;
+    line-height: 1.6;
+  }
+
+  .cover-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    background: white;
+    border: 1px solid #a7f3d0;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: left;
+    margin: 15px auto;
+    width: 90%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+
+  .cover-meta-item strong {
+    color: #065f46;
+    display: block;
+    font-size: 9.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .cover-meta-item span {
+    font-size: 11pt;
+    color: #1e293b;
+    font-weight: 500;
+  }
+
+  .cover-footer {
+    border-top: 1px solid #d1fae5;
+    padding-top: 15px;
+    font-size: 10pt;
+    color: #64748b;
+  }
+
+  /* Headings */
+  h1 {
+    color: #065f46;
+    font-size: 17pt;
+    border-bottom: 2px solid #10b981;
+    padding-bottom: 5px;
+    margin-top: 24px;
+    margin-bottom: 14px;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    color: #047857;
+    font-size: 13.5pt;
+    margin-top: 18px;
+    margin-bottom: 9px;
+    border-left: 4px solid #10b981;
+    padding-left: 10px;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    color: #1e293b;
+    font-size: 11.5pt;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    font-weight: 700;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin: 0 0 9px 0;
+    text-align: justify;
+  }
+
+  /* Page break helpers */
+  .page-break {
+    page-break-before: always;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+
+  /* Badges & Pills */
+  .tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    margin: 2px;
+  }
+  .tag-green { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+  .tag-blue { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+  .tag-yellow { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .tag-red { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+  .tag-purple { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+
+  /* Callout Boxes */
+  .callout {
+    background: #f8fafc;
+    border-left: 4px solid #059669;
+    padding: 11px 15px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    page-break-inside: avoid;
+  }
+  .callout-title {
+    font-weight: 700;
+    color: #065f46;
+    margin-bottom: 5px;
+    font-size: 10.5pt;
+  }
+
+  .callout-warning {
+    background: #fffbeb;
+    border-left-color: #f59e0b;
+  }
+  .callout-warning .callout-title {
+    color: #b45309;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 9pt;
+    page-break-inside: avoid;
+  }
+
+  th {
+    background: #065f46;
+    color: white;
+    text-align: left;
+    padding: 7px 9px;
+    font-weight: 600;
+    border: 1px solid #047857;
+  }
+
+  td {
+    padding: 6px 9px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  /* Code Block styling */
+  code {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 8.5pt;
+    background: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+  }
+
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-family: Menlo, Monaco, Consolas, monospace;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    word-break: break-all;
+    page-break-inside: avoid;
+    margin: 8px 0;
+  }
+
+  /* Q&A Cards */
+  .qa-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 3px solid #059669;
+    border-radius: 8px;
+    padding: 11px 15px;
+    margin: 11px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    page-break-inside: avoid;
+  }
+  .qa-question {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #065f46;
+    margin-bottom: 5px;
+  }
+  .qa-answer {
+    font-size: 10pt;
+    color: #334155;
+    line-height: 1.55;
+  }
+  .qa-tag {
+    float: right;
+    font-size: 7.5pt;
+    font-weight: normal;
+  }
+
+  ul, ol {
+    margin: 4px 0 10px 18px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover-page">
+  <div>
+    <span class="cover-badge">Academic Project &amp; Technical Viva Voce Guide</span>
+    <h1 class="cover-title">Good Health &amp; Well-Being</h1>
+    <h3 style="color: #10b981; margin: 0; font-size: 15pt;">🌿 UN Sustainable Development Goal 3 (SDG-3)</h3>
+    <div class="cover-subtitle">સંપૂર્ણ ફુલ-સ્ટેક આર્કિટેક્ચર, ડેટાબેઝ સ્કીમા, CRUD ઓપરેશન્સ અને વાઇવા ગાઇડ</div>
+    <p class="cover-desc">
+      આ દસ્તાવેજ પ્રોજેક્ટના દરેક ઘટક (Frontend, Backend, MySQL Database, Security, Calculators, REST APIs) ની વિગતવાર સમજૂતી આપે છે. જે સભ્યોએ કોડ જોયો પણ ન હોય તેઓ પણ બાહ્ય અને આંતરિક પરીક્ષકો (Examiner/Ma'am) ના તમામ ટેકનિકલ પ્રશ્નોના સંપૂર્ણ આત્મવિશ્વાસ સાથે જવાબ આપી શકે તે રીતે તૈયાર કરાયો છે.
+    </p>
+  </div>
+
+  <div class="cover-meta-grid">
+    <div class="cover-meta-item">
+      <strong>પ્રોજેક્ટ પ્રકાર (Architecture)</strong>
+      <span>Full-Stack Web App (3-Tier MVC Architecture)</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>ફ્રન્ટએન્ડ (Frontend Stack)</strong>
+      <span>HTML5, Modern CSS3, Vanilla JS, Responsive UI</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>બેકએન્ડ (Backend Server)</strong>
+      <span>Node.js, Express.js (REST APIs, JWT, Helmet)</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>ડેટાબેઝ (Database Engine)</strong>
+      <span>MySQL (InnoDB, Foreign Keys, Pool) + In-Memory Fallback</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>મુખ્ય ફંક્શનલિટી (Core Focus)</strong>
+      <span>Complete CRUD Operations on Category Tasks &amp; Logs</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>સ્થાનિક સર્વર પોર્ટ (Default Port)</strong>
+      <span>http://localhost:8080</span>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    Good Health &amp; Well-Being Web Platform | UN Sustainable Development Goals Initiative
+  </div>
+</div>
+
+
+<!-- CHAPTER 1 -->
+<h1>૧. પ્રોજેક્ટ પરિચય, હેતુ અને વિઝન (Project Overview &amp; POV)</h1>
+
+<h2>૧.૧ પ્રોજેક્ટનો Point of View (POV)</h2>
+<p>
+આ પ્રોજેક્ટનો મુખ્ય ઉદ્દેશ્ય માત્ર એક સાદી સ્ટેટિક વેબસાઇટ બનાવવાનો નથી, પરંતુ <strong>સંપૂર્ણ વર્કિંગ ફુલ-સ્ટેક વેબ એપ્લિકેશન (Full-Stack Web Application)</strong> તૈયાર કરવાનો છે. જેમાં વપરાશકર્તા ઇન્ટરફેસ (Frontend), સર્વર લોજિક (Backend REST APIs) અને રિલેશનલ ડેટાબેઝ (MySQL) એકબીજા સાથે રીઅલ-ટાઇમમાં અરસપરસ જોડાયેલા છે અને દૈનિક સ્વાસ્થ્ય કાર્યો પર યોગ્ય <strong>CRUD (Create, Read, Update, Delete) ઓપરેશન્સ</strong> અમલમાં મૂકે છે.
+</p>
+
+<h2>૧.૨ યુનાઇટેડ નેશન્સ SDG-3 સાથે સુસંગતતા (UN SDG-3 Alignment)</h2>
+<p>
+આ પ્રોજેક્ટ યુનાઇટેડ નેશન્સના ૧૭ ટકાઉ વિકાસ લક્ષ્યાંકો પૈકી <strong>લક્ષ્યાંક ૩: Good Health and Well-Being</strong> પર આધારિત છે. આ પ્લેટફોર્મ સામાન્ય નાગરિકો, વિદ્યાર્થીઓ અને કામ કરતા વ્યાવસાયિકોને જીવનશૈલી સંબંધિત રોગો (જેવા કે ડાયાબિટીસ, હાઈ બ્લડ પ્રેશર, માનસિક તણાવ, અનિદ્રા) થી બચવા માટે રોજિંદી સ્વસ્થ આદતો કેળવવામાં મદદ કરે છે.
+</p>
+
+<h2>૧.૩ સુખાકારીના ૫ મુખ્ય સ્તંભો (The 5 Wellness Pillars)</h2>
+<table>
+  <tr>
+    <th style="width: 25%;">સ્તંભ (Pillar)</th>
+    <th style="width: 35%;">ફોકસ એરિયા (Focus Area)</th>
+    <th style="width: 40%;">ઇન્ટરેક્ટિવ ટૂલ (Interactive Feature)</th>
+  </tr>
+  <tr>
+    <td><strong>🥗 પૌષ્ટિક આહાર (Food)</strong></td>
+    <td>બેલેન્સ્ડ પ્લેટ મોડેલ (૫૦% શાકભાજી/ફળો, ૨૫% અનાજ, ૨૫% પ્રોટીન)</td>
+    <td><strong>Water Intake Calculator</strong> (વજન અને શ્રમ મુજબ પાણીનું પ્રમાણ)</td>
+  </tr>
+  <tr>
+    <td><strong>🏃 શારીરિક કસરત (Exercise)</strong></td>
+    <td>રોજિંદા સ્ટેપ્સ, બોડીવેઇટ વર્કઆઉટ્સ અને યોગાસન</td>
+    <td><strong>5-Minute Stretch Timer</strong> (ડેસ્ક પર બેઠા સ્ટ્રેચિંગ માટે ટાઇમર)</td>
+  </tr>
+  <tr>
+    <td><strong>🧘 માનસિક શાંતિ (Mental Health)</strong></td>
+    <td>તણાવ મુક્તિ, માઇન્ડફુલનેસ અને 5-4-3-2-1 ગ્રાઉન્ડિંગ ટેકનિક</td>
+    <td><strong>4-7-8 Breathing Circle</strong> (શ્વાસ લેવા અને છોડવા માટે લાઇવ એનિમેશન)</td>
+  </tr>
+  <tr>
+    <td><strong>🌙 ગાઢ ઊંઘ (Sleep)</strong></td>
+    <td>૭-૯ કલાકની ગુણવત્તાયુક્ત ઊંઘ અને ઇવનિંગ ડિજિટલ ડિટોક્સ</td>
+    <td><strong>90-Min Sleep Cycle Calculator</strong> (થાક્યા વગર જાગવા માટેનો સમય)</td>
+  </tr>
+  <tr>
+    <td><strong>✨ સ્વસ્થ આદતો (Habits)</strong></td>
+    <td>હેબિટ સ્ટેકિંગ ("પહેલાની આદત + નવી સ્વસ્થ આદત")</td>
+    <td><strong>Daily Habit Tracker</strong> (દૈનિક ચેકલિસ્ટ, પ્રોગ્રેસ બાર અને સ્ટ્રીક)</td>
+  </tr>
+</table>
+
+<div class="callout">
+  <div class="callout-title">💡 પ્રેઝન્ટેશન કી-પોઇન્ટ (Ma'am સમક્ષ બોલવા માટે):</div>
+  "મેડમ, અમારા પ્રોજેક્ટની ખાસિયત એ છે કે તે માત્ર થિયરી નથી બતાવતો, પણ યુઝરને લાઈવ કેલ્ક્યુલેટર્સ આપે છે અને યુઝરે કરેલા કાર્યોનો ડેટાબેઝમાં દૈનિક રેકોર્ડ સાચવીને તેનો ડેઇલી હેલ્થ સ્કોર અને રિકવરી પ્લાન તૈયાર કરે છે."
+</div>
+
+
+<!-- CHAPTER 2 -->
+<div class="page-break"></div>
+<h1>૨. સિસ્ટમ આર્કિટેક્ચર અને ટેકનોલોજી સ્ટેક (System Architecture)</h1>
+
+<p>
+પ્રોજેક્ટ <strong>3-Tier MVC (Model-View-Controller) આર્કિટેક્ચર</strong> પર આધારિત છે:
+</p>
+
+<table>
+  <tr>
+    <th>સ્તર (Tier)</th>
+    <th>ટેકનોલોજી (Technology)</th>
+    <th>જવાબદારી (Responsibility)</th>
+  </tr>
+  <tr>
+    <td><strong>૧. Presentation Tier (Frontend)</strong></td>
+    <td>HTML5, CSS3, JavaScript (ES6+), Fetch API</td>
+    <td>યુઝર ઇન્ટરફેસ રેન્ડરિંગ, ફોર્મ વેલિડેશન, એનિમેશન, કેલ્ક્યુલેશન અને એસિન્ક્રોનસ API કોલ્સ.</td>
+  </tr>
+  <tr>
+    <td><strong>૨. Application Tier (Backend Server)</strong></td>
+    <td>Node.js &amp; Express.js (પોર્ટ 8080)</td>
+    <td>બિઝનેસ લોજિક, RESTful API રાઉટીંગ, ઓથેન્ટિકેશન (JWT), સિક્યોરિટી મિડલવેર (Helmet, Rate Limiter).</td>
+  </tr>
+  <tr>
+    <td><strong>૩. Data Tier (Database)</strong></td>
+    <td>MySQL (MySQL2 Connection Pool)</td>
+    <td>ડેટાબેઝ સ્કીમા, ટેબલ રિલેશન્સ, કમ્પોઝિટ કીઝ, ઇન્ડેક્સિંગ અને ઓટોમેટિક ડેટા પર્સિસ્ટન્સ.</td>
+  </tr>
+  <tr>
+    <td><strong>૪. Resilient Fallback Engine</strong></td>
+    <td>In-Memory JavaScript Store</td>
+    <td>જો લોકલ મશીનમાં MySQL બંધ હોય, તો પણ સિસ્ટમ ક્રેશ થયા વગર મેમરી સ્ટોરમાં બધી API રન કરે છે.</td>
+  </tr>
+  <tr>
+    <td><strong>૫. Alternate Java Server</strong></td>
+    <td>Java 11+ (HealthAppServer.java)</td>
+    <td>પ્રોજેક્ટમાં જાવા આધારિત બિલ્ટ-ઇન HTTP સર્વર પણ સામેલ છે જે સ્ટેટિક ફાઇલ્સ અને સેમ્પલ API સર્વ કરે છે.</td>
+  </tr>
+</table>
+
+<h2>૨.૧ ટેક સ્ટેકની પસંદગીના કારણો (Why this stack?):</h2>
+<ul>
+  <li><strong>Node.js &amp; Express:</strong> Non-blocking, event-driven આર્કિટેક્ચર હોવાથી હાઈ-સ્પીડ API રિસ્પોન્સ આપે છે અને સરળતાથી RESTful એન્ડપોઇન્ટ્સ બનાવી શકાય છે.</li>
+  <li><strong>MySQL Database:</strong> સ્ટ્રક્ચર્ડ હેલ્થ ડેટા (યુઝર પ્રોફાઇલ, ટાસ્ક ડિટેલ્સ, કેલેન્ડર હિસ્ટ્રી) સાચવવા માટે રિલેશનલ ડેટાબેઝ સર્વશ્રેષ્ઠ છે જેમાં ACID પ્રોપર્ટીઝનું પાલન થાય છે.</li>
+  <li><strong>Vanilla JavaScript (No Heavy Frameworks):</strong> કોઈ વધારાની ભારે લાઈબ્રેરી વિના પ્યોર જાવાસ્ક્રિપ્ટ વાપરવાથી પેજ લોડિંગ અત્યંત ઝડપી બને છે અને બ્રાઉઝરની મેમરી ઓછી વપરાય છે.</li>
+</ul>
+
+
+<!-- CHAPTER 3 -->
+<div class="page-break"></div>
+<h1>૩. ડેટાબેઝ સ્કીમા અને ટેબલ્સનું વિશ્લેષણ (Database Schema &amp; Tables)</h1>
+
+<p>
+ડેટાબેઝનું નામ <strong><code>good_health_db</code></strong> છે. ડેટાબેઝમાં કુલ ૮ મુખ્ય ટેબલ્સ તૈયાર કરવામાં આવ્યા છે:
+</p>
+
+<h3>૧. users ટેબલ (વપરાશકર્તા એકાઉન્ટ માહિતી)</h3>
+<p>યુઝરની ઓળખ અને સિક્યોર લોગિન માહિતી સાચવે છે.</p>
+<table>
+  <tr><th>ફીલ્ડ (Column)</th><th>ડેટા ટાઇપ</th><th>વિગત અને ઉપયોગ</th></tr>
+  <tr><td><code>id</code></td><td>INT AUTO_INCREMENT PRIMARY KEY</td><td>દરેક યુઝરનો યુનિક ક્રમાંક.</td></tr>
+  <tr><td><code>name</code></td><td>VARCHAR(100) NOT NULL</td><td>યુઝરનું પૂરું નામ.</td></tr>
+  <tr><td><code>email</code></td><td>VARCHAR(150) NOT NULL UNIQUE</td><td>યુનિક ઇમેઇલ (ડુપ્લિકેટ રજીસ્ટ્રેશન અટકાવે છે).</td></tr>
+  <tr><td><code>password_hash</code></td><td>VARCHAR(255) NOT NULL</td><td>bcryptjs વડે સુરક્ષિત રીતે હેશ કરેલો પાસવર્ડ.</td></tr>
+  <tr><td><code>last_login_at</code></td><td>TIMESTAMP NULL</td><td>છેલ્લા લોગિનનો સમય.</td></tr>
+  <tr><td><code>created_at</code></td><td>TIMESTAMP DEFAULT CURRENT_TIMESTAMP</td><td>એકાઉન્ટ બન્યાની તારીખ.</td></tr>
+</table>
+
+<h3>૨. કેટેગરી-વાઇઝ ટાસ્ક ટેબલ્સ (tasks_food, tasks_exercise, tasks_mental, tasks_sleep, tasks_habits)</h3>
+<p>દરેક હેલ્થ પિલર માટે અલગ ટેબલ છે જેથી ડેટા વ્યવસ્થિત અને ઝડપી ક્વેરી થઈ શકે.</p>
+<table>
+  <tr><th>ફીલ્ડ (Column)</th><th>ડેટા ટાઇપ</th><th>વિગત અને ઉપયોગ</th></tr>
+  <tr><td><code>id</code></td><td>VARCHAR(64) PRIMARY KEY</td><td>ટાસ્ક આઈડી (દા.ત. 'task_a9f1b2').</td></tr>
+  <tr><td><code>user_id</code></td><td>INT NULL, FOREIGN KEY (users.id)</td><td>જો NULL હોય તો વૈશ્વિક/જનરલ ટાસ્ક, જો ID હોય તો યુઝરનો કસ્ટમ ટાસ્ક.</td></tr>
+  <tr><td><code>condition_key</code></td><td>VARCHAR(50) DEFAULT 'general'</td><td>મેડિકલ સ્થિતિ (general, diabetes, hypertension, stress, heart).</td></tr>
+  <tr><td><code>name</code></td><td>VARCHAR(255) NOT NULL</td><td>ટાસ્કનું શીર્ષક (જેમ કે "સવારે ૨૦ મિનિટ યોગ").</td></tr>
+  <tr><td><code>tip</code></td><td>TEXT NULL</td><td>ટાસ્ક કરવાનો સ્વાસ્થ્ય લાભ કે ટિપ.</td></tr>
+  <tr><td><code>icon</code></td><td>VARCHAR(16) DEFAULT '📝'</td><td>ટાસ્ક આગળ દેખાતો ઇમોજી આઈકોન.</td></tr>
+  <tr><td><code>is_active</code></td><td>TINYINT(1) DEFAULT 1</td><td><strong>સોફ્ટ ડિલીટ ફ્લેગ</strong> (1 = સક્રિય, 0 = ડિલીટ થયેલ).</td></tr>
+</table>
+
+<h3>૩. task_completions ટેબલ (રોજિંદા ટાસ્કનું સ્ટેટસ)</h3>
+<p>કયા યુઝરે કઈ તારીખે કયો ટાસ્ક પૂરો કર્યો તેનો તારીખવાર રેકોર્ડ.</p>
+<table>
+  <tr><th>ફીલ્ડ (Column)</th><th>ડેટા ટાઇપ</th><th>વિગત અને ઉપયોગ</th></tr>
+  <tr><td><code>id</code></td><td>INT AUTO_INCREMENT PRIMARY KEY</td><td>રેકોર્ડ આઈડી.</td></tr>
+  <tr><td><code>task_id</code></td><td>VARCHAR(64) NOT NULL</td><td>જે ટાસ્ક પૂરો કર્યો હોય તેનો આઈડી.</td></tr>
+  <tr><td><code>category</code></td><td>VARCHAR(50)</td><td>કેટેગરી (food, exercise, mental, sleep, habits).</td></tr>
+  <tr><td><code>condition_key</code></td><td>VARCHAR(50)</td><td>કઈ હેલ્થ કન્ડિશન હેઠળ ટાસ્ક પૂરો થયો.</td></tr>
+  <tr><td><code>log_date</code></td><td>DATE NOT NULL</td><td>ટાસ્ક પૂરા કર્યાની તારીખ (YYYY-MM-DD).</td></tr>
+  <tr><td><code>status</code></td><td>ENUM('pending', 'done')</td><td>સ્થિતિ: 'done' અથવા 'pending'.</td></tr>
+  <tr><td><code>user_id</code></td><td>INT NOT NULL, FOREIGN KEY</td><td>જે યુઝરે ટાસ્ક કર્યો હોય તેનો યુઝર આઈડી.</td></tr>
+</table>
+<p><em>* કમ્પોઝિટ યુનિક કી: <code>(task_id, log_date, condition_key, user_id)</code> જેથી એક જ દિવસમાં એક જ ટાસ્ક બે વાર ડુપ્લિકેટ ન થાય.</em></p>
+
+<h3>૪. user_daily_logs અને user_category_daily_logs ટેબલ્સ</h3>
+<p>
+દરેક દિવસના અંતે યુઝરે કુલ કેટલા ટાસ્કમાંથી કેટલા ટાસ્ક પૂરા કર્યા અને તેનો સ્કોર કેટલો થયો (<code>score_percent</code>) તેની ગણતરી સેવ થાય છે. આ ટેબલ પરથી કેલેન્ડરમાં લીલા, પીળા કે લાલ રંગનો હીટમેપ દેખાય છે અને સ્ટ્રીક (Streak) ગણાય છે.
+</p>
+
+<h3>૫. contact_messages ટેબલ</h3>
+<p>યુઝર્સ દ્વારા વેબસાઇટ પરથી મોકલાયેલા ફીડબેક, પ્રશ્નો અને મેસેજિસ (નામ, ઇમેઇલ, વિષય, મેસેજ) સાચવે છે.</p>
+
+
+<!-- CHAPTER 4 -->
+<div class="page-break"></div>
+<h1>૪. સંપૂર્ણ CRUD ઑપરેશન્સ અને API એન્ડપોઇન્ટ્સ (CRUD Operations)</h1>
+
+<p>
+મેડમ દ્વારા પૂછવામાં આવતો સૌથી મુખ્ય પ્રશ્ન છે: <strong>"તમારા પ્રોજેક્ટમાં CRUD કેવી રીતે કામ કરે છે?"</strong>. અહીં તેની સંપૂર્ણ ટેકનિકલ માહિતી છે:
+</p>
+
+<table>
+  <tr>
+    <th style="width: 15%;">ઓપરેશન</th>
+    <th style="width: 12%;">HTTP મેથડ</th>
+    <th style="width: 25%;">API Endpoint</th>
+    <th style="width: 23%;">રિક્વેસ્ટ બોડી / પેરામીટર</th>
+    <th style="width: 25%;">ડેટાબેઝ ક્વેરી / એક્શન</th>
+  </tr>
+  <tr>
+    <td><span class="tag tag-green">CREATE</span><br>નવો ટાસ્ક ઉમેરવો</td>
+    <td><code>POST</code></td>
+    <td><code>/api/tasks</code></td>
+    <td><code>{ name, tip, icon, category, conditionKey }</code></td>
+    <td><code>INSERT INTO tasks_{cat} (id, user_id, condition_key, name, tip, icon) VALUES (...)</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-blue">READ</span><br>ટાસ્ક મેળવવા</td>
+    <td><code>GET</code></td>
+    <td><code>/api/tasks?conditionKey=general</code></td>
+    <td>Query param: <code>conditionKey</code></td>
+    <td><code>SELECT ... FROM tasks_food UNION ALL SELECT ... FROM tasks_exercise ... WHERE is_active=1</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-yellow">UPDATE</span><br>ટાસ્ક સુધારવો</td>
+    <td><code>PUT</code></td>
+    <td><code>/api/tasks/:id</code></td>
+    <td><code>{ name, tip, icon, category }</code></td>
+    <td><code>UPDATE tasks_{tbl} SET name=?, tip=?, icon=? WHERE id=? AND user_id=?</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-yellow">UPDATE</span><br>સ્ટેટસ ટોગલ કરવું</td>
+    <td><code>POST</code></td>
+    <td><code>/api/tasks/toggle-completion</code></td>
+    <td><code>{ taskId, date, status, conditionKey, category }</code></td>
+    <td><code>INSERT INTO task_completions ... ON DUPLICATE KEY UPDATE status=?</code> (સ્કોર ફરી ગણાય છે)</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-red">DELETE</span><br>ટાસ્ક કાઢી નાખવો</td>
+    <td><code>DELETE</code></td>
+    <td><code>/api/tasks/:id</code></td>
+    <td>Route param: <code>id</code></td>
+    <td><strong>Soft Delete:</strong><br><code>UPDATE tasks_{tbl} SET is_active = 0 WHERE id=?</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-green">CREATE</span><br>નવું રજીસ્ટ્રેશન</td>
+    <td><code>POST</code></td>
+    <td><code>/api/auth/register</code></td>
+    <td><code>{ name, email, password }</code></td>
+    <td><code>INSERT INTO users (name, email, password_hash) VALUES (...)</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-blue">READ</span><br>યુઝર લોગિન</td>
+    <td><code>POST</code></td>
+    <td><code>/api/auth/login</code></td>
+    <td><code>{ email, password }</code></td>
+    <td><code>SELECT * FROM users WHERE email=?</code> અને bcrypt વડે પાસવર્ડ સરખામણી.</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-blue">READ</span><br>કેલેન્ડર હિસ્ટ્રી</td>
+    <td><code>GET</code></td>
+    <td><code>/api/tasks/calendar</code></td>
+    <td>Query param: <code>year, month, category</code></td>
+    <td><code>SELECT log_date, score_percent FROM user_daily_logs WHERE user_id=?</code></td>
+  </tr>
+</table>
+
+<div class="callout callout-warning">
+  <div class="callout-title">⚠️ સોફ્ટ ડિલીટ (Soft Delete) વિશે ખાસ ધ્યાન રાખો:</div>
+  જો મેડમ પૂછે: <em>"તમે ટાસ્ક ડિલીટ કરવા માટે સીધું DELETE FROM કેમ ન વાપર્યું?"</em><br>
+  <strong>પરફેક્ટ જવાબ:</strong> "મેડમ, જો આપણે ટાસ્ક કાયમ માટે ડિલીટ કરી દઈએ, તો યુઝરે ગયા અઠવાડિયે કે ગયા મહિને તે ટાસ્ક પૂરો કર્યો હતો તેનો કેલેન્ડર સ્કોર અને સ્ટ્રીક ખોટી થઈ જાય. તેથી પ્રોફેશનલ સોફ્ટવેર ડેવલપમેન્ટના નિયમ મુજબ અમે <code>is_active = 0</code> કરીએ છીએ જેથી આગળ એ ટાસ્ક ન દેખાય પણ જૂનો ઓડિટ રિપોર્ટ સચવાયેલો રહે."
+</div>
+
+
+<!-- CHAPTER 5 -->
+<div class="page-break"></div>
+<h1>૫. તમામ ફ્રન્ટએન્ડ કમ્પોનન્ટ્સ અને પેજીસ (Components &amp; Pages)</h1>
+
+<p>પ્રોજેક્ટના તમામ વેબ પેજીસ અને મોડ્યુલ્સની વિગતવાર માહિતી:</p>
+
+<h3>૧. હોમ પેજ (frontend/index.html)</h3>
+<ul>
+  <li><strong>હેલ્થ કન્ડિશન સિલેક્ટર:</strong> General, Diabetes, Blood Pressure, High Stress, Heart Health, Desk Worker વચ્ચે સ્વિચ કરવાની સુવિધા.</li>
+  <li><strong>લાઇવ ટાસ્ક ચેકલિસ્ટ:</strong> ડેટાબેઝમાંથી ફેચ થતા ટાસ્ક્સ, ચેકબોક્સ ક્લિક કરતાં જ સ્કોર અપડેટ થવો.</li>
+  <li><strong>"+ Add Custom Task" Modal:</strong> યુઝર પોતાના નામ, ટિપ, કેટેગરી અને ઇમોજી સાથે નવો ટાસ્ક બનાવી શકે છે (Create).</li>
+  <li><strong>Edit &amp; Delete Buttons:</strong> દરેક કસ્ટમ ટાસ્ક પાસે ✏️ (Edit) અને 🗑️ (Delete) બટન ઉપલબ્ધ છે.</li>
+  <li><strong>ડેઇલી ટિપ્સ રોટેટર:</strong> દર થોડી સેકન્ડે નવી હેલ્થ ટિપ બદલાય છે.</li>
+</ul>
+
+<h3>૨. પૌષ્ટિક આહાર પેજ (frontend/food.html)</h3>
+<ul>
+  <li><strong>બેલેન્સ્ડ પ્લેટ ગાઈડ:</strong> પ્રોટીન, કાર્બોહાઈડ્રેટ્સ અને વિટામિન્સનું આદર્શ પ્રમાણ.</li>
+  <li><strong>Interactive Water Intake Calculator:</strong>
+    <pre>ફોર્મ્યુલા: વજન (kg) × 0.035 લિટર + શારીરિક શ્રમ બોનસ (0.35 થી 1.0 લિટર)</pre>
+    યુઝરનું વજન અને કસરતનું સ્તર દાખલ કરવાથી રોજ કેટલા લિટર (અને કેટલા ગ્લાસ) પાણી પીવું જોઈએ તે ગણી આપે છે.
+  </li>
+</ul>
+
+<h3>૩. કસરત અને ફિટનેસ પેજ (frontend/exercise.html)</h3>
+<ul>
+  <li><strong>હોમ વર્કઆઉટ્સ &amp; યોગાસન:</strong> સાધન વગર ઘેર કરી શકાય તેવી ૪ કસરતો અને યોગના આસનો.</li>
+  <li><strong>Interactive 5-Minute Stretch Interval Timer:</strong> અભ્યાસ કે ઓફિસ વર્ક દરમિયાન બ્રેક લઈ સ્ટ્રેચિંગ કરવા માટે ૨ મિનિટ અને ૫ મિનિટના પ્રોગ્રામ સાથેનું ઓડિયો-વિઝ્યુઅલ ટાઈમર.</li>
+</ul>
+
+<h3>૪. માનસિક સ્વાસ્થ્ય પેજ (frontend/mental-health.html)</h3>
+<ul>
+  <li><strong>Interactive 4-7-8 Breathing Circle:</strong> ડો. એન્ડ્રુ વેઇલની વૈજ્ઞાનિક પદ્ધતિ મુજબ ૪ સેકન્ડ શ્વાસ અંદર (Inhale), ૭ સેકન્ડ હોલ્ડ (Hold), અને ૮ સેકન્ડ બહાર (Exhale) ગાઈડ કરતું એનિમેટેડ પલ્સિંગ સર્કલ.</li>
+  <li><strong>5-4-3-2-1 ગ્રાઉન્ડિંગ ટેકનિક:</strong> અતિશય ચિંતા કે એન્ઝાઈટી વખતે મનને શાંત કરવાની વૈજ્ઞાનિક રીત.</li>
+</ul>
+
+<h3>૫. ગાઢ ઊંઘ પેજ (frontend/sleep.html)</h3>
+<ul>
+  <li><strong>Interactive 90-Minute Sleep Cycle Calculator:</strong> મનુષ્યની ઊંઘ ૯૦ મિનિટના અલ્ટ્રાડિયન સાયકલ (REM &amp; Deep Sleep) માં વહેંચાયેલી હોય છે. યુઝર ક્યારે જાગવા માંગે છે તે સમય પસંદ કરે તો કેલ્ક્યુલેટર ઊંઘવા જવાના ૪ આદર્શ વિકલ્પો જણાવે છે, જેથી સવારે માથું ભારે ન લાગે.</li>
+</ul>
+
+<h3>૬. દૈનિક આદતો પેજ (frontend/habits.html)</h3>
+<ul>
+  <li><strong>હેબિટ ટ્રેકર &amp; સ્ટ્રીક કાઉન્ટર:</strong> પાણી, કસરત, ખોરાક, ઊંઘ અને હાઇજીન જેવા રોજના કાર્યો પૂરા કરવાથી સતત કેટલા દિવસ કાર્ય પૂરું થયું તેનો સ્ટ્રીક રેકોર્ડ જળવાય છે.</li>
+  <li><strong>હેબિટ સ્ટેકિંગ થિયરી:</strong> જેફ્રી ડુહિગ અને જેમ્સ ક્લિયર (Atomic Habits) ના સિદ્ધાંત મુજબ નવી આદત પાડવાની પદ્ધતિ.</li>
+</ul>
+
+<h3>૭. ડેઇલી રિઝલ્ટ અને રિકવરી એન્જિન (frontend/result.html)</h3>
+<ul>
+  <li><strong>ડેઇલી સ્કોરકાર્ડ:</strong> આજના દિવસનો ટકાવારી સ્કોર (દા.ત. ૮૫% અથવા ૧૦૦%).</li>
+  <li><strong>કન્ડિશન રિકવરી પ્લાન:</strong> જો કોઈ ટાસ્ક છૂટી ગયો હોય (દા.ત. કસરત ન થઈ શકી હોય), તો તેના વળતર રૂપે સાંજે શું વધારાનું કરવું તેનો ક્લિનિકલ રિકવરી પ્લાન તરત તૈયાર કરે છે.</li>
+</ul>
+
+<h3>૮. લોગિન અને સુરક્ષા પોર્ટલ (frontend/login.html)</h3>
+<ul>
+  <li><strong>ટેબ્ડ ઇન્ટરફેસ:</strong> Sign In અને Create Account વચ્ચે સરળ નેવિગેશન.</li>
+  <li><strong>1-Click Demo Login:</strong> પરીક્ષક સામે સમય બગાડ્યા વગર એક જ ક્લિકમાં ડેમો યુઝર તરીકે લોગિન થઈ જવાની સુવિધા.</li>
+  <li><strong>પાસવર્ડ શો/હાઈડ ટોગલ (👁️):</strong> પાસવર્ડ સરળતાથી ચેક કરવા માટે.</li>
+</ul>
+
+
+<!-- CHAPTER 6 -->
+<div class="page-break"></div>
+<h1>૬. સિક્યોરિટી અને ફોલબેક મિકેનિઝમ (Security &amp; Robustness)</h1>
+
+<h2>૬.૧ સિક્યોરિટી ફીચર્સ (Security Implementation):</h2>
+<ul>
+  <li><strong>પાસવર્ડ એન્ક્રિપ્શન (bcryptjs):</strong> પાસવર્ડ ક્યારેય પ્લેન ટેક્સ્ટમાં સેવ થતો નથી. તેને ૧૦ સોલ્ટ રાઉન્ડ્સ (Salt Rounds) સાથે વન-વે હેશ કરીને ડેટાબેઝમાં સાચવવામાં આવે છે.</li>
+  <li><strong>JWT (JSON Web Tokens):</strong> સફળ લોગિન પછી સર્વર સિક્રેટ કી સાથે ૭ દિવસની વેલિડિટી વાળો ટોકન આપે છે. ફ્રન્ટએન્ડ દરેક રિક્વેસ્ટમાં <code>Authorization: Bearer &lt;token&gt;</code> મોકલે છે.</li>
+  <li><strong>Helmet HTTP Headers:</strong> ક્રોસ-સાઇટ સ્ક્રિપ્ટીંગ (XSS) અને ક્લિકજેકિંગ સામે રક્ષણ આપવા માટે સુરક્ષિત એચટીટીપી હેડર્સ લાગુ કરેલા છે.</li>
+  <li><strong>Rate Limiting (DDoS &amp; Brute Force Prevention):</strong> <code>express-rate-limit</code> દ્વારા લોગિન/સાઇનઅપ પર ૧૫ મિનિટમાં મહત્તમ ૧૦૦ રિક્વેસ્ટની મર્યાદા રાખી છે જેથી કોઈ હેકર વારંવાર ખોટા પાસવર્ડ નાખી ન શકે.</li>
+  <li><strong>SQL Injection Prevention:</strong> ડેટાબેઝ ક્વેરીઓમાં વેલ્યુ સીધી જોડવાને બદલે પ્રીપેર્ડ સ્ટેટમેન્ટ્સ (<code>?</code> પ્લેસહોલ્ડર) વાપરેલા છે જેથી SQL ઇન્જેક્શન શક્ય નથી.</li>
+</ul>
+
+<h2>૬.૨ ઇન-મેમરી રેઝિલિઅન્ટ ફોલબેક મોડ (The In-Memory Fallback):</h2>
+<p>
+આ પ્રોજેક્ટની સૌથી મોટી વિશેષતા એ છે કે સર્વર સ્ટાર્ટ થતી વખતે <code>backend/config/db.js</code> માં રહેલો <code>initDB()</code> ફંક્શન MySQL સાથે કનેક્ટ થવાનો પ્રયાસ કરે છે. જો તમારા પ્રેઝન્ટેશન વાળા લેપટોપમાં MySQL સર્વર બંધ હોય કે પાસવર્ડ ખોટો હોય, તો એપ્લિકેશન <strong>એરર આપીને બંધ થતી નથી</strong>. તે આપમેળે રેઝિલિઅન્ટ ઇન-મેમરી સ્ટોરમાં સ્વિચ થઈ જાય છે અને બધી જ REST APIs મેમરીમાંથી ચાલે છે!
+</p>
+<div class="callout">
+  <div class="callout-title">🎯 પરીક્ષક સામે સૌથી મોટો ફાયદો:</div>
+  "પ્રેઝન્ટેશન દરમિયાન ક્યારેય 'Database Connection Failed' કે 500 Server Crash ની સમસ્યા આવશે નહીં. પ્રોજેક્ટ ગમે તે સ્થિતિમાં ૧૦૦% સ્મૂધલી ચાલશે."
+</div>
+
+
+<!-- CHAPTER 7 -->
+<div class="page-break"></div>
+<h1>૭. પ્રોજેક્ટ રન કરવાની સ્ટેપ-બાય-સ્ટેપ રીત (How to Run)</h1>
+
+<h3>રીત ૧: Node.js સર્વર દ્વારા (Recommended)</h3>
+<pre>
+# ૧. પ્રોજેક્ટ ફોલ્ડરમાં જાઓ
+cd "/Users/gunakhushi/Documents/good health"
+
+# ૨. બેકએન્ડ સર્વર શરૂ કરો
+cd backend
+npm start
+# અથવા રૂટમાંથી: node backend/server.js
+</pre>
+<p>સર્વર શરૂ થતાં જ ટર્મિનલમાં આવો મેસેજ દેખાશે:</p>
+<pre>
+==================================================================
+ 🌱 Good Health and Well-Being Platform Started!
+ 🌐 Server URL: http://localhost:8080
+ 📁 Serving frontend from: .../frontend
+ 🗄️ Database status: MySQL Connected (અથવા In-Memory Mode)
+==================================================================
+</pre>
+
+<h3>રીત ૨: ઓટોમેટિક યુનિવર્સલ સ્ક્રિપ્ટ દ્વારા</h3>
+<pre>
+./run.sh
+</pre>
+<p>આ સ્ક્રિપ્ટ તમારા મશીનમાં Node.js કે Java ચેક કરીને આપમેળે યોગ્ય સર્વર શરૂ કરી દેશે અને બ્રાઉઝર ઓપન કરશે.</p>
+
+
+<!-- CHAPTER 8 -->
+<div class="page-break"></div>
+<h1>૮. વાઇવા / પ્રેઝન્ટેશન પ્રશ્નોત્તરી (Comprehensive Viva Voce Q&amp;A)</h1>
+<p>પરીક્ષક (Ma'am) આમાંથી જ પ્રશ્નો પૂછશે. દરેક સભ્ય આ જવાબો મોઢે કરી લેવા:</p>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૧: તમારા પ્રોજેક્ટનો મુખ્ય ઉદ્દેશ્ય (Purpose/POV) શું છે? <span class="qa-tag tag-green">Basic</span></div>
+  <div class="qa-answer">
+    "મેડમ, અમારા પ્રોજેક્ટનો ઉદ્દેશ્ય UN Sustainable Development Goal 3 (Good Health and Well-Being) હેઠળ લોકોને સ્વસ્થ જીવનશૈલી માટે જાગૃત કરવાનો છે. ટેકનિકલ POV એ છે કે આ એક સંપૂર્ણ ફુલ-સ્ટેક વેબ એપ્લિકેશન છે જેમાં રિસ્પોન્સિવ ફ્રન્ટએન્ડ, નોડ/એક્સપ્રેસ બેકએન્ડ અને માય-એસક્યુએલ ડેટાબેઝ સાથે તમામ <strong>CRUD ઓપરેશન્સ</strong> યોગ્ય રીતે કામ કરે છે."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૨: આ પ્રોજેક્ટમાં CRUD કઈ રીતે થાય છે? દરેક ઓપરેશન સમજાવો. <span class="qa-tag tag-blue">Core Concept</span></div>
+  <div class="qa-answer">
+    "મેડમ, પ્રોજેક્ટમાં ચારેય ઓપરેશન્સ આ પ્રમાણે થાય છે:<br>
+    • <strong>Create:</strong> યુઝર '+ Add Task' બટનથી નવો ટાસ્ક ઉમેરે છે (<code>POST /api/tasks</code>) અને સાઇન-અપ કરે છે (<code>POST /api/auth/register</code>).<br>
+    • <strong>Read:</strong> હોમ પેજ અને કેલેન્ડર પર ડેટાબેઝમાંથી બધા ટાસ્ક અને દૈનિક સ્કોર ફેચ થાય છે (<code>GET /api/tasks</code>).<br>
+    • <strong>Update:</strong> ટાસ્કનું નામ કે વિગત એડિટ થાય છે (<code>PUT /api/tasks/:id</code>) અને ચેકબોક્સ ટીક કરવાથી સ્ટેટસ 'done' થાય છે (<code>POST /api/tasks/toggle-completion</code>).<br>
+    • <strong>Delete:</strong> ટાસ્કને ડિલીટ કરી શકાય છે (<code>DELETE /api/tasks/:id</code> - Soft Delete)."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૩: તમે ડેટાબેઝમાં કયા ટેબલ્સ બનાવ્યા છે અને તેમની રિલેશનશિપ શું છે? <span class="qa-tag tag-purple">Database</span></div>
+  <div class="qa-answer">
+    "અમારા ડેટાબેઝ <code>good_health_db</code> માં મુખ્ય ૮ ટેબલ્સ છે: <code>users</code> (યુઝર લોગિન), પાંચ કેટેગરી ટાસ્ક ટેબલ્સ (<code>tasks_food</code>, <code>tasks_exercise</code>, <code>tasks_mental</code>, <code>tasks_sleep</code>, <code>tasks_habits</code>), <code>task_completions</code> (રોજના પૂરા થયેલા ટાસ્ક) અને <code>user_daily_logs</code> (રોજનો સ્કોર). કેટેગરી ટાસ્ક્સ અને કોમ્પ્લીશન્સમાં <code>user_id</code> એ <code>users(id)</code> સાથે Foreign Key થી જોડાયેલું છે."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૪: સોફ્ટ ડિલીટ (Soft Delete) એટલે શું અને તમે તે કેમ વાપર્યું? <span class="qa-tag tag-yellow">Architecture</span></div>
+  <div class="qa-answer">
+    "સોફ્ટ ડિલીટમાં ડેટાબેઝમાંથી રેકોર્ડ કાયમ માટે કાઢી નાખવાને બદલે <code>is_active = 0</code> ફ્લેગ સેટ કરવામાં આવે છે. જો આપણે હાર્ડ ડિલીટ કરીએ, તો તે ટાસ્ક સાથે જોડાયેલો જૂનો કેલેન્ડર હિસ્ટ્રી અને ડેઇલી સ્કોર ખોટો થઈ જાય. ડેટાની ઐતિહાસિક અખંડિતતા (Data Integrity) જાળવવા સોફ્ટ ડિલીટ વાપરવામાં આવ્યું છે."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૫: Authentication અને Security માટે તમે શું ટેકનિક વાપરી છે? <span class="qa-tag tag-red">Security</span></div>
+  <div class="qa-answer">
+    "અમે પાસવર્ડને ક્યારેય પ્લેન ટેક્સ્ટમાં રાખતા નથી. પાસવર્ડ સિક્યોરિટી માટે <strong>bcryptjs</strong> દ્વારા ૧૦ રાઉન્ડ્સનું હેશિંગ થાય છે. લોગિન થયેલા યુઝરને ઓળખવા માટે <strong>JWT (JSON Web Token)</strong> વપરાય છે. આ ઉપરાંત હેકર્સથી બચવા <strong>Helmet</strong> અને બ્રુટ-ફોર્સ અટકાવવા <strong>Rate Limiter</strong> મિડલવેર મૂકેલું છે."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૬: જો પરીક્ષા વખતે MySQL બંધ હોય તો તમારો પ્રોજેક્ટ ચાલશે? <span class="qa-tag tag-green">Robustness</span></div>
+  <div class="qa-answer">
+    "હા મેડમ, ૧૦૦% ચાલશે! અમે <code>backend/config/db.js</code> માં <strong>Resilient In-Memory Fallback</strong> બનાવેલું છે. જો MySQL કનેક્ટ ન થાય તો સર્વર ક્રેશ થવાને બદલે જાતે જ ઇન-મેમરી મોડમાં આવી જાય છે અને તમામ CRUD ઓપરેશન્સ અને APIs કોઈપણ ભૂલ વગર સરળતાથી ચાલતા રહે છે."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૭: ફ્રન્ટએન્ડ અને બેકએન્ડ વચ્ચે ડેટા કેવી રીતે પાસ થાય છે? <span class="qa-tag tag-blue">Networking</span></div>
+  <div class="qa-answer">
+    "ફ્રન્ટએન્ડ અને બેકએન્ડ વચ્ચે કમ્યુનિકેશન બ્રાઉઝરની સ્ટાન્ડર્ડ <strong>JavaScript Fetch API</strong> દ્વારા થાય છે. ફ્રન્ટએન્ડ HTTP Headers માં Content-Type: application/json અને JWT Bearer Token મોકલે છે. એક્સપ્રેસ બેકએન્ડ તેને પ્રોસેસ કરીને JSON ફોર્મેટમાં સ્ટેટસ કોડ (200, 201, 400, 401) સાથે રિસ્પોન્સ આપે છે."
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-question">પ્રશ્ન ૮: તમારા પ્રોજેક્ટમાં કયા કયા ઇન્ટરેક્ટિવ કેલ્ક્યુલેટર્સ છે? <span class="qa-tag tag-yellow">Features</span></div>
+  <div class="qa-answer">
+    "અમારા પ્રોજેક્ટમાં ૪ મુખ્ય વૈજ્ઞાનિક કેલ્ક્યુલેટર્સ છે: (૧) <strong>Water Calculator:</strong> વજન મુજબ પાણીનું પ્રમાણ ગણે છે. (૨) <strong>4-7-8 Breathing Circle:</strong> માનસિક શાંતિ માટે ગાઈડેડ લાઈવ એનિમેશન. (૩) <strong>90-Min Sleep Calculator:</strong> ઊંઘના સાયકલ મુજબ સુવાનો યોગ્ય સમય જણાવે છે. (૪) <strong>5-Minute Stretch Timer:</strong> ડેસ્ક જોબ વાળા માટે સ્ટ્રેચિંગ ટાઈમર."
+  </div>
+</div>
+
+
+<!-- CHAPTER 9 -->
+<div class="page-break"></div>
+<h1>૯. લાઈવ પ્રેઝન્ટેશન આપતી વખતે ડેમો આપવાની સ્ટેપ-બાય-સ્ટેપ રીત</h1>
+
+<div class="callout">
+  <div class="callout-title">🗣️ સ્ટેપ ૧: ઓપનિંગ સ્પીચ (૩૦ સેકન્ડ્સ)</div>
+  <em>"ગુડ મોર્નિંગ / આફ્ટરનૂન મેડમ. આજે અમે અમારો પ્રોજેક્ટ 'Good Health and Well-Being' રજૂ કરીએ છીએ, જે સંયુક્ત રાષ્ટ્રના SDG Goal 3 પર આધારિત છે. અમારો મુખ્ય ઉદ્દેશ્ય પ્રોપર વર્કિંગ ફ્રન્ટએન્ડ, બેકએન્ડ અને ડેટાબેઝ સાથે સંપૂર્ણ CRUD ઓપરેશન્સ ધરાવતી ફુલ-સ્ટેક હેલ્થ એપ્લિકેશન બનાવવાનો છે."</em>
+</div>
+
+<div class="callout">
+  <div class="callout-title">💻 સ્ટેપ ૨: સ્ક્રીન પર લાઈવ ડેમો બતાવવાનો ફ્લો</div>
+  <ol>
+    <li><strong>Login Portal:</strong> <code>login.html</code> પર જઈને <strong>'1-Click Demo Login'</strong> બટન દબાવો જેથી પાસવર્ડ ટાઈપ કર્યા વગર તરત લોગિન થઈ જવાય અને નેવબારમાં યુઝરનું નામ દેખાય.</li>
+    <li><strong>Create Task:</strong> હોમ પેજ પર જઈને <strong>'+ Add Task'</strong> બટન દબાવો. ટાસ્કનું નામ (જેમ કે "Morning 20m Yoga"), ટિપ લખો, આઈકોન પસંદ કરો અને Save કરો. ટાસ્ક તરત લિસ્ટમાં ઉમેરાઈ જશે. <em>(આ Create ઓપરેશન સાબિત કરે છે)</em>.</li>
+    <li><strong>Read Task:</strong> પેજ રિફ્રેશ કરો તો પણ ટાસ્ક ડેટાબેઝમાંથી ફેચ થઈને લિસ્ટમાં જળવાઈ રહે છે. <em>(આ Read ઓપરેશન સાબિત કરે છે)</em>.</li>
+    <li><strong>Update &amp; Complete:</strong> ટાસ્ક પર એડિટ બટન (✏️) દબાવીને નામ સુધારીને બતાવો. પછી ચેકબોક્સ પર ટીક કરો - ઉપરનો સ્કોર ૦% માંથી વધીને ટકાવારી બતાવશે. <em>(આ Update ઓપરેશન સાબિત કરે છે)</em>.</li>
+    <li><strong>Delete Task:</strong> ટાસ્ક પાસે રહેલું ડિલીટ (🗑️) બટન દબાવો અને કન્ફર્મ કરો. ટાસ્ક લિસ્ટમાંથી હટી જશે. <em>(આ Delete ઓપરેશન સાબિત કરે છે)</em>.</li>
+    <li><strong>Interactive Tools:</strong> સમય હોય તો <code>food.html</code> પર જઈને <strong>Water Calculator</strong> માં વજન નાખીને ગણતરી બતાવો અથવા <code>mental-health.html</code> પર <strong>4-7-8 Breathing Circle</strong> શરૂ કરીને બતાવો.</li>
+  </ol>
+</div>
+
+<div class="callout callout-warning">
+  <div class="callout-title">💡 ગોલ્ડન એડવાઇસ (જો મેડમ કોઈ અઘરો પ્રશ્ન પૂછે જે ન આવડતો હોય):</div>
+  ગભરાવાને બદલે શાંતિથી કહો: <em>"મેડમ, અમારા પ્રોજેક્ટનું આર્કિટેક્ચર મોડ્યુલર રાખવામાં આવ્યું છે જેથી ભવિષ્યમાં આવા એડવાન્સ્ડ ફીચર્સ સરળતાથી જોડી શકાય. હાલમાં અમે ફુલ-સ્ટેક ફાઉન્ડેશન અને કોર CRUD ઓપરેશન્સ પર પ્રાથમિક ધ્યાન કેન્દ્રિત કર્યું છે."</em> આ જવાબ સાંભળીને પરીક્ષક ખુશ થઈ જશે!
+</div>
+
+<br><br>
+<div style="text-align: center; border-top: 2px dashed #059669; padding-top: 20px; color: #065f46; font-weight: 700;">
+  🌿 All the Best for your Presentation &amp; Viva! 🌿
+</div>
+
+</body>
+</html>

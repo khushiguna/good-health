@@ -1508,6 +1508,100 @@ const HOME_UI_LABELS = {
 };
 
 /* ==========================================================================
+   Bidirectional Preset <-> Ratio Identifier Mapping
+   Ensures 100% synchronization between Home Page, Daily Result, and Backend
+   ========================================================================== */
+const PRESET_TO_RATIO_MAP = {
+  'preset_1': 'water',
+  'preset_2': 'walk',
+  'preset_3': 'diet',
+  'preset_4': 'avoid_junk',
+  'preset_5': 'avoid_soda',
+  'preset_6': 'avoid_screen',
+  'preset_7': 'fennel_water',
+  'preset_8': 'vajrasana',
+  'preset_9': 'chew_slow',
+  'preset_10': 'avoid_fried',
+  'preset_11': 'avoid_lie_down',
+  'preset_12': 'avoid_cold_drinks',
+  'preset_13': 'brisk_walk',
+  'preset_14': 'water_pre_meal',
+  'preset_15': 'fiber_plate',
+  'preset_16': 'avoid_sugar',
+  'preset_17': 'avoid_late_eat',
+  'preset_18': 'avoid_sedentary',
+  'preset_19': 'breathing_478',
+  'preset_20': 'calm_walk',
+  'preset_21': 'herbal_tea',
+  'preset_22': 'avoid_caffeine_noon',
+  'preset_23': 'avoid_doomscroll',
+  'preset_24': 'avoid_rush_meal',
+  'preset_25': 'morning_sun',
+  'preset_26': 'sleep_schedule',
+  'preset_27': 'warm_milk_read',
+  'preset_28': 'avoid_bed_screens',
+  'preset_29': 'avoid_pm_coffee',
+  'preset_30': 'avoid_heavy_dinner',
+  'preset_31': 'desk_stretch',
+  'preset_32': 'low_impact_walk',
+  'preset_33': 'turmeric_walnuts',
+  'preset_34': 'avoid_long_sit',
+  'preset_35': 'avoid_slouch',
+  'preset_36': 'avoid_soft_bed',
+  'preset_37': 'post_meal_walk',
+  'preset_38': 'fiber_oats_methi',
+  'preset_39': 'deep_breath_bp',
+  'preset_40': 'avoid_refined_sugar',
+  'preset_41': 'avoid_high_salt',
+  'preset_42': 'avoid_skip_checks'
+};
+
+const RATIO_TO_PRESET_MAP = {};
+for (const [pKey, rKey] of Object.entries(PRESET_TO_RATIO_MAP)) {
+  RATIO_TO_PRESET_MAP[rKey] = pKey;
+}
+
+const PRESET_CATEGORY_MAP = {
+  'preset_1': 'food', 'preset_2': 'exercise', 'preset_3': 'habits', 'preset_4': 'habits', 'preset_5': 'food', 'preset_6': 'sleep',
+  'preset_7': 'food', 'preset_8': 'food', 'preset_9': 'food', 'preset_10': 'food', 'preset_11': 'habits', 'preset_12': 'food',
+  'preset_13': 'exercise', 'preset_14': 'food', 'preset_15': 'habits', 'preset_16': 'food', 'preset_17': 'habits', 'preset_18': 'habits',
+  'preset_19': 'mental', 'preset_20': 'exercise', 'preset_21': 'habits', 'preset_22': 'habits', 'preset_23': 'habits', 'preset_24': 'food',
+  'preset_25': 'habits', 'preset_26': 'habits', 'preset_27': 'food', 'preset_28': 'sleep', 'preset_29': 'habits', 'preset_30': 'sleep',
+  'preset_31': 'exercise', 'preset_32': 'exercise', 'preset_33': 'food', 'preset_34': 'habits', 'preset_35': 'habits', 'preset_36': 'habits',
+  'preset_37': 'food', 'preset_38': 'food', 'preset_39': 'mental', 'preset_40': 'food', 'preset_41': 'habits', 'preset_42': 'habits'
+};
+
+function getDefaultPresetTasks() {
+  const presets = [];
+  const conditionKeys = ['general', 'digestion', 'weight', 'stress', 'sleep', 'joints', 'sugar_bp'];
+  conditionKeys.forEach(ck => {
+    const cond = HEALTH_CONDITIONS[ck];
+    if (cond && cond.ratioTasks) {
+      cond.ratioTasks.forEach((rt, idx) => {
+        const presetId = RATIO_TO_PRESET_MAP[rt.id] || `preset_${ck}_${idx}`;
+        const cat = PRESET_CATEGORY_MAP[presetId] || 'habits';
+        presets.push({
+          id: presetId,
+          user_id: null,
+          condition_key: ck,
+          category: cat,
+          name: rt.name_en,
+          name_en: rt.name_en,
+          name_gu: rt.name_gu,
+          tip: rt.tip_en,
+          tip_en: rt.tip_en,
+          tip_gu: rt.tip_gu,
+          icon: rt.icon,
+          display_order: idx,
+          is_active: 1
+        });
+      });
+    }
+  });
+  return presets;
+}
+
+/* ==========================================================================
    Home Page Minimal Health Concern & Action Checklist Hub
    Supports dynamic language switching (English default / Gujarati option)
    ========================================================================== */
@@ -1777,14 +1871,22 @@ function initHomePageHub() {
   let cachedTasks = null;
 
   function getCustomTasks() {
-    if (cachedTasks !== null) return cachedTasks;
+    if (cachedTasks !== null && cachedTasks.length > 0) return cachedTasks;
+    let local = [];
     try {
-      const local = JSON.parse(localStorage.getItem('gh_custom_tasks') || '[]').filter(t => t !== null && typeof t === 'object');
-      cachedTasks = local;
-      return local;
+      local = JSON.parse(localStorage.getItem('gh_custom_tasks') || '[]').filter(t => t !== null && typeof t === 'object' && t.is_active !== 0);
     } catch (e) {
-      return [];
+      local = [];
     }
+
+    const hasPresets = local.some(t => t.id && String(t.id).startsWith('preset_'));
+    if (!hasPresets) {
+      const defaultPresets = getDefaultPresetTasks();
+      local = [...defaultPresets, ...local];
+    }
+
+    cachedTasks = local;
+    return local;
   }
 
   function saveCustomTasks(tasks) {
@@ -1820,6 +1922,8 @@ function initHomePageHub() {
           try { taskStates = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch(e) {}
           completions.forEach(c => {
             taskStates[c.task_id] = c.status;
+            const rAlias = PRESET_TO_RATIO_MAP[c.task_id] || RATIO_TO_PRESET_MAP[c.task_id];
+            if (rAlias) taskStates[rAlias] = c.status;
           });
           localStorage.setItem(storageKey, JSON.stringify(taskStates));
           renderHomeConditionData();
@@ -1925,7 +2029,10 @@ function initHomePageHub() {
       : allTasks.filter(t => t.category === activeCategoryFilter);
 
     function updateCounter() {
-      const completed = relevantTasks.filter(t => taskStates[t.id] === 'done' || t.status === 'done').length;
+      const completed = relevantTasks.filter(t => {
+        const rAlias = PRESET_TO_RATIO_MAP[t.id] || RATIO_TO_PRESET_MAP[t.id];
+        return taskStates[t.id] === 'done' || t.status === 'done' || (rAlias && taskStates[rAlias] === 'done');
+      }).length;
       const total = relevantTasks.length || 1;
       const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
@@ -1945,6 +2052,21 @@ function initHomePageHub() {
       }
       if (homeRatioPct) {
         homeRatioPct.textContent = `${pct}%`;
+      }
+      if (homeRatioGrade) {
+        if (pct >= 85) {
+          homeRatioGrade.textContent = lang === 'gu' ? 'શ્રેષ્ઠ' : 'Excellent';
+          homeRatioGrade.style.color = '#15803d';
+        } else if (pct >= 50) {
+          homeRatioGrade.textContent = lang === 'gu' ? 'સારી પ્રગતિ' : 'Good Progress';
+          homeRatioGrade.style.color = '#0284c7';
+        } else if (pct > 0) {
+          homeRatioGrade.textContent = lang === 'gu' ? 'ચાલુ છે' : 'In Progress';
+          homeRatioGrade.style.color = '#d97706';
+        } else {
+          homeRatioGrade.textContent = lang === 'gu' ? 'બાકી' : 'Pending';
+          homeRatioGrade.style.color = '#64748b';
+        }
       }
     }
 
@@ -1972,8 +2094,12 @@ function initHomePageHub() {
       catSection.appendChild(catHeader);
 
       catTasks.forEach(task => {
-        const isDone = (taskStates[task.id] === 'done') || (task.status === 'done');
-        if (isDone && taskStates[task.id] !== 'done') taskStates[task.id] = 'done';
+        const rAlias = PRESET_TO_RATIO_MAP[task.id] || RATIO_TO_PRESET_MAP[task.id];
+        const isDone = (taskStates[task.id] === 'done') || (task.status === 'done') || (rAlias && taskStates[rAlias] === 'done');
+        if (isDone) {
+          taskStates[task.id] = 'done';
+          if (rAlias) taskStates[rAlias] = 'done';
+        }
         
         const taskName = task['name_' + lang] || task.name_en || task.name;
         const taskTip = task['tip_' + lang] || task.tip_en || task.tip;
@@ -2010,6 +2136,10 @@ function initHomePageHub() {
           e.stopPropagation();
           const newStatus = cb.checked ? 'done' : 'pending';
           taskStates[task.id] = newStatus;
+          const ratioAlias = PRESET_TO_RATIO_MAP[task.id] || RATIO_TO_PRESET_MAP[task.id];
+          if (ratioAlias) {
+            taskStates[ratioAlias] = newStatus;
+          }
           row.classList.toggle('checked', cb.checked);
           localStorage.setItem(storageKey, JSON.stringify(taskStates));
           updateCounter();
@@ -2937,7 +3067,7 @@ const RESULT_UI_LABELS = {
     heroTitle: 'Your Daily Health Result & <span class="hero-highlight" style="color: #6ee7b7;">Recovery Protocol</span>',
     heroDesc: '<strong>Daily Evaluation & Recovery Plan:</strong> Review your daily score, track your completed tasks, and follow your condition-specific compensatory protocol to maintain peak health.',
     conditionLabel: '🩺 Health Condition Target:',
-    scoreLbl: 'Health Score',
+    scoreLbl: 'Health Score Ratio',
     scoreSub: 'Live Day Evaluation',
     auditTitle: '<span>📋</span> Today\'s Tasks Status',
     auditSub: 'Synchronized with your Home Page checklist (tick to update):',
@@ -2978,7 +3108,7 @@ const RESULT_UI_LABELS = {
     heroTitle: 'તમારું દૈનિક સ્વાસ્થ્ય પરિણામ & <span class="hero-highlight" style="color: #6ee7b7;">રિકવરી પ્લાન</span>',
     heroDesc: '<strong>આજનું સ્વાસ્થ્ય પરિણામ અને વધારાનું એક્શન પ્લાન:</strong> તમારો દૈનિક સ્કોર તપાસો, પૂર્ણ થયેલા કાર્યો જુઓ, અને શરીરનું સંતુલન જાળવવા વધારાનું શું કરવું તે અનુસરો.',
     conditionLabel: '🩺 સ્વાસ્થ્ય લક્ષ્ય:',
-    scoreLbl: 'હેલ્થ સ્કોર',
+    scoreLbl: 'હેલ્થ સ્કોર રેશિયો',
     scoreSub: 'આજનું લાઈવ મૂલ્યાંકન',
     auditTitle: '<span>📋</span> આજના કાર્યોની સ્થિતિ',
     auditSub: 'હોમ પેજ સાથે લાઈવ જોડાયેલ છે (બદલવા માટે ટીક કરો):',
@@ -3122,31 +3252,89 @@ function initResultPage() {
 
   if (conditionSelect) {
     conditionSelect.value = selectedCondition;
-    conditionSelect.addEventListener('change', (e) => {
+    conditionSelect.addEventListener('change', async (e) => {
       selectedCondition = e.target.value;
       localStorage.setItem('gh_selected_condition', selectedCondition);
+      await syncResultCompletions();
       renderResultPage();
+      window.dispatchEvent(new CustomEvent('gh_condition_changed', { detail: { condition: selectedCondition } }));
+      if (typeof window.refreshHealthCalendar === 'function') {
+        window.refreshHealthCalendar();
+      }
     });
   }
 
-  function getRatioKey() {
-    return `gh_ratio_${selectedCondition}_${todayKey}`;
+  function getRatioKey(cond = selectedCondition) {
+    return `gh_ratio_${cond}_${todayKey}`;
   }
 
-  function getRecoveryKey() {
-    return `gh_recovery_${selectedCondition}_${todayKey}`;
+  function getRecoveryKey(cond = selectedCondition) {
+    return `gh_recovery_${cond}_${todayKey}`;
   }
 
-  function getTaskStates() {
-    return JSON.parse(localStorage.getItem(getRatioKey()) || '{}');
+  function getTaskStates(cond = selectedCondition) {
+    try {
+      return JSON.parse(localStorage.getItem(getRatioKey(cond)) || '{}');
+    } catch(e) {
+      return {};
+    }
   }
 
-  function getRecoveryStates() {
-    return JSON.parse(localStorage.getItem(getRecoveryKey()) || '{}');
+  function getRecoveryStates(cond = selectedCondition) {
+    try {
+      return JSON.parse(localStorage.getItem(getRecoveryKey(cond)) || '{}');
+    } catch(e) {
+      return {};
+    }
+  }
+
+  function isTaskCompleted(task, states) {
+    if (!states) return false;
+    if (states[task.id] === 'done') return true;
+    const presetId = task.preset_id || RATIO_TO_PRESET_MAP[task.id];
+    if (presetId && states[presetId] === 'done') return true;
+    const ratioId = PRESET_TO_RATIO_MAP[task.id];
+    if (ratioId && states[ratioId] === 'done') return true;
+    return false;
+  }
+
+  function getResultTasks(condKey) {
+    const condition = HEALTH_CONDITIONS[condKey] || HEALTH_CONDITIONS.general;
+    const tasks = (condition.ratioTasks || []).map(t => ({
+      ...t,
+      preset_id: RATIO_TO_PRESET_MAP[t.id] || null,
+      canonical_id: t.id
+    }));
+
+    try {
+      const allCustom = JSON.parse(localStorage.getItem('gh_custom_tasks') || '[]')
+        .filter(t => t && typeof t === 'object' && t.is_active !== 0 && t.is_active !== false);
+      const customForCond = allCustom.filter(t => (t.user_id !== null && t.user_id !== undefined) && (!t.condition_key || t.condition_key === condKey));
+      customForCond.forEach(ct => {
+        if (!tasks.some(bt => bt.id === ct.id || bt.preset_id === ct.id)) {
+          tasks.push({
+            id: ct.id,
+            preset_id: ct.id,
+            canonical_id: ct.id,
+            icon: ct.icon || '📝',
+            type: 'do',
+            category: ct.category || 'habits',
+            name_en: ct.name_en || ct.name,
+            name_gu: ct.name_gu || ct.name,
+            tip_en: ct.tip_en || ct.tip,
+            tip_gu: ct.tip_gu || ct.tip,
+            isCustom: true
+          });
+        }
+      });
+    } catch(e) {}
+
+    return tasks;
   }
 
   function getCompensatoryItem(task) {
-    const advice = COMPENSATORY_ACTIONS[task.id];
+    const lookupId = task.canonical_id || PRESET_TO_RATIO_MAP[task.id] || task.id;
+    const advice = COMPENSATORY_ACTIONS[lookupId];
     const taskName = (currentLang === 'gu' ? task.name_gu : task.name_en) || task.name;
     if (!advice) {
       return {
@@ -3179,7 +3367,7 @@ function initResultPage() {
     updateStaticLabels();
     const labels = RESULT_UI_LABELS[currentLang] || RESULT_UI_LABELS.en;
     const condition = HEALTH_CONDITIONS[selectedCondition] || HEALTH_CONDITIONS.general;
-    const tasks = condition.ratioTasks || [];
+    const tasks = getResultTasks(selectedCondition);
     let taskStates = getTaskStates();
     let recoveryStates = getRecoveryStates();
 
@@ -3189,10 +3377,12 @@ function initResultPage() {
     const skippedItems = [];
 
     tasks.forEach(t => {
-      const isDone = taskStates[t.id] === 'done';
+      const isDone = isTaskCompleted(t, taskStates);
       if (isDone) {
         doneCount++;
         completedItems.push(t);
+        taskStates[t.id] = 'done';
+        if (t.preset_id) taskStates[t.preset_id] = 'done';
       } else {
         skippedItems.push(t);
       }
@@ -3217,7 +3407,11 @@ function initResultPage() {
 
     const condTitle = (currentLang === 'gu' ? (condition.title_gu || condition.title) : (condition.title_en || condition.title)).split('(')[0].trim();
 
-    if (donePct >= 85) {
+    if (doneCount === 0) {
+      gradeLabel = labels.gradeAwaiting || 'Awaiting Today\'s Tasks';
+      gradeClass = 'grade-needs-work';
+      diagMsg = labels.gradeAwaitingDiag || labels.gradeCDiag.replace('{condition}', condTitle);
+    } else if (donePct >= 85) {
       gradeLabel = labels.gradeAplus;
       gradeClass = 'grade-excellent';
       diagMsg = labels.gradeAplusDiag.replace('{condition}', condTitle);
@@ -3248,7 +3442,7 @@ function initResultPage() {
     if (auditList) {
       auditList.innerHTML = '';
       tasks.forEach(task => {
-        const isDone = taskStates[task.id] === 'done';
+        const isDone = isTaskCompleted(task, taskStates);
         const taskName = (currentLang === 'gu' ? task.name_gu : task.name_en) || task.name;
         const taskTip = (currentLang === 'gu' ? task.tip_gu : task.tip_en) || task.tip;
         const statusText = isDone ? (labels.statusDone || '✓ Done') : (labels.statusPending || '⏳ Pending');
@@ -3261,8 +3455,9 @@ function initResultPage() {
           <div class="audit-check-content">
             <div class="audit-check-top">
               <span class="audit-check-title">
-                <span>${task.icon}</span>
+                <span>${task.icon || '📝'}</span>
                 <span>${taskName}</span>
+                ${task.isCustom ? `<span class="task-custom-badge" style="font-size:0.7rem; padding:0.1rem 0.4rem; background:#e0e7ff; color:#4338ca; border-radius:4px; margin-left:0.4rem;">${currentLang === 'gu' ? 'કસ્ટમ' : 'Custom'}</span>` : ''}
               </span>
               <span class="audit-status-tag ${isDone ? 'tag-done' : 'tag-pending'}">${statusText}</span>
             </div>
@@ -3272,8 +3467,25 @@ function initResultPage() {
 
         const checkbox = row.querySelector('.audit-check-box');
         checkbox.addEventListener('change', (e) => {
-          taskStates[task.id] = e.target.checked ? 'done' : 'pending';
+          const newStatus = e.target.checked ? 'done' : 'pending';
+          taskStates[task.id] = newStatus;
+          if (task.preset_id) taskStates[task.preset_id] = newStatus;
+          const rId = PRESET_TO_RATIO_MAP[task.id];
+          if (rId) taskStates[rId] = newStatus;
+          const pId = RATIO_TO_PRESET_MAP[task.id];
+          if (pId) taskStates[pId] = newStatus;
+
           localStorage.setItem(getRatioKey(), JSON.stringify(taskStates));
+
+          const apiId = task.preset_id || task.id;
+          if (window.HealthAPI && window.HealthAPI.toggleCompletion) {
+            window.HealthAPI.toggleCompletion(apiId, newStatus, selectedCondition, todayKey, task.category || 'general').then(() => {
+              if (typeof window.refreshHealthCalendar === 'function') {
+                window.refreshHealthCalendar();
+              }
+            });
+          }
+
           renderResultPage();
         });
 
@@ -3286,7 +3498,6 @@ function initResultPage() {
       recoveryList.innerHTML = '';
 
       if (skippedItems.length === 0) {
-        // 100% Perfect day
         recoveryList.innerHTML = `
           <div class="recovery-empty-state">
             <div class="empty-icon">🏆</div>
@@ -3303,7 +3514,7 @@ function initResultPage() {
 
         skippedItems.forEach(task => {
           const recItem = getCompensatoryItem(task);
-          const isChecked = !!recoveryStates[task.id];
+          const isChecked = !!recoveryStates[task.id] || (task.preset_id && !!recoveryStates[task.preset_id]);
           if (isChecked) completedRecoveryCount++;
 
           const pillClass = recItem.urgency === 'urgent' ? 'pill-urgent' : (recItem.urgency === 'vital' ? 'pill-vital' : 'pill-recovery');
@@ -3323,9 +3534,10 @@ function initResultPage() {
             </div>
           `;
 
-          const checkbox = card.querySelector('.extra-action-checkbox');
-          checkbox.addEventListener('change', (e) => {
+          const recCheckbox = card.querySelector('.extra-action-checkbox');
+          recCheckbox.addEventListener('change', (e) => {
             recoveryStates[task.id] = e.target.checked;
+            if (task.preset_id) recoveryStates[task.preset_id] = e.target.checked;
             localStorage.setItem(getRecoveryKey(), JSON.stringify(recoveryStates));
             renderResultPage();
           });
@@ -3333,7 +3545,6 @@ function initResultPage() {
           recoveryList.appendChild(card);
         });
 
-        // Update Recovery Progress Bar
         const recoveryPct = Math.round((completedRecoveryCount / totalRecoveryCount) * 100);
         if (recoveryProgressText) {
           recoveryProgressText.textContent = labels.recProgressFormat
@@ -3363,6 +3574,9 @@ function initResultPage() {
         localStorage.removeItem(getRatioKey());
         localStorage.removeItem(getRecoveryKey());
         renderResultPage();
+        if (typeof window.refreshHealthCalendar === 'function') {
+          window.refreshHealthCalendar();
+        }
       }
     });
   }
@@ -3373,7 +3587,40 @@ function initResultPage() {
     renderResultPage();
   });
 
+  // Load latest tasks and completions from backend on startup
+  async function syncResultCompletions() {
+    if (window.HealthAPI && window.HealthAPI.getTasks) {
+      try {
+        const tasks = await window.HealthAPI.getTasks('all');
+        if (tasks && Array.isArray(tasks)) {
+          localStorage.setItem('gh_custom_tasks', JSON.stringify(tasks));
+        }
+      } catch(e) {}
+    }
+
+    if (window.HealthAPI && window.HealthAPI.getCompletions) {
+      try {
+        const completions = await window.HealthAPI.getCompletions(selectedCondition, todayKey);
+        if (completions && Array.isArray(completions) && completions.length > 0) {
+          let states = getTaskStates();
+          completions.forEach(c => {
+            states[c.task_id] = c.status;
+            const rId = PRESET_TO_RATIO_MAP[c.task_id];
+            if (rId) states[rId] = c.status;
+            const pId = RATIO_TO_PRESET_MAP[c.task_id];
+            if (pId) states[pId] = c.status;
+          });
+          localStorage.setItem(getRatioKey(), JSON.stringify(states));
+          renderResultPage();
+        }
+      } catch (err) {
+        console.warn('[Result Sync]: Backend completions sync', err);
+      }
+    }
+  }
+
   renderResultPage();
+  syncResultCompletions();
 }
 
 
